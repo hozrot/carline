@@ -1,14 +1,16 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, Linking, ImageBackground } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-// import { LinearGradient } from 'expo-linear-gradient';
 import {
   useFonts, DMSans_400Regular,
   DMSans_500Medium,
   DMSans_700Bold,
 } from "@expo-google-fonts/dm-sans";
+import UserContext from '../auth/UserContext';
+import Button from '../component/Button';
 
 export default function ProfileScreen({ navigation }) {
+  const { userData } = useContext(UserContext)
 
   const image = require("../assets/logo-blue.png");
   const image2 = require("../assets/bottomtab.png");
@@ -17,6 +19,17 @@ export default function ProfileScreen({ navigation }) {
     DMSans_500Medium,
     DMSans_700Bold,
   });
+
+  const logout = async () => {
+    try {
+      //await AsyncStorage.removeItem('authToken'); // Replace 'authToken' with your token key
+      // Clear any other local state
+      // Navigate to login screen or landing page
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
   return (
 
     <ScrollView style={styles.containerView}>
@@ -28,7 +41,7 @@ export default function ProfileScreen({ navigation }) {
             <TouchableOpacity>
               <Image
                 style={{ width: 120, height: 120, borderRadius: 50 }}
-                source={require("../assets/profile-img.png")}
+                source={{ uri: userData?.image }}
               />
             </TouchableOpacity>
 
@@ -36,8 +49,8 @@ export default function ProfileScreen({ navigation }) {
           </View>
         </ImageBackground>
         <View style={styles.profileInfo}>
-          <Text style={{ color: 'white', fontSize: 20, fontFamily: 'DMSans_500Medium' }}> Md Rohim Miya  </Text>
-          <Text style={{ color: '#C0CACB', fontSize: 16, fontFamily: 'DMSans_400Regular' }}> Company: Graphic IT BD  </Text>
+          <Text style={{ color: 'white', fontSize: 20, fontFamily: 'DMSans_500Medium' }}> {userData?.name}  </Text>
+          <Text style={{ color: '#C0CACB', fontSize: 16, fontFamily: 'DMSans_400Regular' }}> {userData?.company_name}  </Text>
         </View>
         <View style={styles.optionList}>
           <View style={styles.optionListOne}>
@@ -84,18 +97,15 @@ export default function ProfileScreen({ navigation }) {
 
               />
             </TouchableOpacity>
+
+
+
           </View>
+          <Button
+            label="Log Out"
+            onPress={() => logout()}
+          />
         </View>
-        {/* <ImageBackground source={image2}>
-     
-     <View style={styles.profileInfo}>
-     <TouchableOpacity>
-    <Text>test </Text>
-         </TouchableOpacity>
-    
-      
-     </View>
-     </ImageBackground> */}
       </ImageBackground>
     </ScrollView>
   )

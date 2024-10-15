@@ -9,7 +9,7 @@ import {
   ImageBackground,
 } from "react-native";
 import React from "react";
-// import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // To use weblink adress just import Linking and use the navigation like : onPress = {() => {Linking.openURL('#')}}
 export default function AboutScreen({ navigation }) {
@@ -57,7 +57,7 @@ export default function AboutScreen({ navigation }) {
 
         <TouchableOpacity
           style={styles.options}
-          onPress={() => { Linking.openURL('https://autopix.no/privacy-policy/') }}
+          onPress={() => { Linking.openURL('https://carline.no') }}
         >
           <Text style={styles.CardText}>Privacy Policy </Text>
           <MaterialCommunityIcons
@@ -68,7 +68,7 @@ export default function AboutScreen({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.options}
-          onPress={() => { Linking.openURL('https://autopix.no/terms-of-service') }}
+          onPress={() => { Linking.openURL('https://carline.no') }}
         >
           <Text style={styles.CardText}>Terms & Conditions</Text>
           <MaterialCommunityIcons
