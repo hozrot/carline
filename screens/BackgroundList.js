@@ -65,28 +65,6 @@ export default function BackgroundList({ navigation, route }) {
     fetchBackground();
   }, []);
 
-  // useEffect(() => {
-  //   getBackground();
-  // }, []);
-
-  // const getBackground = () => {
-  //  // const URL = "https://app.carline.no/api/backgrounds/";
-  //   const URL =  axios.get(`${BaseUrl}/backgrounds/`, {
-  //     headers: {
-  //       'Authorization': `token ${userData?.token}`,  // Pass the token here
-  //       'Content-Type': 'application/json',
-  //     }
-  //   });
-
-  //   fetch(URL)
-  //     .then((res) => {
-  //       return res.json();
-  //     })
-  //     .then((data) => {
-  //       setImageList(data);
-  //       // console.log(data);
-  //     });
-  // };
 
   return (
     <ImageBackground
@@ -137,7 +115,7 @@ export default function BackgroundList({ navigation, route }) {
         renderItem={({ item }) => (
 
           <TouchableOpacity
-            onPress={() => navigation.navigate("GuideAdd", {"image": item.image,"id": item.id})}
+            onPress={() => navigation.navigate("GuideAdd", { "bgimage": item.image, "id": item.id })}
             style={{
               backgroundColor: 'transparent', borderRadius: 35, margin: 5
             }}

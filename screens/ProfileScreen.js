@@ -80,7 +80,7 @@ export default function ProfileScreen({ navigation }) {
                 color={"white"}
               />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.options} onPress={() => { Linking.openURL('https://carline.no/') }}>
+            <TouchableOpacity style={styles.options} onPress={() => { Linking.openURL('https://carline.no/en/support/') }}>
               <Text style={styles.CardText}>Support</Text>
               <MaterialCommunityIcons
                 name="greater-than"

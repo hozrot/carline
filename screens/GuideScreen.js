@@ -81,6 +81,8 @@ export default function GuideScreen({ navigation }) {
     };
 
     fetchOrders();
+
+
   }, []);
 
   return (

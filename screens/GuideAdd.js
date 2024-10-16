@@ -21,43 +21,43 @@ import UserContext from "../auth/UserContext";
 export default function GuideAdd({ navigation, route }) {
   const { userData, InstructionName, setInstructionName } = useContext(UserContext);
   const bgswitch = route.params;
-  const image = route.params;
+  const bgimage = route.params;
+
+  const logoimage = route.params;
+  const floorimage = route.params;
   const name = route.params;
 
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  // const [isEnabled, setIsEnabled] = useState(false);
+  // const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   const [backgroundSwitch, setBackgroundSwitch] = useState(false);
-  const togglebackgroundSwitch = () =>
-    setBackgroundSwitch((previousState) => !previousState);
+  const togglebackgroundSwitch = () => setBackgroundSwitch((previousState) => !previousState);
 
 
-  const [background, setBackground] = useState(null);
+  //const [background, setBackground] = useState(null);
 
   const [floorSwitch, setFloorSwitch] = useState(false);
-  const togglefloorSwitch = () =>
-    setFloorSwitch((previousState) => !previousState);
-  const [floor, setFloor] = useState(null);
+  const togglefloorSwitch = () => setFloorSwitch((previousState) => !previousState);
+  //const [floor, setFloor] = useState(null);
 
   const [logoSwitch, setLogoSwitch] = useState(false);
-  const togglelogSwitch = () =>
-    setLogoSwitch((previousState) => !previousState);
-  const [logo, setLogo] = useState(null);
+  const togglelogoSwitch = () => setLogoSwitch((previousState) => !previousState);
+  //const [logo, setLogo] = useState(null);
 
   const [npSwitch, setNpSwitch] = useState(false);
   const togglenpSwitch = () => setNpSwitch((previousState) => !previousState);
-  const [numberplate, setNumberplate] = useState(null);
+  //const [numberplate, setNumberplate] = useState(null);
 
-  const pickBackground = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync();
-    if (!result.canceled) {
-      setBackground(result.assets[0].uri);
-    }
-  };
+  // const pickBackground = async () => {
+  //   // No permissions request is necessary for launching the image library
+  //   let result = await ImagePicker.launchImageLibraryAsync();
+  //   if (!result.canceled) {
+  //     setBackground(result.assets[0].uri);
+  //   }
+  // };
 
 
-  console.log(InstructionName)
+  // console.log(InstructionName)
   const PostInstructions = () => {
     try {
       if (!InstructionName) {
@@ -81,17 +81,13 @@ export default function GuideAdd({ navigation, route }) {
       formdata.append("instruction_details", "testDetails");
       formdata.append("share_instruction", userData?.email);
       formdata.append("approval", userData?.email);
-      formdata.append("logo_placement", 11);
-      formdata.append("logo", logoSwitch ? "Addlogo" : "Dontaddlogo");
-      formdata.append("floor", floorSwitch ? "Add Floor" : 11);
-      formdata.append(
-        "background",
-        backgroundSwitch ? image.id : "Don't Add Background"
-      );
-      formdata.append(
-        "license_plate",
-        npSwitch ? "addLicensePlate" : "DontaddLicensePlate"
-      );
+      formdata.append("logo_placement", logoSwitch ? logoimage.id : "Dontaddlogo");
+      // formdata.append(
+      //   "logo",
+      //   logoSwitch ? "addlogo" : "Dontaddlogo");
+      formdata.append("floor", floorSwitch ? floorimage.id : "Dontaddfloor");
+      formdata.append("background", backgroundSwitch ? bgimage.id : "Don't Add Background");
+      formdata.append("license_plate", npSwitch ? "addLicensePlate" : "DontaddLicensePlate");
 
       const requestOptions = {
         method: "POST",
@@ -109,7 +105,14 @@ export default function GuideAdd({ navigation, route }) {
         })
         .then((result) => {
           Alert.alert("Instruction Created Successfull");
-          navigation.navigate("Home")
+
+          // setInstructionName([]);
+          // togglebackgroundSwitch([]);
+          // togglefloorSwitch([]);
+          // togglelogoSwitch([]);
+          // togglenpSwitch([]);
+
+          navigation.navigate("InstructionList")
 
           console.log("Instruction Created Successfull", result);
         })
@@ -177,7 +180,7 @@ export default function GuideAdd({ navigation, route }) {
                 <TouchableOpacity
                   style={styles.addImage}
                   onPress={() =>
-                    navigation.navigate("BackgroundList", { bgswitch })
+                    navigation.navigate("BackgroundList")
                   }
                 >
                   <MaterialCommunityIcons
@@ -186,17 +189,13 @@ export default function GuideAdd({ navigation, route }) {
                     color={"#ffffff"}
                   />
                 </TouchableOpacity>
-                {/* <Text style={{
-              color: "#ffffff",
-              fontFamily: "DMSans_500Medium",
-              fontSize: 18,
-            }}> {name} </Text> */}
-                {image && (
+
+                {bgimage && (
                   <TouchableOpacity
                     onPress={() => navigation.navigate("BackgroundList")}
                   >
                     <Image
-                      source={{ uri: image?.image }}
+                      source={{ uri: bgimage?.bgimage }}
                       style={styles.logo1}
                     />
                   </TouchableOpacity>
@@ -232,8 +231,15 @@ export default function GuideAdd({ navigation, route }) {
                     color={"#ffffff"}
                   />
                 </TouchableOpacity>
-                {background && (
-                  <Image source={{ uri: background }} style={styles.logo1} />
+                {floorimage && (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("FloorList")}
+                  >
+                    <Image
+                      source={{ uri: floorimage?.floorimage }}
+                      style={styles.logo1}
+                    />
+                  </TouchableOpacity>
                 )}
               </View>
             )}
@@ -253,7 +259,7 @@ export default function GuideAdd({ navigation, route }) {
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                 thumbColor={logoSwitch ? "#FF4A22" : "#ffffff"}
                 ios_backgroundColor="#3e3e3e"
-                onValueChange={togglelogSwitch}
+                onValueChange={togglelogoSwitch}
                 value={logoSwitch}
               />
             </View>
@@ -269,8 +275,15 @@ export default function GuideAdd({ navigation, route }) {
                     color={"#ffffff"}
                   />
                 </TouchableOpacity>
-                {background && (
-                  <Image source={{ uri: background }} style={styles.logo1} />
+                {logoimage && (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("LogoList")}
+                  >
+                    <Image
+                      source={{ uri: logoimage?.logoimage }}
+                      style={styles.logo1}
+                    />
+                  </TouchableOpacity>
                 )}
               </View>
             )}

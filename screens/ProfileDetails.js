@@ -15,8 +15,9 @@ import UserContext from '../auth/UserContext';
 
 
 export default function ProfileDetails({ navigation }) {
-  const [image, setImage] = useState(null);
+
   const { userData } = useContext(UserContext)
+  const [image, setImage] = useState(userData?.image);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -91,7 +92,7 @@ export default function ProfileDetails({ navigation }) {
             <TouchableOpacity onPress={pickImage}>
               <Image
                 style={{ width: 120, height: 120, borderRadius: 50, backgroundColor: 'gray' }}
-                source={{ uri: userData?.image }}
+                source={{ uri: image }}
               />
               <View style={styles.profileAdd}>
                 <MaterialCommunityIcons name="pencil-minus-outline" size={16} color={"#000000"} />
@@ -112,9 +113,9 @@ export default function ProfileDetails({ navigation }) {
               </Text>
               <TextInput
                 inputHieght={54}
-                value={userData?.name}
+
                 inputAlign={'center'}
-                placeholder="Enter your Name"
+                placeholder={userData?.name}
                 autoCapitalize="none"
                 autoCompleteType="email"
                 keyboardType="email-address"
@@ -130,8 +131,8 @@ export default function ProfileDetails({ navigation }) {
               <TextInput
                 inputHieght={54}
                 inputAlign={'center'}
-                value={userData?.email}
-                placeholder="Enter your email"
+                // value={userData?.email}
+                placeholder={userData?.email}
                 autoCapitalize="none"
                 autoCompleteType="email"
                 keyboardType="email-address"
@@ -148,8 +149,8 @@ export default function ProfileDetails({ navigation }) {
               <TextInput
                 inputHieght={54}
                 inputAlign={'center'}
-                value={userData?.company_name}
-                placeholder="Enter your company"
+                // value={userData?.company_name}
+                placeholder={userData?.company_name}
                 autoCapitalize="none"
                 autoCompleteType="email"
                 keyboardType="email-address"

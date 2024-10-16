@@ -31,12 +31,13 @@ import NotificationScreen from './screens/NotificationScreen';
 import CameraScreen from './screens/CameraScreen';
 import OrderScreen from './screens/OrderScreen';
 import { useFonts } from "expo-font";
-import React, {useEffect } from "react";
+import React, { useEffect } from "react";
 
 import * as SplashScreen from 'expo-splash-screen';
 import ImageList from './screens/ImageList';
 import FloorType from './screens/FloorType';
 import { UserProvider } from './auth/UserContext';
+import InstructionList from './screens/InstructionList';
 SplashScreen.preventAutoHideAsync();
 
 const Tab = createMaterialBottomTabNavigator();
@@ -92,6 +93,7 @@ export default function App() {
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ header: () => null }} />
           <Stack.Screen name="ImageList" component={ImageList} options={{ header: () => null }} />
           <Stack.Screen name="FloorType" component={FloorType} options={{ header: () => null }} />
+          <Stack.Screen name="InstructionList" component={InstructionList} options={{ header: () => null }} />
 
 
         </Stack.Navigator>

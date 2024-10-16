@@ -57,7 +57,7 @@ export default function AboutScreen({ navigation }) {
 
         <TouchableOpacity
           style={styles.options}
-          onPress={() => { Linking.openURL('https://carline.no') }}
+          onPress={() => { Linking.openURL('https://carline.no/en/privacy-policy/') }}
         >
           <Text style={styles.CardText}>Privacy Policy </Text>
           <MaterialCommunityIcons
@@ -68,7 +68,7 @@ export default function AboutScreen({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.options}
-          onPress={() => { Linking.openURL('https://carline.no') }}
+          onPress={() => { Linking.openURL('https://carline.no/en/terms-conditions/') }}
         >
           <Text style={styles.CardText}>Terms & Conditions</Text>
           <MaterialCommunityIcons

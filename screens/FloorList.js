@@ -84,12 +84,17 @@ export default function FloorList({ navigation }) {
         renderItem={({ item }) => (
 
           <TouchableOpacity
-            onPress={() => navigation.navigate("GuideAdd", item.image)}
+            onPress={() => navigation.navigate("GuideAdd", { "floorimage": item.image, "id": item.id })}
             style={{
               backgroundColor: 'transparent', borderRadius: 35, margin: 5
             }}
           >
             <Image style={styles.ImageList} source={{ uri: item.image }} />
+            {/* <Text style={{
+              color: "#ffffff",
+              fontFamily: "DMSans_500Medium",
+              fontSize: 18,
+            }}> {item.name} </Text> */}
           </TouchableOpacity>
 
         )}

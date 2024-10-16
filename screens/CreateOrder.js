@@ -35,9 +35,10 @@ export default function CreateOrder({ navigation }) {
   const [Loader, setLoader] = useState(false);
 
   const items = [
-    { label: "24 Hours", value: "1" },
-    { label: "3 Days", value: "3" },
-    { label: "7 Days", value: "7" },
+    { label: "12 Hours", value: "12" },
+    { label: "24 Hours", value: "24" },
+    { label: "3 Days", value: "72" },
+    { label: "7 Days", value: "168" },
     // ... more options
   ];
 
@@ -63,7 +64,7 @@ export default function CreateOrder({ navigation }) {
   });
 
   const sendOrderData = async () => {
-    if (!regCarId || !message || !Instruction) {
+    if (!regCarId || !message || !Instruction || !selectedValue) {
       alert("Fill The required Field");
       setModalVisible(false);
       return;
@@ -88,6 +89,7 @@ export default function CreateOrder({ navigation }) {
     formdata.append("job_name", regCarId);
     formdata.append("instruction_id", Instruction.id);
     formdata.append("massage", message);
+    // formdata.append("delivery_date", "11/12/2023");
 
     const requestOptions = {
       method: "POST",
@@ -284,13 +286,14 @@ export default function CreateOrder({ navigation }) {
                   <Text style={styles.InstructionText}>
                     instruction id : {Instruction.id}{" "}
                   </Text>
-                  <Text style={styles.InstructionText}>BG : {Instruction.background} </Text>
+                  <Text style={styles.InstructionText}>BG : {Instruction.background ? "yes" : "No"} </Text>
                   <Text style={styles.InstructionText}>
-                    Floor :  {Instruction.floor}
+                    Floor :  {Instruction.floor ? "yes" : "No"}
                   </Text>
-                  <Text style={styles.InstructionText}>Logo : {Instruction.logo_placement} </Text>
+
+                  <Text style={styles.InstructionText}>Logo : {Instruction.logo_placement ? "yes" : "No"} </Text>
                   <Text style={styles.InstructionText}>
-                    Licence Plate :  {Instruction.license_plate}
+                    Licence Plate :  {Instruction.license_plate ? "yes" : "No"}
                   </Text>
                 </>
               ) : (
@@ -344,8 +347,8 @@ export default function CreateOrder({ navigation }) {
           <Button
             label="Next"
             onPress={() => setModalVisible(!modalVisible)}
-            // onPress={handlePresentModalPress}
-            // onPress={() => sendOrderData(true)}
+          // onPress={handlePresentModalPress}
+          // onPress={() => sendOrderData(true)}
           />
         </View>
         <Modal
