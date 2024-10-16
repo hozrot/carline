@@ -106,7 +106,7 @@ export default function GuideAdd({ navigation, route }) {
         .then((result) => {
           Alert.alert("Instruction Created Successfull");
 
-          // setInstructionName([]);
+          setInstructionName([]);
           // togglebackgroundSwitch([]);
           // togglefloorSwitch([]);
           // togglelogoSwitch([]);

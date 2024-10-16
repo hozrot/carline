@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, KeyboardAvoidingView, Platform, ImageBackground } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, KeyboardAvoidingView, Platform, ImageBackground, Alert } from 'react-native'
 import React, { useContext, useState } from 'react'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import TextInput from "../component/TextInput";
@@ -16,8 +16,12 @@ import UserContext from '../auth/UserContext';
 
 export default function ProfileDetails({ navigation }) {
 
+
   const { userData } = useContext(UserContext)
   const [image, setImage] = useState(userData?.image);
+  const [nameUpdate, setNameUpdate] = useState("");
+  const [company_name, setCompanyName] = useState("");
+
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -33,6 +37,7 @@ export default function ProfileDetails({ navigation }) {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      //uploadImage(result.assets[0].uri);
     }
   };
 
@@ -49,6 +54,59 @@ export default function ProfileDetails({ navigation }) {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+  const UpdateProfile = () => {
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", `Token ${userData?.token}`);
+    myHeaders.append(
+      "Cookie",
+      "csrftoken=ASTAfJ6pYzH8nZpIHUf5SIJWuXrLAPe8; sessionid=lnupp2l3rm3a6se4vwr6uj5xlnp291b7"
+    );
+    const formdata = new FormData();
+    formdata.append("name", nameUpdate);
+
+    //formdata.append("image", uri: image, "[PROXY]");
+    //formdata.append("image", image, "[PROXY]");
+    formdata.append("company_name", company_name);
+
+    const requestOptions = {
+      method: "PUT",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow"
+    };
+
+    fetch("https://app.carline.no/api/auths/update_info/", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .then((result) => {
+        Alert.alert("Login Again To see the changes", result);
+        navigation.navigate("Home")
+
+
+      })
+      .catch((error) => console.error(error));
+
+
+  }
+  // const uploadImage = async (imageUri) => {
+  //   const requestOptions = {
+  //     method: "PUT",
+  //     headers: myHeaders,
+  //     body: formdata,
+  //     redirect: "follow"
+  //   };
+  //   try {
+  //     const response = await fetch('https://app.carline.no/api/auths/update_info/', requestOptions)
+
+  //     const data = await response.json();
+
+  //     // Handle the API response
+  //     console.log('Image upload successful:', data);
+  //   } catch (error) {
+  //     console.error('Error uploading image:', error);
+  //   }
+  // };
+
   return (
     <View style={styles.containerView}>
       <ScrollView style={styles.containerView}>
@@ -116,6 +174,8 @@ export default function ProfileDetails({ navigation }) {
 
                 inputAlign={'center'}
                 placeholder={userData?.name}
+                value={nameUpdate}
+                onChangeText={setNameUpdate}
                 autoCapitalize="none"
                 autoCompleteType="email"
                 keyboardType="email-address"
@@ -151,6 +211,8 @@ export default function ProfileDetails({ navigation }) {
                 inputAlign={'center'}
                 // value={userData?.company_name}
                 placeholder={userData?.company_name}
+                value={company_name}
+                onChangeText={setCompanyName}
                 autoCapitalize="none"
                 autoCompleteType="email"
                 keyboardType="email-address"
@@ -185,7 +247,11 @@ export default function ProfileDetails({ navigation }) {
             </KeyboardAvoidingView>
           </View>
           <View style={styles.Bottom}>
-            <Button label="Save" onPress={() => navigation.navigate("Home")} />
+            <Button label="Save"
+              // onPress={() => navigation.navigate("Home")} 
+              onPress={() => UpdateProfile()}
+
+            />
           </View>
 
         </ImageBackground>
