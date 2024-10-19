@@ -37,7 +37,7 @@ const data = [
 export default function LogoList({ navigation }) {
   const [selectedIds, setSelectedIds] = useState([]);
   const [imageList, setImageList] = useState(null);
-  const { userData } = useContext(UserContext);
+  const { userData, contextValue: { updateLogoImage } } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -94,7 +94,13 @@ export default function LogoList({ navigation }) {
           renderItem={({ item }) => (
 
             <TouchableOpacity
-              onPress={() => navigation.navigate("GuideAdd", { "logoimage": item.image, "id": item.id })}
+              onPress={() => {
+                /**
+                 * The following function is used to update the logo image and logo id in the context
+                 */
+                updateLogoImage(item.id, item.image);
+                navigation.navigate("GuideAdd", { "logoimage": item.image, "id": item.id })
+              }}
               style={{
                 backgroundColor: 'transparent', borderRadius: 35, margin: 5
               }}

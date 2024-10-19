@@ -4,7 +4,7 @@
     "slug": "carline",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Carline-Orange.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/logo-orange.png",

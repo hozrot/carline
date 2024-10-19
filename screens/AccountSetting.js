@@ -87,7 +87,7 @@ export default function AccountSetting({ navigation }) {
             style={styles.options}
           // onPress={() => navigation.navigate("#")}
           >
-            <Text style={styles.CardText}>Permissions</Text>
+            <Text style={styles.CardText}>Permissions </Text>
             <MaterialCommunityIcons
               name="greater-than"
               size={18}
@@ -99,8 +99,8 @@ export default function AccountSetting({ navigation }) {
           <TouchableOpacity style={styles.optionsTop} >
             <Text style={styles.CardText}>Send to mail </Text>
             <Switch
-              trackColor={{ false: '#ffffff', true: '#FF4A22' }}
-              thumbColor={backgroundSwitch ? '#ffffff' : '#FF4A22'}
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={backgroundSwitch ? "#FF4A22" : "#ffffff"}
               ios_backgroundColor="#3e3e3e"
               onValueChange={togglebackgroundSwitch}
               value={backgroundSwitch}

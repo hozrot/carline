@@ -44,9 +44,10 @@ export default function ShootScreen({ navigation }) {
       // mediaTypes:ImagePicker.MediaTypeOptions.Images,
     });
     setSelectedOrderImage(result?.assets);
-    navigation.navigate("CreateOrder");
+    navigation.navigate("Home");
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      navigation.navigate("CreateOrder");
     }
   };
 

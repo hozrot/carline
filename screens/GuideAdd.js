@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
 
 } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import Button from "../component/Button";
@@ -21,8 +21,26 @@ import BaseUrl from "../auth/BaseUrl";
 import UserContext from "../auth/UserContext";
 
 export default function GuideAdd({ navigation, route }) {
-  const { userData, InstructionName, setInstructionName, backgroundImageURL, floorImageURL,
-    value1, value2, value3 } = useContext(UserContext);
+  const {
+    value1,
+    value2,
+    value3,
+    userData,
+    InstructionName,
+    setInstructionName,
+    contextValue: {
+      backgroundImageId,
+      backgroundImageURL,
+      floorImageId,
+      floorImageURL,
+      logoImageId,
+      logoImageURL,
+
+      updateBackgroundImage,
+      updateFloorImage,
+      updateLogoImage,
+    }
+  } = useContext(UserContext);
 
   const [Loader, setLoader] = useState(false);
   const bgswitch = route.params;
@@ -35,7 +53,7 @@ export default function GuideAdd({ navigation, route }) {
   // const [isEnabled, setIsEnabled] = useState(false);
   // const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
-  const [backgroundSwitch, setBackgroundSwitch] = useState(true);
+  const [backgroundSwitch, setBackgroundSwitch] = useState(false);
   const togglebackgroundSwitch = () => setBackgroundSwitch((previousState) => !previousState);
 
 
@@ -77,17 +95,13 @@ export default function GuideAdd({ navigation, route }) {
       formdata.append("instruction_details", "testDetails");
       formdata.append("share_instruction", userData?.email);
       formdata.append("approval", userData?.email);
+
       // formdata.append("logo", logoSwitch ? "addlogo" : "Dontaddlogo");
-      // formdata.append("logo_placement", logoSwitch ? logoimage.id : "Dontaddlogo");
-      formdata.append("logo_placement", logoSwitch ? 12 : "Dontaddlogo");
 
-      //formdata.append("floor", floorSwitch ? floorimage.id : "Dontaddfloor");
-      formdata.append("floor", floorSwitch ? 23 : "Dontaddfloor");
-      //formdata.append("background", backgroundSwitch ? bgimage.id : "Don't Add Background");
-      formdata.append("background", backgroundSwitch ? 19 : "Don't Add Background");
+      formdata.append("logo_placement", logoSwitch ? logoImageId : "Dontaddlogo");
+      formdata.append("floor", floorSwitch ? floorImageId : "Dontaddfloor");
+      formdata.append("background", backgroundSwitch ? backgroundImageId : "Don't Add Background");
       formdata.append("license_plate", npSwitch ? "addLicensePlate" : "DontaddLicensePlate");
-
-
 
       const requestOptions = {
         method: "POST",
@@ -106,9 +120,14 @@ export default function GuideAdd({ navigation, route }) {
         .then((result) => {
 
           Alert.alert("Instruction Created Successfull");
-          navigation.navigate("InstructionList");
+          navigation.navigate("Home", {
+            screen: "Guide",
+            initial: true,
+          });
+          //navigation.navigate("InstructionList");
           setLoader(false);
           setInstructionName([]);
+          clearSelectedStates();
           // togglebackgroundSwitch([]);
           // togglefloorSwitch([]);
           // togglelogoSwitch([]);
@@ -129,6 +148,23 @@ export default function GuideAdd({ navigation, route }) {
     }
   };
 
+  /**
+   * The following is a cleanup function which will be used
+   * to reset the selection of images once the user is done
+   * with adding the instructions, it will help user to
+   * do a fresh start when trying to create instruction
+   */
+  const clearSelectedStates = () => {
+    updateBackgroundImage('', '');
+    updateFloorImage('', '');
+    updateLogoImage('', '');
+
+    setBackgroundSwitch(false);
+    setFloorSwitch(false);
+    setLogoSwitch(false);
+    setNpSwitch(false);
+  }
+
   return (
     <View style={styles.containerView}>
       <ImageBackground
@@ -148,10 +184,13 @@ export default function GuideAdd({ navigation, route }) {
             paddingTop: 40,
             paddingLeft: 10
           }}>
-            <TouchableOpacity onPress={() => navigation.navigate("Home", {
-              screen: "Guide",
-              initial: true,
-            })} style={{ flexDirection: 'row' }}>
+            <TouchableOpacity onPress={() => {
+              clearSelectedStates();
+              navigation.navigate("Home", {
+                screen: "Guide",
+                initial: true,
+              })
+            }} style={{ flexDirection: 'row' }}>
               <MaterialCommunityIcons name="arrow-left" size={24} color={"#ffffff"} />
               <Text style={{
                 color: "#ffffff",
@@ -210,16 +249,14 @@ export default function GuideAdd({ navigation, route }) {
                   />
 
                 </TouchableOpacity>
-                <Text style={{ color: "#ffffff" }} >
 
-                </Text>
 
-                {bgimage && (
+                {backgroundImageURL && backgroundImageURL.length && (
                   <TouchableOpacity
-                    onPress={() => navigation.navigate("BackgroundList")}
+                    onPress={() => navigation.navigate("BackgroundType")}
                   >
                     <Image
-                      source={{ uri: bgimage?.bgimage }}
+                      source={{ uri: backgroundImageURL }}
                       style={styles.logo1}
                     />
                   </TouchableOpacity>
@@ -258,12 +295,12 @@ export default function GuideAdd({ navigation, route }) {
                 <Text style={{ color: "#ffffff" }} >
                   {/* {floorimage.id} */}
                 </Text>
-                {floorimage && (
+                {floorImageURL && floorImageURL.length && (
                   <TouchableOpacity
-                    onPress={() => navigation.navigate("FloorList")}
+                    onPress={() => navigation.navigate("FloorType")}
                   >
                     <Image
-                      source={{ uri: floorimage?.floorimage }}
+                      source={{ uri: floorImageURL }}
                       style={styles.logo1}
                     />
                   </TouchableOpacity>
@@ -305,12 +342,12 @@ export default function GuideAdd({ navigation, route }) {
                 <Text style={{ color: "#ffffff" }} >
                   {/* {logoimage.id} */}
                 </Text>
-                {logoimage && (
+                {logoImageURL && logoImageURL.length && (
                   <TouchableOpacity
                     onPress={() => navigation.navigate("LogoList")}
                   >
                     <Image
-                      source={{ uri: logoimage?.logoimage }}
+                      source={{ uri: logoImageURL }}
                       style={styles.logo1}
                     />
                   </TouchableOpacity>

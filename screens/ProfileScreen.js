@@ -40,7 +40,7 @@ export default function ProfileScreen({ navigation }) {
           <View style={styles.profilePic}>
             <TouchableOpacity>
               <Image
-                style={{ width: 120, height: 120, borderRadius: 50 }}
+                style={{ width: 120, height: 120, borderRadius: 75 }}
                 source={{ uri: userData?.image }}
               />
             </TouchableOpacity>

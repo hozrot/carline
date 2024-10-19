@@ -13,6 +13,8 @@ export const UserProvider = ({ children }) => {
     const [backgroundImageURL, setBackgroundImageURL] = useState('');
     const [floorImageId, setFloorImageId] = useState('');
     const [floorImageURL, setFloorImageURL] = useState('');
+    const [logoImageId, setLogoImageId] = useState('');
+    const [logoImageURL, setLogoImageURL] = useState('');
 
     const updateBackgroundImage = (imageId, imageURL) => {
         setBackgroundImageId(imageId);
@@ -24,13 +26,30 @@ export const UserProvider = ({ children }) => {
         setFloorImageURL(imageURL);
     };
 
+    const updateLogoImage = (imageId, imageURL) => {
+        setLogoImageId(imageId);
+        setLogoImageURL(imageURL);
+    }
+
+    /**
+     * The following context is used to update the context
+     * and is used on the following screens for reading and
+     * updating the instructions
+     * 1. BackgroundList.js
+     * 2. FloorList.js
+     * 3. LogoList.js
+     */
     const contextValue = {
         backgroundImageId,
         backgroundImageURL,
         floorImageId,
         floorImageURL,
+        logoImageId,
+        logoImageURL,
+
         updateBackgroundImage,
         updateFloorImage,
+        updateLogoImage,
     };
 
 

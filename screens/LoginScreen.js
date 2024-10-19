@@ -171,6 +171,7 @@ export default function LoginScreen({ navigation }) {
               alignItems: "center",
               backgroundColor: "black",
               alignContent: "center",
+              paddingTop: 20
             }}
           >
             <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
@@ -185,11 +186,11 @@ export default function LoginScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.Bottom}>
+        {/* <View style={styles.Bottom}>
           <TouchableOpacity onPress={handelLogin}>
             <Text style={styles.RegularText}> Forget Password? </Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </ImageBackground>
     </ScrollView>
   );

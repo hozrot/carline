@@ -34,7 +34,7 @@ import axios from "axios";
 export default function FloorList({ navigation, route }) {
   const [selectedIds, setSelectedIds] = useState([]);
   const [imageList, setImageList] = useState(null);
-  const { userData } = useContext(UserContext);
+  const { userData, contextValue: { updateFloorImage } } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
   const id = route.params;
   const data = id;
@@ -93,7 +93,13 @@ export default function FloorList({ navigation, route }) {
           renderItem={({ item }) => (
 
             <TouchableOpacity
-              onPress={() => navigation.navigate("GuideAdd", { "floorimage": item.image, "id": item.id })}
+              onPress={() => {
+                /**
+                 * The following function is used to update the floor image and floor id in the context
+                 */
+                updateFloorImage(item.id, item.image)
+                navigation.navigate("GuideAdd", { "floorimage": item.image, "id": item.id })
+              }}
               style={{
                 backgroundColor: 'transparent', borderRadius: 35, margin: 5
               }}

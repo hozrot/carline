@@ -80,7 +80,7 @@ export default function OrderScreen({ navigation }) {
   const [OrderList, setOrderList] = useState([]);
 
   const [OrderImage, setOrderImage] = useState();
-  const [OrderImagebyId, setOrderImagebyId] = useState();
+  const [OrderImagebyId, setOrderImagebyId] = useState([]);
   const { userData } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -111,15 +111,11 @@ export default function OrderScreen({ navigation }) {
         setIsLoading(false);
         console.log(imageResponse?.data);
 
-        // const imageResponsebyId = await axios.get(`${BaseUrl}/order-upload/${orderID}/files/`, {
-        //   headers: {
-        //     Authorization: `token ${userData?.token}`, // Pass the token here
-        //     "Content-Type": "application/json",
-        //   },
-        // });
-        // setOrderImagebyId(imageResponsebyId?.data);
-        // setIsLoading(false);
-        // console.log(imageResponsebyId?.data);
+        const filteredImages = imageResponse?.data?.filter((image) => image.id === OrderList.id);
+        const imageCount = filteredImages?.length || 0;
+        console.log(imageCount);
+
+
 
       } catch (err) {
         alert(err.message); // Catch and display error if any

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, KeyboardAvoidingView, Platform, ImageBackground, Alert } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, KeyboardAvoidingView, Platform, ImageBackground, Alert, ActivityIndicator } from 'react-native'
 import React, { useContext, useState, useEffect } from 'react'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import TextInput from "../component/TextInput";
@@ -18,7 +18,6 @@ import { useGlobalContext } from '../auth/GlobalContext';
 
 export default function ProfileDetails({ navigation }) {
 
-
   const { userData, setUserData } = useContext(UserContext)
   const [image, setImage] = useState(userData?.image);
   const [nameUpdate, setNameUpdate] = useState("");
@@ -26,6 +25,9 @@ export default function ProfileDetails({ navigation }) {
   const [password, setPassword] = useState('');
   // State variable to track password visibility
   const [showPassword, setShowPassword] = useState(false);
+  const [Loader, setLoader] = useState(false);
+
+  const isButtonActive = (nameUpdate.trim() !== '' || company_name.trim() !== '');
 
   // const { isAppReloading, reloadApp } = useGlobalContext();
 
@@ -63,14 +65,14 @@ export default function ProfileDetails({ navigation }) {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.5,
       allowsMultipleSelection: false
     });
 
     console.log(result);
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setImage(result.assets[0]);
       //uploadImage(result.assets[0].uri);
     }
   };
@@ -81,6 +83,7 @@ export default function ProfileDetails({ navigation }) {
     DMSans_700Bold,
   });
 
+  console.log("User Data", userData, "Image is", image, "Type of image", typeof image)
 
   // Function to toggle the password visibility state
   const toggleShowPassword = () => {
@@ -88,14 +91,14 @@ export default function ProfileDetails({ navigation }) {
   };
   const UpdateProfile = () => {
 
-    if (!nameUpdate) {
-      alert("Enter Updated name");
-      return;
-    }
-    if (!company_name) {
-      alert("Enter New Company Name");
-      return;
-    }
+    // if (!nameUpdate) {
+    //   alert("Enter Updated name");
+    //   return;
+    // }
+    // if (!company_name) {
+    //   alert("Enter New Company Name");
+    //   return;
+    // }
 
     const myHeaders = new Headers();
     myHeaders.append("Authorization", `Token ${userData?.token}`);
@@ -104,17 +107,20 @@ export default function ProfileDetails({ navigation }) {
       "csrftoken=ASTAfJ6pYzH8nZpIHUf5SIJWuXrLAPe8; sessionid=lnupp2l3rm3a6se4vwr6uj5xlnp291b7"
     );
     const formdata = new FormData();
-    formdata.append("name", nameUpdate);
 
-    //formdata.append("image", uri: image, "[PROXY]");
-    //formdata.append("image", image, "[PROXY]");
-    formdata.append("company_name", company_name);
-    formdata.append("image", {
-      uri: image.uri,
-      name: image.fileName,
-      type: "image/jpeg",
-    });
-
+    const defaultImage = userData?.image;
+    formdata.append("name", nameUpdate || userData?.name);
+    formdata.append("company_name", company_name || userData?.company_name);
+    if (image.uri) {
+      const selectedImage = {
+        uri: image.uri,
+        name: image?.fileName ?? image.uri.split("/").pop(),
+        type: image.mimeType,
+      };
+      formdata.append("image", selectedImage || defaultImage);
+    }
+    setLoader(true);
+    console.log("Form Data", formdata)
 
     const requestOptions = {
       method: "PUT",
@@ -127,39 +133,27 @@ export default function ProfileDetails({ navigation }) {
       .then((response) => response.text())
       .then((result) => console.log(result))
       .then((result) => {
+        console.log("Result is", result);
+        setLoader(false);
         Alert.alert("Login Again To see the changes", result);
-        navigation.navigate("Home")
+        navigation.navigate("Login")
 
 
       })
       .catch((error) => console.error(error));
 
-
   }
-  // const uploadImage = async (imageUri) => {
-  //   const requestOptions = {
-  //     method: "PUT",
-  //     headers: myHeaders,
-  //     body: formdata,
-  //     redirect: "follow"
-  //   };
-  //   try {
-  //     const response = await fetch('https://app.carline.no/api/auths/update_info/', requestOptions)
 
-  //     const data = await response.json();
-
-  //     // Handle the API response
-  //     console.log('Image upload successful:', data);
-  //   } catch (error) {
-  //     console.error('Error uploading image:', error);
-  //   }
-  // };
 
   return (
     <View style={styles.containerView}>
+
       <ScrollView style={styles.containerView}>
 
         <ImageBackground source={require("../assets/background.png")} resizeMode='stretch' >
+          {Loader && (
+            <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
+          )}
 
           <View style={styles.topBack}>
             <ImageBackground source={require("../assets/profileback.png")} resizeMode='stretch' >
@@ -198,7 +192,7 @@ export default function ProfileDetails({ navigation }) {
             <TouchableOpacity onPress={pickImage}>
               <Image
                 style={{ width: 120, height: 120, borderRadius: 50, backgroundColor: 'gray' }}
-                source={{ uri: image }}
+                source={{ uri: (image != null && image !== undefined) ? image?.uri ? image.uri : image : "" }}
               />
               <View style={styles.profileAdd}>
                 <MaterialCommunityIcons name="pencil-minus-outline" size={16} color={"#000000"} />
@@ -295,11 +289,12 @@ export default function ProfileDetails({ navigation }) {
             </KeyboardAvoidingView>
           </View>
           <View style={styles.Bottom}>
-            <Button label="Save"
+            {isButtonActive && <Button label="Save"
               // onPress={() => navigation.navigate("Home")} 
+
               onPress={() => UpdateProfile()}
 
-            />
+            />}
           </View>
 
         </ImageBackground>
@@ -316,6 +311,12 @@ const styles = StyleSheet.create({
   },
   topBack: {
     flex: .10,
+  },
+  loader: {
+    position: "absolute",
+    zIndex: 2,
+    top: "50%",
+    left: "50%",
   },
   profileAdd: {
     justifyContent: 'center',

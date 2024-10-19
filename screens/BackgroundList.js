@@ -15,50 +15,16 @@ import UserContext from '../auth/UserContext';
 import BaseUrl from "../auth/BaseUrl";
 import axios from "axios";
 
-// const data = [
-//   {
-//     id: 1,
-//     backgroundImage: require('../assets/background1.png'),
-//   },
-//   {
-//     id: 2,
-//     backgroundImage: require('../assets/background2.png'),
-//   },
-//   {
-//     id: 3,
-//     backgroundImage: require('../assets/background3.png'),
-//   },
-//   {
-//     id: 4,
-//     backgroundImage: require('../assets/background1.png'),
-//   },
-//   {
-//     id: 5,
-//     backgroundImage: require('../assets/background2.png'),
-//   },
-//   {
-//     id: 6,
-//     backgroundImage: require('../assets/background3.png'),
-//   },
-
-//   // ... more items
-// ];
-
 export default function BackgroundList({ navigation, route }) {
   //const { setValue1 } = useContext(MyContext);
   const [selectedIds, setSelectedIds] = useState([]);
   const [imageList, setImageList] = useState(null);
-  const { userData, setBackgroundImageId, setBackgroundImageURL } = useContext(UserContext);
+  const { userData, contextValue: { updateBackgroundImage } } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
   const catid = route.params;
   const data = catid;
   console.log("test", data.catid);
 
-
-  const handleImageSelection = (imageId, imageURL) => {
-    setBackgroundImageId(imageId);
-    setBackgroundImageURL(imageURL);
-  };
   useEffect(() => {
     const fetchBackground = async () => {
       try {
@@ -131,7 +97,13 @@ export default function BackgroundList({ navigation, route }) {
           renderItem={({ item }) => (
 
             <TouchableOpacity
-              onPress={() => navigation.navigate("GuideAdd", { "bgimage": item.image, "id": item.id })}
+              onPress={() => {
+                /**
+                 * The following function is called to update the background image and background image id in the context
+                 */
+                updateBackgroundImage(item.id, item.image)
+                navigation.navigate("GuideAdd", { "bgimage": item.image, "id": item.id })
+              }}
               style={{
                 backgroundColor: 'transparent', borderRadius: 35, margin: 5
               }}

@@ -122,7 +122,8 @@ export default function InstructionList({ navigation }) {
 
                 <FlatList
                     style={styles.bodyContent}
-                    data={instructions}
+                    // data={instructions}
+                    data={instructions.sort((a, b) => b.created_at.localeCompare(a.created_at))}
                     renderItem={({ item }) => (
                         <TouchableOpacity
                         // onPress={() => {
