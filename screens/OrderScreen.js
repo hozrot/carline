@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   ImageBackground,
   FlatList,
+  ActivityIndicator,
+
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import OrderCard from "../component/OrderCard";
@@ -76,11 +78,14 @@ const orderDetails = [
 
 export default function OrderScreen({ navigation }) {
   const [OrderList, setOrderList] = useState([]);
-  const [OrderImage, setOrderImage] = useState();
-  const { userData } = useContext(UserContext);
 
-  const inProgressText = "in_progress";
-  const capitalizedText = inProgressText.charAt(0).toUpperCase() + inProgressText.slice(1).replace("_", " ");
+  const [OrderImage, setOrderImage] = useState();
+  const [OrderImagebyId, setOrderImagebyId] = useState();
+  const { userData } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // const inProgressText = "in_progress";
+  //const capitalizedText = inProgressText.charAt(0).toUpperCase() + inProgressText.slice(1).replace("_", " ");
   const imageCounts = {};
   const [arrayCount, setArrayCount] = useState(0);
 
@@ -94,6 +99,7 @@ export default function OrderScreen({ navigation }) {
           },
         });
         setOrderList(response.data);
+        setIsLoading(false);
 
         const imageResponse = await axios.get(`${BaseUrl}/order-upload/`, {
           headers: {
@@ -102,27 +108,24 @@ export default function OrderScreen({ navigation }) {
           },
         });
         setOrderImage(imageResponse?.data);
+        setIsLoading(false);
         console.log(imageResponse?.data);
-       
 
-imageResponse?.data?.forEach(OrderList => {
-  const orderId = OrderList.id;
-  const imageCount = OrderList.file.length;
+        // const imageResponsebyId = await axios.get(`${BaseUrl}/order-upload/${orderID}/files/`, {
+        //   headers: {
+        //     Authorization: `token ${userData?.token}`, // Pass the token here
+        //     "Content-Type": "application/json",
+        //   },
+        // });
+        // setOrderImagebyId(imageResponsebyId?.data);
+        // setIsLoading(false);
+        // console.log(imageResponsebyId?.data);
 
-  if (imageCounts[orderId]) {
-    imageCounts[orderId] += imageCount;
-  } else {
-    imageCounts[orderId] = imageCount;
-  }
- 
-});
-
-console.log(imageCounts);
       } catch (err) {
         alert(err.message); // Catch and display error if any
       }
     };
-    
+
 
 
 
@@ -136,6 +139,9 @@ console.log(imageCounts);
 
   return (
     <View style={styles.containerView}>
+      {/* {isLoading ? (
+        <ActivityIndicator size="large" />
+      ) : ( */}
       <ImageBackground
         source={require("../assets/background.png")}
         style={styles.containerView}
@@ -168,10 +174,12 @@ console.log(imageCounts);
             <Text style={{ color: "#ffffff" }}> Create Order </Text>
           </TouchableOpacity>
         </View>
+
         {OrderList && OrderImage && (
           <FlatList
             style={styles.bodyContent}
-            data={OrderList}
+            //data={OrderList}
+            data={OrderList.sort((a, b) => b.created_on.localeCompare(a.created_on))}
             //  data={orderDetails}
             renderItem={({ item }) => (
               <OrderCard

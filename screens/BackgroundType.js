@@ -1,114 +1,145 @@
-import { StyleSheet, Text, View, Image,TouchableOpacity,ScrollView,ImageBackground,FlatList} from 'react-native'
-import React from 'react'
+import React, { useContext, useState, useEffect } from "react";
+import {
+  FlatList,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  ImageBackground,
+  ActivityIndicator,
+
+} from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import UserContext from '../auth/UserContext';
+import BaseUrl from "../auth/BaseUrl";
+import axios from "axios";
+export default function BackgroundType({ navigation, image, TypeName, route }) {
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [imageList, setImageList] = useState(null);
+  const { userData } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(true);
 
-const BgType = [
-  { 
-    id: 1,
-    image: require('../assets/red-car2.png'),
-   TypeName:'Interior',
-  },
-  { 
-    id: 2,
-    image: require('../assets/red-car3.png'),
-   TypeName:'Studio',
-  },
-  { 
-    id: 3,
-    image: require('../assets/car.png'),
-   TypeName:'Color Background',
-  },
-  { 
-    id: 4,
-    image: require('../assets/car.png'),
-   TypeName:'Others',
-  },
-];
-export default function BackgroundType({navigation,image,TypeName}) {
+  useEffect(() => {
+    const fetchBackground = async () => {
+      try {
+        const response = await axios.get(`${BaseUrl}/background-categories/`, {
+          headers: {
+            'Authorization': `token ${userData?.token}`,  // Pass the token here
+            'Content-Type': 'application/json',
+          }
+        });
+        setImageList(response.data);
+
+
+        setIsLoading(false);
+      } catch (err) {
+        alert(err.message);  // Catch and display error if any
+      }
+    };
+
+    fetchBackground();
+  }, []);
   return (
-    <View style={styles.containerView}>
-       <ImageBackground source={require("../assets/background.png")} resizeMode='stretch' >
-       <View style={{
-            color: 'white',
-            width: '100%',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            paddingTop: 40,
-            paddingLeft:10
-          }}>
-            <TouchableOpacity onPress={() => navigation.navigate("GuideAdd")}  style={{flexDirection:'row'}}>
-              <MaterialCommunityIcons name="arrow-left" size={24} color={"#ffffff"} />
+    <ImageBackground
+      source={require("../assets/background.png")}
+      resizeMode="stretch"
+      style={styles.BackList}
+    >
+      <View
+        style={{
+          justifyContent: "space-between",
+          flexDirection: "row",
+          paddingTop: 40,
+          paddingLeft: 10,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => navigation.navigate("GuideAdd")}
+          style={{ flexDirection: "row" }}
+        >
+          <MaterialCommunityIcons
+            name="arrow-left"
+            size={24}
+            color={"#ffffff"}
+          />
+          <Text
+            style={{
+              color: "#ffffff",
+              fontFamily: "DMSans_500Medium",
+              fontSize: 18,
+            }}
+          >
+            {" "}
+          </Text>
+        </TouchableOpacity>
+        <Text
+          style={{
+            color: "#ffffff",
+            fontFamily: "DMSans_500Medium",
+            fontSize: 18,
+          }}
+        >
+          Background Type
+        </Text>
+        <Text> </Text>
+      </View>
+      {isLoading ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        <FlatList
+          data={imageList}
+          renderItem={({ item }) => (
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate("BackgroundList", { "catid": item.id })}
+              style={{
+                backgroundColor: 'transparent', borderRadius: 35, margin: 5,
+              }}
+            >
+              <Image style={styles.ImageList} source={{ uri: item.image }} />
               <Text style={{
-              color: "#ffffff",
-              fontFamily: 'DMSans_500Medium', fontSize: 18
-            }}> </Text>
+                color: "#ffffff",
+                fontFamily: "DMSans_500Medium",
+                fontSize: 18,
+
+              }}> {item.name} </Text>
             </TouchableOpacity>
-            <Text style={{
-              color: "#ffffff",
-              fontFamily: 'DMSans_500Medium', fontSize: 18
-            }}>Background Type</Text>
-            <Text>       </Text>
 
-        </View>
+          )}
+          keyExtractor={(item) => item.id}
+        />)}
+    </ImageBackground>
 
-        <FlatList 
-        style={styles.bodyContent}
-        data={BgType}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.ListView}  onPress={() => navigation.navigate("BackgroundList")}>
-     <Text style={{ color: "#ffffff",fontSize:16 }}> {item.TypeName} </Text>
-     <Image
-        style={styles.BackgroundType}
-        source={item.image}
-      />
-     </TouchableOpacity>
-        )}
-        keyExtractor={item => item.id}
-      />  
-    
-     {/* <TouchableOpacity style={styles.ListView}  onPress={() => navigation.navigate("BackgroundList")}>
-     <Text style={{ color: "#ffffff",fontSize:16 }}> Studio </Text>
-     <Image
-        style={styles.BackgroundType}
-        source={require("../assets/red-car2.png")}
-      />
-     </TouchableOpacity>
-     <TouchableOpacity style={styles.ListView}  onPress={() => navigation.navigate("BackgroundList")}>
-     <Text style={{ color: "#ffffff",fontSize:16 }}> Color Background </Text>
-     <Image
-        style={styles.BackgroundType}
-        source={require("../assets/car.png")}
-      />
-     </TouchableOpacity>
-     <TouchableOpacity style={styles.ListView}  onPress={() => navigation.navigate("BackgroundList")}>
-     <Text style={{ color: "#ffffff",fontSize:16 }}> Others </Text>
-     <Image
-        style={styles.BackgroundType}
-        source={require("../assets/red-car3.png")}
-      />
-     </TouchableOpacity> */}
-     </ImageBackground>
-    </View>
   )
 }
 
 const styles = StyleSheet.create({
-    containerView: {
-        flex: 1,
-        backgroundColor: "#020202",  
-    
-      },
-      ListView:{
+  BackList: {
+    flex: 1,
+  },
+  ImageList: {
+    width: 'auto',
+    height: 150,
+    margin: 5,
+    borderRadius: 15
 
-        paddingBottom:10,
-        margin:15
-      },
-      BackgroundType:{
-      width:'auto',
-     height:150,
-      margin:5,
-      borderRadius:15
-    
-          
-      }
-})
+
+  },
+  imageBox: {
+    width: "100%",
+    height: 170,
+    borderRadius: 25,
+  },
+  SelectIcon: {
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    top: 8,
+    left: 6,
+    height: 30,
+    width: 30,
+    backgroundColor: "transparent",
+    borderRadius: 45,
+  },
+});

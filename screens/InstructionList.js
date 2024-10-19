@@ -114,10 +114,7 @@ export default function InstructionList({ navigation }) {
                             alignItems: "center",
                             justifyContent: "center",
                         }}
-                        onPress={() => navigation.navigate("Home", {
-                            screen: "Guide",
-                            initial: true
-                        })}
+                        onPress={() => navigation.navigate("GuideAdd")}
                     >
                         <Text style={{ color: "#ffffff" }}> Create Instruction </Text>
                     </TouchableOpacity>

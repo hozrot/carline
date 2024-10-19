@@ -10,7 +10,7 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Button from "../component/Button";
 import TextInput from "../component/TextInput";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -19,6 +19,10 @@ import UserContext from "../auth/UserContext";
 //npx expo install @react-native-picker/picker
 import PickerSelect from "react-native-picker-select";
 import BaseUrl from "../auth/BaseUrl";
+
+
+
+
 export default function CreateOrder({ navigation }) {
   const {
     userData,
@@ -35,12 +39,28 @@ export default function CreateOrder({ navigation }) {
   const [Loader, setLoader] = useState(false);
 
   const items = [
-    { label: "12 Hours", value: "12" },
-    { label: "24 Hours", value: "24" },
-    { label: "3 Days", value: "72" },
-    { label: "7 Days", value: "168" },
+    { label: "12 Hours", value: "12hours" },
+    { label: "24 Hours", value: "24hours" },
+    { label: "Express Delivery", value: "express_delivary" },
+
     // ... more options
   ];
+
+
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const formattedTime = currentTime.toISOString();
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     const now = new Date();
+  //     const futureTime = new Date(now);
+  //     futureTime.setHours(now.getHours());
+  //     setCurrentTime(futureTime);
+  //   }, 1000);
+
+  //   return () => clearInterval(intervalId);
+  // }, []);
+
 
   const pickerSelectStyle = StyleSheet.create({
     inputIOS: {
@@ -89,7 +109,7 @@ export default function CreateOrder({ navigation }) {
     formdata.append("job_name", regCarId);
     formdata.append("instruction_id", Instruction.id);
     formdata.append("massage", message);
-    // formdata.append("delivery_date", "11/12/2023");
+    formdata.append("delivery_date", selectedValue);
 
     const requestOptions = {
       method: "POST",
@@ -109,7 +129,12 @@ export default function CreateOrder({ navigation }) {
       .then((result) => {
         console.log("orderssss", result);
         setModalVisible(false);
+
+        setRegCarId("");
+        setMessage("");
         setInstruction("");
+
+
         if (SelectedOrderImage?.length > 0) {
           const convert = JSON.parse(result);
           uploadImages(convert.id);
@@ -203,7 +228,7 @@ export default function CreateOrder({ navigation }) {
             </Text>
             <Text> </Text>
           </TouchableOpacity>
-          <Text style={styles.AllText}> Create a new order </Text>
+          <Text style={styles.AllText}> Create a new order   </Text>
           <Text
             style={{
               padding: 5,
@@ -286,14 +311,14 @@ export default function CreateOrder({ navigation }) {
                   <Text style={styles.InstructionText}>
                     instruction id : {Instruction.id}{" "}
                   </Text>
-                  <Text style={styles.InstructionText}>BG : {Instruction.background ? "yes" : "No"} </Text>
+                  <Text style={styles.InstructionText}>BG : {Instruction.background ? "Yes" : "No"} </Text>
                   <Text style={styles.InstructionText}>
-                    Floor :  {Instruction.floor ? "yes" : "No"}
+                    Floor :  {Instruction.floor ? "Yes" : "No"}
                   </Text>
 
-                  <Text style={styles.InstructionText}>Logo : {Instruction.logo_placement ? "yes" : "No"} </Text>
+                  <Text style={styles.InstructionText}>Logo : {Instruction.logo_placement ? "Yes" : "No"} </Text>
                   <Text style={styles.InstructionText}>
-                    Licence Plate :  {Instruction.license_plate ? "yes" : "No"}
+                    Licence Plate :  {Instruction.license_plate === "addLicensePlate" ? "Yes" : "No"}
                   </Text>
                 </>
               ) : (

@@ -8,6 +8,7 @@ import BottomTab from '../component/BottomTab';
 
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import InstructionList from './InstructionList';
 
 //npm install @react-navigation/bottom-tabs
 const Tab = createBottomTabNavigator();
@@ -21,7 +22,7 @@ export default function HomeScreen() {
       <Tab.Screen name="Order" component={OrderScreen} options={{
         headerShown: false
       }} />
-      <Tab.Screen name="Guide" component={GuideAdd} options={{
+      <Tab.Screen name="Guide" component={InstructionList} options={{
         headerShown: false
       }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{
@@ -29,7 +30,7 @@ export default function HomeScreen() {
       }} />
 
     </Tab.Navigator>
-    
+
 
   )
 }

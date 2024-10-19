@@ -1,14 +1,10 @@
 //npm install react-native-svg
 //npx expo install react-native-reanimated
 // npm install react-native-circular-progress-indicator
-
-
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { Text, View, ImageBackground, Image, Style, StyleSheet, Alert, TouchableOpacity, FlatList, Button, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from "react";
-import { LinearGradient } from 'expo-linear-gradient';
 export default function UploadingScreen({ route, navigation }) {
-
 
   return (
 

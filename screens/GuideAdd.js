@@ -8,6 +8,8 @@ import {
   ScrollView,
   ImageBackground,
   Alert,
+  ActivityIndicator,
+
 } from "react-native";
 import React, { useState, useContext } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -19,7 +21,10 @@ import BaseUrl from "../auth/BaseUrl";
 import UserContext from "../auth/UserContext";
 
 export default function GuideAdd({ navigation, route }) {
-  const { userData, InstructionName, setInstructionName } = useContext(UserContext);
+  const { userData, InstructionName, setInstructionName, backgroundImageURL, floorImageURL,
+    value1, value2, value3 } = useContext(UserContext);
+
+  const [Loader, setLoader] = useState(false);
   const bgswitch = route.params;
   const bgimage = route.params;
 
@@ -30,45 +35,36 @@ export default function GuideAdd({ navigation, route }) {
   // const [isEnabled, setIsEnabled] = useState(false);
   // const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
-  const [backgroundSwitch, setBackgroundSwitch] = useState(false);
+  const [backgroundSwitch, setBackgroundSwitch] = useState(true);
   const togglebackgroundSwitch = () => setBackgroundSwitch((previousState) => !previousState);
 
 
   //const [background, setBackground] = useState(null);
 
-  const [floorSwitch, setFloorSwitch] = useState(false);
+  const [floorSwitch, setFloorSwitch] = useState('');
   const togglefloorSwitch = () => setFloorSwitch((previousState) => !previousState);
   //const [floor, setFloor] = useState(null);
 
-  const [logoSwitch, setLogoSwitch] = useState(false);
+  const [logoSwitch, setLogoSwitch] = useState('');
   const togglelogoSwitch = () => setLogoSwitch((previousState) => !previousState);
   //const [logo, setLogo] = useState(null);
 
-  const [npSwitch, setNpSwitch] = useState(false);
+  const [npSwitch, setNpSwitch] = useState('');
   const togglenpSwitch = () => setNpSwitch((previousState) => !previousState);
-  //const [numberplate, setNumberplate] = useState(null);
 
-  // const pickBackground = async () => {
-  //   // No permissions request is necessary for launching the image library
-  //   let result = await ImagePicker.launchImageLibraryAsync();
-  //   if (!result.canceled) {
-  //     setBackground(result.assets[0].uri);
-  //   }
-  // };
-
-
-  // console.log(InstructionName)
   const PostInstructions = () => {
     try {
       if (!InstructionName) {
         alert("Enter Instruction name");
+        setLoader(false);
         return;
       }
       if (!userData?.email) {
         alert("Email Not Found");
+        setLoader(false);
         return;
       }
-
+      setLoader(true);
       const myHeaders = new Headers();
       myHeaders.append("Authorization", `Token ${userData?.token}`);
       myHeaders.append(
@@ -81,13 +77,17 @@ export default function GuideAdd({ navigation, route }) {
       formdata.append("instruction_details", "testDetails");
       formdata.append("share_instruction", userData?.email);
       formdata.append("approval", userData?.email);
-      formdata.append("logo_placement", logoSwitch ? logoimage.id : "Dontaddlogo");
-      // formdata.append(
-      //   "logo",
-      //   logoSwitch ? "addlogo" : "Dontaddlogo");
-      formdata.append("floor", floorSwitch ? floorimage.id : "Dontaddfloor");
-      formdata.append("background", backgroundSwitch ? bgimage.id : "Don't Add Background");
+      // formdata.append("logo", logoSwitch ? "addlogo" : "Dontaddlogo");
+      // formdata.append("logo_placement", logoSwitch ? logoimage.id : "Dontaddlogo");
+      formdata.append("logo_placement", logoSwitch ? 12 : "Dontaddlogo");
+
+      //formdata.append("floor", floorSwitch ? floorimage.id : "Dontaddfloor");
+      formdata.append("floor", floorSwitch ? 23 : "Dontaddfloor");
+      //formdata.append("background", backgroundSwitch ? bgimage.id : "Don't Add Background");
+      formdata.append("background", backgroundSwitch ? 19 : "Don't Add Background");
       formdata.append("license_plate", npSwitch ? "addLicensePlate" : "DontaddLicensePlate");
+
+
 
       const requestOptions = {
         method: "POST",
@@ -104,24 +104,28 @@ export default function GuideAdd({ navigation, route }) {
           }
         })
         .then((result) => {
-          Alert.alert("Instruction Created Successfull");
 
+          Alert.alert("Instruction Created Successfull");
+          navigation.navigate("InstructionList");
+          setLoader(false);
           setInstructionName([]);
           // togglebackgroundSwitch([]);
           // togglefloorSwitch([]);
           // togglelogoSwitch([]);
           // togglenpSwitch([]);
 
-          navigation.navigate("InstructionList")
+
 
           console.log("Instruction Created Successfull", result);
         })
         .catch((error) => {
           Alert.alert("Instruction Error", error.message);
           console.log("Instruction Error", error.message);
+          setLoader(false);
         });
     } catch (error) {
       Alert.alert("Failed Create Instruction", error?.message);
+      setLoader(false);
     }
   };
 
@@ -133,17 +137,33 @@ export default function GuideAdd({ navigation, route }) {
         style={styles.containerView}
       >
         <ScrollView>
-          <View style={styles.Head}>
-            <Text
-              style={{
+          {Loader && (
+            <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
+          )}
+          <View style={{
+            color: 'white',
+            width: '100%',
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            paddingTop: 40,
+            paddingLeft: 10
+          }}>
+            <TouchableOpacity onPress={() => navigation.navigate("Home", {
+              screen: "Guide",
+              initial: true,
+            })} style={{ flexDirection: 'row' }}>
+              <MaterialCommunityIcons name="arrow-left" size={24} color={"#ffffff"} />
+              <Text style={{
                 color: "#ffffff",
-                fontSize: 24,
-                fontWeight: "condensedBold",
-              }}
-            >
-              {" "}
-              Instruction{" "}
-            </Text>
+                fontFamily: 'DMSans_500Medium', fontSize: 18
+              }}> </Text>
+            </TouchableOpacity>
+            <Text style={{
+              color: "#ffffff",
+              fontFamily: 'DMSans_500Medium', fontSize: 18
+            }}> Instruction Create</Text>
+            <Text>       </Text>
+
           </View>
           <View style={styles.optionList}>
             <Text style={styles.InputHead}> Instruction name </Text>
@@ -180,7 +200,7 @@ export default function GuideAdd({ navigation, route }) {
                 <TouchableOpacity
                   style={styles.addImage}
                   onPress={() =>
-                    navigation.navigate("BackgroundList")
+                    navigation.navigate("BackgroundType")
                   }
                 >
                   <MaterialCommunityIcons
@@ -188,7 +208,11 @@ export default function GuideAdd({ navigation, route }) {
                     size={30}
                     color={"#ffffff"}
                   />
+
                 </TouchableOpacity>
+                <Text style={{ color: "#ffffff" }} >
+
+                </Text>
 
                 {bgimage && (
                   <TouchableOpacity
@@ -223,7 +247,7 @@ export default function GuideAdd({ navigation, route }) {
               <View style={styles.imageContainer}>
                 <TouchableOpacity
                   style={styles.addImage}
-                  onPress={() => navigation.navigate("FloorList")}
+                  onPress={() => navigation.navigate("FloorType")}
                 >
                   <MaterialCommunityIcons
                     name="plus"
@@ -231,6 +255,9 @@ export default function GuideAdd({ navigation, route }) {
                     color={"#ffffff"}
                   />
                 </TouchableOpacity>
+                <Text style={{ color: "#ffffff" }} >
+                  {/* {floorimage.id} */}
+                </Text>
                 {floorimage && (
                   <TouchableOpacity
                     onPress={() => navigation.navigate("FloorList")}
@@ -275,6 +302,9 @@ export default function GuideAdd({ navigation, route }) {
                     color={"#ffffff"}
                   />
                 </TouchableOpacity>
+                <Text style={{ color: "#ffffff" }} >
+                  {/* {logoimage.id} */}
+                </Text>
                 {logoimage && (
                   <TouchableOpacity
                     onPress={() => navigation.navigate("LogoList")}
@@ -403,5 +433,11 @@ const styles = StyleSheet.create({
     flex: 0.2,
     width: "100%",
     padding: 20,
+  },
+  loader: {
+    position: "absolute",
+    zIndex: 2,
+    top: "50%",
+    left: "50%",
   },
 });

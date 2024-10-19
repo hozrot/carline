@@ -1,15 +1,17 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, KeyboardAvoidingView, Platform, ImageBackground, Alert } from 'react-native'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import TextInput from "../component/TextInput";
 import Button from "../component/Button";
 import * as ImagePicker from "expo-image-picker";
+
 import {
   useFonts, DMSans_400Regular,
   DMSans_500Medium,
   DMSans_700Bold,
 } from "@expo-google-fonts/dm-sans";
 import UserContext from '../auth/UserContext';
+import { useGlobalContext } from '../auth/GlobalContext';
 
 
 
@@ -17,11 +19,43 @@ import UserContext from '../auth/UserContext';
 export default function ProfileDetails({ navigation }) {
 
 
-  const { userData } = useContext(UserContext)
+  const { userData, setUserData } = useContext(UserContext)
   const [image, setImage] = useState(userData?.image);
   const [nameUpdate, setNameUpdate] = useState("");
   const [company_name, setCompanyName] = useState("");
+  const [password, setPassword] = useState('');
+  // State variable to track password visibility
+  const [showPassword, setShowPassword] = useState(false);
 
+  // const { isAppReloading, reloadApp } = useGlobalContext();
+
+  // useEffect(() => {
+  //   // Update global state when the component mounts or when isAppReloading changes
+  //   reloadApp();
+  // }, [isAppReloading]);
+
+
+
+  // useEffect(() => {
+  //   const fetchProfileData = async () => {
+  //     try {
+  //       const response = await axios.get(`${BaseUrl}/auths/`, {
+  //         headers: {
+  //           'Authorization': `token ${userData?.token}`,  // Pass the token here
+  //           'Content-Type': 'application/json',
+  //         }
+  //       });
+  //       setUserData(response.data);
+
+  //     } catch (err) {
+  //       alert(err.message);  // Catch and display error if any
+
+  //     }
+
+  //   };
+
+  //   fetchProfileData();
+  // }, []);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -46,15 +80,23 @@ export default function ProfileDetails({ navigation }) {
     DMSans_500Medium,
     DMSans_700Bold,
   });
-  const [password, setPassword] = useState('');
-  // State variable to track password visibility
-  const [showPassword, setShowPassword] = useState(false);
+
 
   // Function to toggle the password visibility state
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
   const UpdateProfile = () => {
+
+    if (!nameUpdate) {
+      alert("Enter Updated name");
+      return;
+    }
+    if (!company_name) {
+      alert("Enter New Company Name");
+      return;
+    }
+
     const myHeaders = new Headers();
     myHeaders.append("Authorization", `Token ${userData?.token}`);
     myHeaders.append(
@@ -67,6 +109,12 @@ export default function ProfileDetails({ navigation }) {
     //formdata.append("image", uri: image, "[PROXY]");
     //formdata.append("image", image, "[PROXY]");
     formdata.append("company_name", company_name);
+    formdata.append("image", {
+      uri: image.uri,
+      name: image.fileName,
+      type: "image/jpeg",
+    });
+
 
     const requestOptions = {
       method: "PUT",

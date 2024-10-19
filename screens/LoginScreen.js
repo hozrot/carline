@@ -17,9 +17,9 @@ import BaseUrl from "../auth/BaseUrl";
 import UserContext from "../auth/UserContext";
 
 export default function LoginScreen({ navigation }) {
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const { userData, setUserData } = useContext(UserContext)
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const { userData, setUserData } = useContext(UserContext);
 
   // State variable to track password visibility
   const [showPassword, setShowPassword] = useState(false);
@@ -31,58 +31,98 @@ export default function LoginScreen({ navigation }) {
 
   const handelLogin = () => {
     if (!email && !password) {
-      alert("Please Enter Email and Password")
-      return
+      alert("Please Enter Email and Password");
+      return;
     }
     let data = JSON.stringify({
-      "email": email,
-      "password": password
+      email: email,
+      password: password,
     });
 
     let config = {
-      method: 'post',
+      method: "post",
       maxBodyLength: Infinity,
       url: `${BaseUrl}/auths/login/`,
       headers: {
-        'Content-Type': 'application/json',
-        'Cookie': 'csrftoken=CH8HzIULQdGpZESH58Pav5ulF8BT6q4s; sessionid=4v67h0saqwxa3571v4o0stfz8v1bl7o3'
+        "Content-Type": "application/json",
+        Cookie:
+          "csrftoken=CH8HzIULQdGpZESH58Pav5ulF8BT6q4s; sessionid=4v67h0saqwxa3571v4o0stfz8v1bl7o3",
       },
-      data: data
+      data: data,
     };
 
-    axios.request(config)
+    axios
+      .request(config)
       .then((result) => {
         if (result.status == 200) {
-          AsyncStorage.setItem("AccessToken", JSON.stringify(result.data))
-          setUserData(result.data)
-          navigation.navigate("Home", {
-            screen: "Shoot",
-            initial: true
-          })
+          getData(result.data);
+          // setUserData(result.data);
         }
       })
       .catch((error) => {
         alert("Wrong Email And Password");
       });
-  }
+  };
 
+  const getData = async (data) => {
+    try {
+      const response = await axios.get(`${BaseUrl}/auths/`, {
+        headers: {
+          Authorization: `Token ${data?.token}`, // Pass the token here
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.status == 200) {
+        const userData = response.data;
+        const mergedObj = { ...data, ...userData[0] };
+        setUserData(mergedObj);
+        AsyncStorage.setItem("AccessToken", JSON.stringify(data));
+        navigation.navigate("Home", {
+          screen: "Shoot",
+          initial: true,
+        });
+      }
+    } catch (err) {
+      alert(err.message); // Catch and display error if any
+      console.log("getData", err);
+    }
+  };
 
   return (
     <ScrollView style={styles.containerView}>
-
-      <ImageBackground source={require("../assets/background.png")} resizeMode='stretch' >
+      <ImageBackground
+        source={require("../assets/background.png")}
+        resizeMode="stretch"
+      >
         <View style={styles.HeaderView}>
-          <Text style={{ fontFamily: 'DMSans_500Medium', padding: 10, color: "#ffffff", fontSize: 30 }}> CarLine </Text>
+          <Text
+            style={{
+              fontFamily: "DMSans_500Medium",
+              padding: 10,
+              color: "#ffffff",
+              fontSize: 30,
+            }}
+          >
+            {" "}
+            CarLine{" "}
+          </Text>
           <Text style={styles.AllText}> Welcome Back! </Text>
         </View>
         <View style={styles.FormView}>
-          <Text style={{ fontFamily: 'DMSans_500Medium', fontSize: 16, paddingBottom: 8, color: "#ffffff" }}>
+          <Text
+            style={{
+              fontFamily: "DMSans_500Medium",
+              fontSize: 16,
+              paddingBottom: 8,
+              color: "#ffffff",
+            }}
+          >
             {" "}
             Email{" "}
           </Text>
           <TextInput
             inputHieght={54}
-            inputAlign={'center'}
+            inputAlign={"center"}
             placeholder="Enter here...."
             autoCapitalize="none"
             autoCompleteType="email"
@@ -94,15 +134,23 @@ export default function LoginScreen({ navigation }) {
             onChangeText={setEmail}
             style={{ fontSize: 14 }}
           />
-          <Text style={{ fontFamily: 'DMSans_500Medium', fontSize: 16, paddingBottom: 8, paddingTop: 15, color: "#ffffff" }}>
+          <Text
+            style={{
+              fontFamily: "DMSans_500Medium",
+              fontSize: 16,
+              paddingBottom: 8,
+              paddingTop: 15,
+              color: "#ffffff",
+            }}
+          >
             {" "}
             Password{" "}
           </Text>
           <TextInput
             inputHieght={54}
-            inputAlign={'center'}
+            inputAlign={"center"}
             onPress={toggleShowPassword}
-            icon={showPassword ? 'eye-off' : 'eye'}
+            icon={showPassword ? "eye-off" : "eye"}
             placeholder="*******"
             autoCapitalize="none"
             autoCompleteType="password"
@@ -113,19 +161,24 @@ export default function LoginScreen({ navigation }) {
             secureTextEntry={!showPassword}
             value={password}
             onChangeText={setPassword}
-
           />
-
         </View>
         <View style={styles.SubmitView}>
           <Button label="Login" onPress={() => handelLogin()} />
-          <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', alignContent: 'center' }}>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "black",
+              alignContent: "center",
+            }}
+          >
             <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
               <Text style={styles.RegularText}>
                 {" "}
                 New User?{" "}
                 <Image
-                  style={{ width: 60, height: 20, resizeMode: 'contain' }}
+                  style={{ width: 60, height: 20, resizeMode: "contain" }}
                   source={require("../assets/signup.png")}
                 />
               </Text>
@@ -134,14 +187,11 @@ export default function LoginScreen({ navigation }) {
         </View>
         <View style={styles.Bottom}>
           <TouchableOpacity onPress={handelLogin}>
-            <Text style={styles.RegularText}>
-              {" "}
-              Forget Password?{" "}
-            </Text>
+            <Text style={styles.RegularText}> Forget Password? </Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
-    </ScrollView >
+    </ScrollView>
   );
 }
 
@@ -149,7 +199,6 @@ const styles = StyleSheet.create({
   containerView: {
     flex: 1,
     backgroundColor: "#020202",
-
   },
   HeaderView: {
     flex: 0.2,
@@ -157,7 +206,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 80
+    paddingTop: 80,
   },
   FormView: {
     flex: 0.4,
@@ -166,10 +215,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   SubmitView: {
-    alignContent: 'center',
+    alignContent: "center",
     alignItems: "center",
     padding: 20,
-
   },
   Bottom: {
     flex: 0.2,
@@ -178,17 +226,16 @@ const styles = StyleSheet.create({
   },
   AllText: {
     color: "#ffffff",
-    fontFamily: 'DMSans_500Medium',
+    fontFamily: "DMSans_500Medium",
     fontSize: 24,
-
-
   },
   InputBlock: {
     justifyContent: "flex-start",
   },
 
   RegularText: {
-    color: "#ffffff", fontSize: 16, fontFamily: 'DMSans_400Regular'
-
+    color: "#ffffff",
+    fontSize: 16,
+    fontFamily: "DMSans_400Regular",
   },
 });

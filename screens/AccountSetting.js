@@ -63,7 +63,7 @@ export default function AccountSetting({ navigation }) {
         <View style={styles.optionList}>
           <TouchableOpacity
             style={styles.options}
-            onPress={() => navigation.navigate("#")}
+          // onPress={() => navigation.navigate("#")}
           >
             <Text style={styles.CardText}>Notification </Text>
             <MaterialCommunityIcons
@@ -85,7 +85,7 @@ export default function AccountSetting({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.options}
-            onPress={() => navigation.navigate("#")}
+          // onPress={() => navigation.navigate("#")}
           >
             <Text style={styles.CardText}>Permissions</Text>
             <MaterialCommunityIcons
@@ -96,7 +96,7 @@ export default function AccountSetting({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={styles.optionListOne}>
-          <TouchableOpacity style={styles.optionsTop} onPress={() => navigation.navigate("Profiledetails")}>
+          <TouchableOpacity style={styles.optionsTop} >
             <Text style={styles.CardText}>Send to mail </Text>
             <Switch
               trackColor={{ false: '#ffffff', true: '#FF4A22' }}

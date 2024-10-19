@@ -83,6 +83,7 @@ export default function GuideScreen({ navigation }) {
     fetchOrders();
 
 
+
   }, []);
 
   return (
@@ -132,10 +133,10 @@ export default function GuideScreen({ navigation }) {
               <GuideCard
                 BgId={item.background}
                 guideId={item.id}
-                BGCheck={item.BGCheck}
-                NPCheck={item.NPCheck}
-                FloorCheck={item.FloorCheck}
-                LogoCheck={item.LogoCheck}
+                BGCheck={item.background}
+                NPCheck={item.license_plate}
+                FloorCheck={item.floor}
+                LogoCheck={item.logo}
                 createdOn={moment(item.created_at).fromNow()}
               //dayCount={moment(item.created_on).fromNow()}
               />

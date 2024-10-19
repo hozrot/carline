@@ -7,6 +7,8 @@ import {
   StyleSheet,
   Image,
   ImageBackground,
+  ActivityIndicator,
+
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import UserContext from '../auth/UserContext';
@@ -43,20 +45,31 @@ import axios from "axios";
 // ];
 
 export default function BackgroundList({ navigation, route }) {
+  //const { setValue1 } = useContext(MyContext);
   const [selectedIds, setSelectedIds] = useState([]);
   const [imageList, setImageList] = useState(null);
-  const { userData } = useContext(UserContext);
+  const { userData, setBackgroundImageId, setBackgroundImageURL } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const catid = route.params;
+  const data = catid;
+  console.log("test", data.catid);
 
+
+  const handleImageSelection = (imageId, imageURL) => {
+    setBackgroundImageId(imageId);
+    setBackgroundImageURL(imageURL);
+  };
   useEffect(() => {
     const fetchBackground = async () => {
       try {
-        const response = await axios.get(`${BaseUrl}/backgrounds/`, {
+        const response = await axios.get(`${BaseUrl}/backgrounds/?category_id=${data.catid}`, {
           headers: {
             'Authorization': `token ${userData?.token}`,  // Pass the token here
             'Content-Type': 'application/json',
           }
         });
         setImageList(response.data);
+        setIsLoading(false);
       } catch (err) {
         alert(err.message);  // Catch and display error if any
       }
@@ -81,7 +94,7 @@ export default function BackgroundList({ navigation, route }) {
         }}
       >
         <TouchableOpacity
-          onPress={() => navigation.navigate("GuideAdd")}
+          onPress={() => navigation.navigate("BackgroundType")}
           style={{ flexDirection: "row" }}
         >
           <MaterialCommunityIcons
@@ -110,27 +123,30 @@ export default function BackgroundList({ navigation, route }) {
         </Text>
         <Text> </Text>
       </View>
-      <FlatList
-        data={imageList}
-        renderItem={({ item }) => (
+      {isLoading ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        <FlatList
+          data={imageList}
+          renderItem={({ item }) => (
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate("GuideAdd", { "bgimage": item.image, "id": item.id })}
-            style={{
-              backgroundColor: 'transparent', borderRadius: 35, margin: 5
-            }}
-          >
-            <Image style={styles.ImageList} source={{ uri: item.image }} />
-            {/* <Text style={{
+            <TouchableOpacity
+              onPress={() => navigation.navigate("GuideAdd", { "bgimage": item.image, "id": item.id })}
+              style={{
+                backgroundColor: 'transparent', borderRadius: 35, margin: 5
+              }}
+            >
+              <Image style={styles.ImageList} source={{ uri: item.image }} />
+              {/* <Text style={{
               color: "#ffffff",
               fontFamily: "DMSans_500Medium",
               fontSize: 18,
             }}> {item.name} </Text> */}
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-        )}
-        keyExtractor={(item) => item.id}
-      />
+          )}
+          keyExtractor={(item) => item.id}
+        />)}
     </ImageBackground>
   );
 }

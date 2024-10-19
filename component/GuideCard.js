@@ -19,24 +19,28 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
         'Cookie': 'csrftoken=NJChvjOxebFsuddDFi8waFmFFeWWLsBm; sessionid=pewl7aqbu7dwierg2uy7yipixdz05r7s'
       }
     };
-
-    axios.request(config)
-      .then((response) => {
-        setImg(response.data);
-      })
-      .catch((error) => {
-        console.log('backgrounds', error);
-      });
-  }, [])
+    BgId &&
+      axios.request(config)
+        .then((response) => {
+          setImg(response.data);
+        })
+        .catch((error) => {
+          console.log('backgrounds', error);
+        });
+  }, [BgId])
 
 
   return (
     <View style={styles.GuideCard}>
       <View style={styles.OrderCardImage}>
         <Image
-          style={{ width: 119, height: 153, borderRadius: 22 }}
+          style={{ width: 119, height: 154, borderRadius: 22 }}
           source={{ uri: img?.image }}
         />
+        {/* <Image
+          style={{ width: 119, height: 80, borderRadius: 22 }}
+          source={{ uri: img?.image }}
+        /> */}
       </View>
       <View style={styles.OrderCardDetails}>
         <Text style={styles.CardHead}>  # {guideId} </Text>
@@ -67,8 +71,9 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
             <Text style={styles.CardText}>
               Floor{" "}
               <MaterialCommunityIcons
-                //name="bookmark-remove-outline"
-                name={FloorCheck}
+                name="check-circle"
+                // name="bookmark-remove-outline"
+                // name={FloorCheck}
                 size={12}
                 color={"red"}
               />
@@ -83,15 +88,18 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
             <Text style={styles.CardText}>
               Logo{" "}
               <MaterialCommunityIcons
+                name="check-circle"
                 // name="check-circle"
-                name={LogoCheck}
+                // name={LogoCheck}
                 size={12}
                 color={"red"}
               />
             </Text>
           </TouchableOpacity>
 
+
         </View>
+        {/* if({NPCheck}=="DontaddLicensePlate"){ */}
         <View style={styles.OrderCardDetailsThree}>
           <TouchableOpacity style={{
             borderWidth: 1,
@@ -99,16 +107,29 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
             padding: 5,
             borderRadius: 15
           }}>
+
+
             <Text style={styles.CardText}>
-              Number Plate{" "}
-              <MaterialCommunityIcons
-                name="check-circle"
-                // name={NPCheck}
-                size={12}
-                color={"red"}
-              />
+              Number Plate
+              {
+                NPCheck === "addLicensePlate" ? (
+                  <MaterialCommunityIcons
+                    name="check-circle"
+                    // name="bookmark-remove-outline"
+                    size={14}
+                    color={"red"}
+                  />
+                ) : (
+                  <MaterialCommunityIcons
+                    // name="check-circle"
+                    name="bookmark-remove-outline"
+                    size={12}
+                    color={"red"}
+                  />)
+              }
             </Text>
           </TouchableOpacity>
+
         </View>
         <View style={styles.OrderCardDetailsFour}>
 

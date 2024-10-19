@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { FlatList, View, Text, TouchableOpacity, StyleSheet, Image, ImageBackground } from 'react-native';
+import { FlatList, View, Text, TouchableOpacity, StyleSheet, Image, ImageBackground, ActivityIndicator } from 'react-native';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import UserContext from '../auth/UserContext';
 import BaseUrl from "../auth/BaseUrl";
@@ -38,6 +38,7 @@ export default function LogoList({ navigation }) {
   const [selectedIds, setSelectedIds] = useState([]);
   const [imageList, setImageList] = useState(null);
   const { userData } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchLogo = async () => {
@@ -49,8 +50,10 @@ export default function LogoList({ navigation }) {
           }
         });
         setImageList(response.data);
+        setIsLoading(false);
       } catch (err) {
         alert(err.message);  // Catch and display error if any
+        setIsLoading(false);
       }
     };
 
@@ -83,27 +86,30 @@ export default function LogoList({ navigation }) {
         <Text>       </Text>
 
       </View>
-      <FlatList
-        data={imageList}
-        renderItem={({ item }) => (
+      {isLoading ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        <FlatList
+          data={imageList}
+          renderItem={({ item }) => (
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate("GuideAdd", { "logoimage": item.image, "id": item.id })}
-            style={{
-              backgroundColor: 'transparent', borderRadius: 35, margin: 5
-            }}
-          >
-            <Image style={styles.ImageList} source={{ uri: item.image }} />
-            {/* <Text style={{
+            <TouchableOpacity
+              onPress={() => navigation.navigate("GuideAdd", { "logoimage": item.image, "id": item.id })}
+              style={{
+                backgroundColor: 'transparent', borderRadius: 35, margin: 5
+              }}
+            >
+              <Image style={styles.ImageList} source={{ uri: item.image }} />
+              {/* <Text style={{
               color: "#ffffff",
               fontFamily: "DMSans_500Medium",
               fontSize: 18,
             }}> {item.name} </Text> */}
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-        )}
-        keyExtractor={(item) => item.id}
-      />
+          )}
+          keyExtractor={(item) => item.id}
+        />)}
     </ImageBackground>
 
   )

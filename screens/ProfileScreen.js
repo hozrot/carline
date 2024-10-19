@@ -35,7 +35,7 @@ export default function ProfileScreen({ navigation }) {
     <ScrollView style={styles.containerView}>
       <ImageBackground source={require("../assets/background.png")} resizeMode='stretch' >
 
-        <ImageBackground source={image} >
+        <ImageBackground source={image} resizeMode='contain'>
 
           <View style={styles.profilePic}>
             <TouchableOpacity>
