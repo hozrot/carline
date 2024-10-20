@@ -134,8 +134,8 @@ export default function InstructionList({ navigation }) {
                                 BgId={item.background}
                                 guideId={item.id}
                                 BGCheck={item.BGCheck}
-                                NPCheck={item.NPCheck}
-                                FloorCheck={item.FloorCheck}
+                                NPCheck={item.license_plate}
+                                FloorCheck={item.floor}
                                 LogoCheck={item.LogoCheck}
                                 createdOn={moment(item.created_at).fromNow()}
                             //dayCount={moment(item.created_on).fromNow()}

@@ -7,7 +7,8 @@ import BaseUrl from "../auth/BaseUrl";
 
 export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck, LogoCheck, createdOn, onPress }) {
   const { userData } = useContext(UserContext);
-  const [img, setImg] = useState()
+  const [img, setImg] = useState();
+  const [floor, setFloor] = useState();
 
   useEffect(() => {
     let config = {
@@ -27,15 +28,38 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
         .catch((error) => {
           console.log('backgrounds', error);
         });
-  }, [BgId])
+
+    let config2 = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `${BaseUrl}/floors/${FloorCheck}`,
+      headers: {
+        "Authorization": `Token ${userData?.token}`, // Pass the token here
+        'Cookie': 'csrftoken=NJChvjOxebFsuddDFi8waFmFFeWWLsBm; sessionid=pewl7aqbu7dwierg2uy7yipixdz05r7s'
+      }
+    };
+    FloorCheck &&
+      axios.request(config2)
+        .then((response) => {
+          setFloor(response.data);
+        })
+        .catch((error) => {
+          console.log('backgrounds', error);
+        });
+
+  }, [BgId], [FloorCheck])
 
 
   return (
     <View style={styles.GuideCard}>
       <View style={styles.OrderCardImage}>
         <Image
-          style={{ width: 119, height: 154, borderRadius: 22 }}
+          style={{ width: 119, height: 77, borderRadius: 22 }}
           source={{ uri: img?.image }}
+        />
+        <Image
+          style={{ width: 119, height: 77, borderRadius: 22 }}
+          source={{ uri: floor?.image }}
         />
         {/* <Image
           style={{ width: 119, height: 80, borderRadius: 22 }}
@@ -116,7 +140,7 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
                   <MaterialCommunityIcons
                     name="check-circle"
                     // name="bookmark-remove-outline"
-                    size={14}
+                    size={12}
                     color={"red"}
                   />
                 ) : (
