@@ -50,6 +50,9 @@ export default function CreateOrder({ navigation }) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const formattedTime = currentTime.toISOString();
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+
   // useEffect(() => {
   //   const intervalId = setInterval(() => {
   //     const now = new Date();
@@ -84,6 +87,7 @@ export default function CreateOrder({ navigation }) {
   });
 
   const sendOrderData = async () => {
+    setIsButtonDisabled(true);
     if (!regCarId || !message || !Instruction || !selectedValue) {
       alert("Fill The required Field");
       setModalVisible(false);
@@ -399,7 +403,7 @@ export default function CreateOrder({ navigation }) {
                     backgroundColor: "#FF4A22",
                   }}
                 ></View>
-                <Button label="Send Order" onPress={() => sendOrderData()} />
+                <Button label="Send Order" disabled={isButtonDisabled} onPress={() => sendOrderData()} />
 
                 <TouchableOpacity
                   style={{

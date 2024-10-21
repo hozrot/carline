@@ -289,7 +289,7 @@ export default function ProfileDetails({ navigation }) {
             </KeyboardAvoidingView>
           </View>
           <View style={styles.Bottom}>
-            {isButtonActive && <Button label="Save"
+            {isButtonActive || image != userData?.image && <Button label="Save"
               // onPress={() => navigation.navigate("Home")} 
 
               onPress={() => UpdateProfile()}

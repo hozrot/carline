@@ -13,56 +13,9 @@ import BaseUrl from "../auth/BaseUrl";
 import axios from "axios";
 import moment from 'moment';
 
-const guideDetails = [
-    {
-        guideId: 1,
-        image: require("../assets/Rectangle 17 (3).png"),
-        orderId: 1009001,
-        BGCheck: "check-circle",
-        NPCheck: "bookmark-remove-outline",
-        FloorCheck: "check-circle",
-        LogoCheck: "bookmark-remove-outline",
-        createdOn: 3,
-        orderStatus: "Pending",
-    },
-    {
-        guideId: 2,
-        image: require("../assets/Rectangle 17 (3).png"),
-        orderId: 1009001,
-        BGCheck: "check-circle",
-        NPCheck: "bookmark-remove-outline",
-        FloorCheck: "check-circle",
-        LogoCheck: "bookmark-remove-outline",
-        createdOn: 3,
-        orderStatus: "Pending",
-    },
-    {
-        guideId: 3,
-        image: require("../assets/Rectangle 17 (3).png"),
-        orderId: 1009001,
-        BGCheck: "check-circle",
-        NPCheck: "bookmark-remove-outline",
-        FloorCheck: "check-circle",
-        LogoCheck: "bookmark-remove-outline",
-        createdOn: 3,
-        orderStatus: "Pending",
-    },
-    {
-        guideId: 4,
-        image: require("../assets/Rectangle 17 (3).png"),
-        orderId: 1009001,
-        BGCheck: "check-circle",
-        NPCheck: "bookmark-remove-outline",
-        FloorCheck: "check-circle",
-        LogoCheck: "bookmark-remove-outline",
-        createdOn: 3,
-        orderStatus: "Pending",
-    },
-];
-
 export default function InstructionList({ navigation }) {
     const [instructions, setInstructions] = useState([]);
-    const { userData, setInstruction } = useContext(UserContext);
+    const { userData } = useContext(UserContext);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -122,14 +75,10 @@ export default function InstructionList({ navigation }) {
 
                 <FlatList
                     style={styles.bodyContent}
-                    // data={instructions}
+                    //data={instructions}
                     data={instructions.sort((a, b) => b.created_at.localeCompare(a.created_at))}
                     renderItem={({ item }) => (
-                        <TouchableOpacity
-                        // onPress={() => {
-                        //     setInstruction(item), navigation.navigate("CreateOrder");
-                        // }}
-                        >
+                        <TouchableOpacity>
                             <GuideCard
                                 BgId={item.background}
                                 guideId={item.id}

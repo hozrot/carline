@@ -19,14 +19,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/Carline-Orange.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.mhali.carline",
       "versionCode": 1
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/Carline-Orange.png"
     },
     "plugins": [
       "expo-router",

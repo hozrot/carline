@@ -47,7 +47,7 @@ export default function SuccessScreen({ navigation }) {
             alignItems: "center",
           }} onPress={() => navigation.navigate("Home", {
             screen: "Order",
-            initial: true
+            initial: false
           })}
         >
           <Text style={{

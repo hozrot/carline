@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react'
 import ShootScreen from './ShootScreen';
 import OrderScreen from './OrderScreen';
 import ProfileScreen from './ProfileScreen';
-import GuideAdd from './GuideAdd';
+import InstructionList from './InstructionList';
+// import GuideAdd from './GuideAdd';
 import BottomTab from '../component/BottomTab';
 
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import InstructionList from './InstructionList';
+
 
 //npm install @react-navigation/bottom-tabs
 const Tab = createBottomTabNavigator();

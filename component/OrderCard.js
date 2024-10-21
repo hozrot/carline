@@ -60,60 +60,39 @@ export default function OrderCard({
 
   return (
     <View style={styles.OrderCard}>
-      <View style={{ flex: 0.4 }}>
-        <ScrollView style={styles.imageList} horizontal={true}>
+      <View style={{ flex: 0.38 }}>
+        <ScrollView horizontal={true}>
           <Image source={{ uri: Img?.file }} style={styles.imageList} />
         </ScrollView>
       </View>
-      <View style={{ flex: 0.4, flexDirection: "row" }}>
-        <View>
+
+      <View style={{ flex: 0.62, flexDirection: "column" }}>
+        <View style={{ flex: 0.2, justifyContent: 'center' }}>
+
           <Text
             style={{
               color: "#ffffff",
-              fontSize: 15,
+              fontSize: 16,
               fontFamily: "DMSans_500Medium",
-              paddingLeft: 4,
             }}
           >
-            {" "}
+
             # {orderId}
           </Text>
+        </View>
+        <View style={{ flex: 0.5, flexDirection: "row", justifyContent: "space-between", paddingRight: 8 }}>
           <Text
             style={{
               color: "#ffffff",
               fontSize: 14,
               fontFamily: "DMSans_400Regular",
-              paddingLeft: 4,
+
             }}
           >
             {" "}
-            {imageCount} Images{" "}
+            {imageCount} images
           </Text>
-          <View style={{ paddingTop: 45, paddingLeft: 10 }}>
-            <Text
-              style={{
-                color: "#ffffff",
-                fontSize: 12,
-                fontFamily: "DMSans_400Regular",
-              }}
-            >
-              {dayCount}
-            </Text>
-          </View>
-        </View>
-      </View>
 
-      <View
-        style={{ flex: 0.3, justifyContent: "flex-end", paddingBottom: 20 }}
-      >
-        <View
-          style={{
-            alignContent: "center",
-            alignItems: "center",
-            justifyContent: "center",
-            paddingBottom: 40,
-          }}
-        >
           <Text
             style={{
               color: statusColor,
@@ -124,36 +103,49 @@ export default function OrderCard({
             {orderStatus}
           </Text>
         </View>
-
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: "gray",
-            borderRadius: 15,
-            width: 80,
-            height: 30,
-            alignContent: "center",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          onPress={onPress}
-        >
+        <View style={{ flex: 0.4, flexDirection: "row", justifyContent: "space-between", alignItems: 'center', paddingRight: 8 }}>
+          {/* <View style={{ paddingTop: 45, paddingLeft: 10 }}> */}
           <Text
             style={{
               color: "#ffffff",
-              fontSize: 14,
+              fontSize: 12,
               fontFamily: "DMSans_400Regular",
             }}
           >
-            Option{" "}
-            <MaterialCommunityIcons
-              name="ship-wheel"
-              size={14}
-              color={"#ffffff"}
-            />
+            {dayCount}
           </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              borderWidth: 1,
+              borderColor: "gray",
+              borderRadius: 15,
+              width: 80,
+              height: 30,
+              alignContent: "center",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={onPress}
+          >
+            <Text
+              style={{
+                color: "#ffffff",
+                fontSize: 14,
+                fontFamily: "DMSans_400Regular",
+              }}
+            >
+              Option{" "}
+              <MaterialCommunityIcons
+                name="ship-wheel"
+                size={14}
+                color={"#ffffff"}
+              />
+            </Text>
+          </TouchableOpacity>
+          {/* </View> */}
+        </View>
       </View>
+
     </View>
   );
 }

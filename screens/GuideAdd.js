@@ -77,6 +77,16 @@ export default function GuideAdd({ navigation, route }) {
         setLoader(false);
         return;
       }
+      if (!backgroundImageId) {
+        alert("Background Not Found");
+        setLoader(false);
+        return;
+      }
+      if (!logoImageId) {
+        alert("Select a Logo ");
+        setLoader(false);
+        return;
+      }
       if (!userData?.email) {
         alert("Email Not Found");
         setLoader(false);
@@ -85,10 +95,10 @@ export default function GuideAdd({ navigation, route }) {
       setLoader(true);
       const myHeaders = new Headers();
       myHeaders.append("Authorization", `Token ${userData?.token}`);
-      myHeaders.append(
-        "Cookie",
-        "csrftoken=ASTAfJ6pYzH8nZpIHUf5SIJWuXrLAPe8; sessionid=lnupp2l3rm3a6se4vwr6uj5xlnp291b7"
-      );
+      // myHeaders.append(
+      //   "Cookie",
+      //   "csrftoken=ASTAfJ6pYzH8nZpIHUf5SIJWuXrLAPe8; sessionid=lnupp2l3rm3a6se4vwr6uj5xlnp291b7"
+      // );
 
       const formdata = new FormData();
       formdata.append("instruction_name", InstructionName);
@@ -119,13 +129,15 @@ export default function GuideAdd({ navigation, route }) {
         })
         .then((result) => {
 
-          Alert.alert("Instruction Created Successfull");
-          navigation.navigate("Home", {
-            screen: "Guide",
-            initial: true,
-          });
-          //navigation.navigate("InstructionList");
           setLoader(false);
+          navigation.navigate("InstructionList");
+          // navigation.navigate("Home", {
+          //   screen: "Guide",
+          //   initial: false,
+          // });
+          Alert.alert("Instruction Created Successfull");
+          //navigation.navigate("InstructionList");
+
           setInstructionName([]);
           clearSelectedStates();
           // togglebackgroundSwitch([]);
@@ -387,7 +399,7 @@ export default function GuideAdd({ navigation, route }) {
           </View>
 
           <View style={styles.Bottom}>
-            {(backgroundSwitch || npSwitch || logoSwitch || floorSwitch) && (
+            {(backgroundSwitch && logoSwitch && floorSwitch) && (
               <Button
                 label="Create Instruction"
                 onPress={() => PostInstructions()}

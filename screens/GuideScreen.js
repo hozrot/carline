@@ -13,52 +13,6 @@ import BaseUrl from "../auth/BaseUrl";
 import axios from "axios";
 import moment from 'moment';
 
-const guideDetails = [
-  {
-    guideId: 1,
-    image: require("../assets/Rectangle 17 (3).png"),
-    orderId: 1009001,
-    BGCheck: "check-circle",
-    NPCheck: "bookmark-remove-outline",
-    FloorCheck: "check-circle",
-    LogoCheck: "bookmark-remove-outline",
-    createdOn: 3,
-    orderStatus: "Pending",
-  },
-  {
-    guideId: 2,
-    image: require("../assets/Rectangle 17 (3).png"),
-    orderId: 1009001,
-    BGCheck: "check-circle",
-    NPCheck: "bookmark-remove-outline",
-    FloorCheck: "check-circle",
-    LogoCheck: "bookmark-remove-outline",
-    createdOn: 3,
-    orderStatus: "Pending",
-  },
-  {
-    guideId: 3,
-    image: require("../assets/Rectangle 17 (3).png"),
-    orderId: 1009001,
-    BGCheck: "check-circle",
-    NPCheck: "bookmark-remove-outline",
-    FloorCheck: "check-circle",
-    LogoCheck: "bookmark-remove-outline",
-    createdOn: 3,
-    orderStatus: "Pending",
-  },
-  {
-    guideId: 4,
-    image: require("../assets/Rectangle 17 (3).png"),
-    orderId: 1009001,
-    BGCheck: "check-circle",
-    NPCheck: "bookmark-remove-outline",
-    FloorCheck: "check-circle",
-    LogoCheck: "bookmark-remove-outline",
-    createdOn: 3,
-    orderStatus: "Pending",
-  },
-];
 
 export default function GuideScreen({ navigation }) {
   const [instructions, setInstructions] = useState([]);
@@ -81,8 +35,6 @@ export default function GuideScreen({ navigation }) {
     };
 
     fetchOrders();
-
-
 
   }, []);
 

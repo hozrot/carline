@@ -93,12 +93,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#000000',
         paddingBottom: 15,
-
-
-
-
-
-
     },
     tabbarItem: {
         flex: 1,
