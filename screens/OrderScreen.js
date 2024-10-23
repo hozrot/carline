@@ -22,7 +22,7 @@ export default function OrderScreen({ navigation }) {
 
   const [OrderImage, setOrderImage] = useState();
   const [OrderImagebyId, setOrderImagebyId] = useState([]);
-  const { userData } = useContext(UserContext);
+  const { userData, setOrder } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
   const [Loader, setLoader] = useState(false);
 
@@ -33,7 +33,7 @@ export default function OrderScreen({ navigation }) {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      setLoader(true);
+      // setLoader(true);
       try {
         const response = await axios.get(`${BaseUrl}/orders/`, {
           headers: {
@@ -132,10 +132,29 @@ export default function OrderScreen({ navigation }) {
             //  data={orderDetails}
             renderItem={({ item }) => (
               <OrderCard
+              onDetails={() => {
+                setOrder(item),
+                 navigation.navigate("OrderDetails");
+              }}
                 image={OrderImage}
                 orderId={item.id}
-                orderStatus={item.status}
+               // orderStatus={item.status}
                 //.charAt(0).toUpperCase() + item.status.slice(1).replace("_", " ")}
+                orderStatus= {
+                  item.status === 'draft' ? 'Draft' :
+                  item.status === 'uploaded' ? 'Uploaded' :
+                  item.status === 'in_progress' ? 'In Progress' :
+                  item.status === 'qc_in_progress' ? 'QC in progress' :
+                  item.status === 'approval_required' ? 'Approval required' :
+                  item.status === 'approved' ? 'Approved' :
+                 
+                  item.status}
+                  // ('draft', 'Draft'),
+                  // ('uploaded', 'Uploaded'),
+                  // ('in_progress', 'In progress'),
+                  // ('qc_in_progress', 'QC in progress'),
+                  // ('approval_required', 'Approval required'),
+                  // ('approved', 'Approved'),
                 imageCount={OrderImage.length}
                 dayCount={moment(item.created_on).fromNow()}
               />

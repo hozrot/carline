@@ -38,6 +38,8 @@ import ImageList from './screens/ImageList';
 import FloorType from './screens/FloorType';
 import { UserProvider } from './auth/UserContext';
 import InstructionList from './screens/InstructionList';
+import InstructionEdit from './screens/InstructionEdit';
+import OrderDetails from './screens/OrderDetails';
 SplashScreen.preventAutoHideAsync();
 
 const Tab = createMaterialBottomTabNavigator();
@@ -94,6 +96,8 @@ export default function App() {
           <Stack.Screen name="ImageList" component={ImageList} options={{ header: () => null }} />
           <Stack.Screen name="FloorType" component={FloorType} options={{ header: () => null }} />
           <Stack.Screen name="InstructionList" component={InstructionList} options={{ header: () => null }} />
+          <Stack.Screen name="InstructionEdit" component={InstructionEdit} options={{ header: () => null }} />
+          <Stack.Screen name="OrderDetails" component={OrderDetails} options={{ header: () => null }} />
 
 
         </Stack.Navigator>

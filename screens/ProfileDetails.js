@@ -23,11 +23,15 @@ export default function ProfileDetails({ navigation }) {
   const [nameUpdate, setNameUpdate] = useState("");
   const [company_name, setCompanyName] = useState("");
   const [password, setPassword] = useState('');
+  const [newpassword, setNewPassword] = useState('');
   // State variable to track password visibility
   const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
   const [Loader, setLoader] = useState(false);
 
-  const isButtonActive = (nameUpdate.trim() !== '' || company_name.trim() !== '' ||  image != userData?.image);
+  const isButtonActive = (nameUpdate.trim() !== '' || company_name.trim() !== '' 
+                                                   ||  image != userData?.image 
+                                                   ||  (password.trim()!=='' && newpassword.trim()!==''));
 
   // const { isAppReloading, reloadApp } = useGlobalContext();
 
@@ -88,6 +92,9 @@ export default function ProfileDetails({ navigation }) {
   // Function to toggle the password visibility state
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+  const toggleShowNewPassword = () => {
+    setShowNewPassword(!showNewPassword);
   };
   const UpdateProfile = () => {
 
@@ -202,7 +209,7 @@ export default function ProfileDetails({ navigation }) {
 
             </TouchableOpacity>
             <Text style={{ color: 'white', fontSize: 20, fontFamily: 'DMSans_500Medium' }}> {userData?.name}</Text>
-            <Text style={{ color: '#C0CACB', fontSize: 16, fontFamily: 'DMSans_400Regular' }}>{userData?.company_name}  </Text>
+            <Text style={{ color: '#C0CACB', fontSize: 16, fontFamily: 'DMSans_400Regular' }}>{userData?.email}  </Text>
 
           </View>
           <View style={styles.optionList}>
@@ -228,7 +235,7 @@ export default function ProfileDetails({ navigation }) {
                 returnKeyLabel="next"
 
               />
-              <Text style={styles.InputHead}>
+              {/* <Text style={styles.InputHead}>
                 {" "}
                 Email{" "}
               </Text>
@@ -244,7 +251,7 @@ export default function ProfileDetails({ navigation }) {
                 returnKeyType="next"
                 returnKeyLabel="next"
                 editable={false}
-              />
+              /> */}
 
               <Text style={styles.InputHead}>
                 {" "}
@@ -266,7 +273,7 @@ export default function ProfileDetails({ navigation }) {
               />
               <Text style={styles.InputHead}>
                 {" "}
-                Password{" "}
+               Old Password{" "}
               </Text>
               <TextInput
                 inputHieght={54}
@@ -283,8 +290,26 @@ export default function ProfileDetails({ navigation }) {
                 secureTextEntry={!showPassword}
                 value={password}
                 onChangeText={setPassword}
-                editable={false}
-
+              />
+               <Text style={styles.InputHead}>
+                {" "}
+               New Password{" "}
+              </Text>
+              <TextInput
+                inputHieght={54}
+                inputAlign={'center'}
+                onPress={toggleShowNewPassword}
+                icon={showNewPassword ? 'eye-off' : 'eye'}
+                placeholder="*******"
+                autoCapitalize="none"
+                autoCompleteType="password"
+                keyboardType="password"
+                keyboardAppearance="dark"
+                returnKeyType="next"
+                returnKeyLabel="next"
+                secureTextEntry={!showNewPassword}
+                value={newpassword}
+                onChangeText={setNewPassword}
               />
 
 

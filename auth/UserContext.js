@@ -6,6 +6,8 @@ export const UserProvider = ({ children }) => {
     const [userData, setUserData] = useState('')
     const [token, setToken] = useState('')
     const [Instruction, setInstruction] = useState()
+    
+    const [Order, setOrder] = useState()
     const [SelectedImage, setSelectedImage] = useState([])
     const [SelectedOrderImage, setSelectedOrderImage] = useState([])
     const [InstructionName, setInstructionName] = useState('')
@@ -59,6 +61,7 @@ export const UserProvider = ({ children }) => {
             SelectedOrderImage, setSelectedOrderImage,
             SelectedImage, setSelectedImage,
             Instruction, setInstruction,
+            Order,setOrder,
             userData, setUserData,
             token, setToken,
 

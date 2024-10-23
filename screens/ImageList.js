@@ -94,6 +94,7 @@ export default function ImageList({ navigation }) {
         <View style={styles.Bottom}>
           <FlatList
             data={uniqueImages}
+          // data={uniqueImages.sort(( a , b ) => b.id - a.id)}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => toggleImageSelection(item)} // Toggle selection on press

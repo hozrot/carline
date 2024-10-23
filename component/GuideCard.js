@@ -5,7 +5,7 @@ import axios from 'axios';
 import UserContext from "../auth/UserContext";
 import BaseUrl from "../auth/BaseUrl";
 
-export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck, LogoCheck, createdOn, onPress }) {
+export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck, LogoCheck, createdOn, onEdit }) {
   const { userData } = useContext(UserContext);
   const [img, setImg] = useState();
   const [floor, setFloor] = useState();
@@ -20,14 +20,14 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
         // 'Cookie': 'csrftoken=NJChvjOxebFsuddDFi8waFmFFeWWLsBm; sessionid=pewl7aqbu7dwierg2uy7yipixdz05r7s'
       }
     };
-    BgId &&
+   { BgId &&
       axios.request(config)
         .then((response) => {
           setImg(response.data);
         })
         .catch((error) => {
           console.log('backgrounds', error);
-        });
+        });}
 
     let config2 = {
       method: 'get',
@@ -38,14 +38,14 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
       //  'Cookie': 'csrftoken=NJChvjOxebFsuddDFi8waFmFFeWWLsBm; sessionid=pewl7aqbu7dwierg2uy7yipixdz05r7s'
       }
     };
-    FloorCheck &&
+   { FloorCheck &&
       axios.request(config2)
         .then((response) => {
           setFloor(response.data);
         })
         .catch((error) => {
           console.log('backgrounds', error);
-        });
+        });}
 
   }, [BgId], [FloorCheck])
 
@@ -67,8 +67,13 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
         /> */}
       </View>
       <View style={styles.OrderCardDetails}>
+        <View>
         <Text style={styles.CardHead}>  # {guideId} </Text>
-        <View style={styles.OrderCardDetailsTwo}>
+        </View>
+
+       
+      
+        <View style={styles.threeIconsection}>
           <TouchableOpacity style={{
             borderWidth: 1,
             borderColor: 'gray',
@@ -120,11 +125,12 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
               />
             </Text>
           </TouchableOpacity>
-
-
         </View>
         {/* if({NPCheck}=="DontaddLicensePlate"){ */}
-        <View style={styles.OrderCardDetailsThree}>
+
+        
+        <View style={styles.NpIconsection}>
+        {NPCheck === "addLicensePlate" &&
           <TouchableOpacity style={{
             borderWidth: 1,
             borderColor: 'gray',
@@ -134,7 +140,7 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
 
 
             <Text style={styles.CardText}>
-              Number Plate
+              Number Plate {" "}
               {
                 NPCheck === "addLicensePlate" ? (
                   <MaterialCommunityIcons
@@ -152,10 +158,11 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
                   />)
               }
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity>}
 
         </View>
-        <View style={styles.OrderCardDetailsFour}>
+
+        <View style={styles.dateEditsection}>
 
           <Text style={styles.CardText}>{createdOn?.split('T')[0]}  </Text>
           <TouchableOpacity style={{
@@ -163,7 +170,7 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
             borderColor: 'gray',
             padding: 5,
             borderRadius: 10
-          }} onPress={onPress} >
+          }} onPress={onEdit} >
             <Text style={styles.CardText}>
               Edit{" "}
               <MaterialCommunityIcons
@@ -174,6 +181,7 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
             </Text>
           </TouchableOpacity>
         </View>
+      
       </View>
 
     </View>
@@ -182,24 +190,12 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
 }
 
 const styles = StyleSheet.create({
-  containerView: {
-    flex: 1,
-    justifyContent: "space-between",
-    backgroundColor: "#020202",
-
-  },
-
   topBar: {
-
     flex: 0.07,
     flexDirection: "row",
     margin: 10,
     justifyContent: "space-between",
     paddingTop: 30
-  },
-  bodyContent: {
-    flex: 0.8,
-
   },
   GuideCard: {
     margin: 10,
@@ -209,41 +205,37 @@ const styles = StyleSheet.create({
     padding: 2,
     borderRadius: 25,
   },
-  imageBack: {
-
-    flexDirection: "row",
-    width: '100%',
-    borderRadius: 25,
-  },
-
   OrderCardImage: {
     flex: .40
   },
   OrderCardDetails: {
     flex: .60,
-    paddingRight: 10,
-
-    paddingTop: 8
-
+    margin:5
   },
-  OrderCardDetailsTwo: {
+
+ 
+  
+  threeIconsection: {
     flexDirection: 'row',
     padding: 5,
-    justifyContent: 'space-around'
+    justifyContent: 'space-between'
   },
-  OrderCardDetailsThree: {
-    justifyContent: 'center',
-    alignContent: 'center',
+  NpIconsection: { 
     width: '60%',
-
-    alignItems: 'center'
+    justifyContent:'center',
+    alignItems:'center',
+    alignContent:'center'
+   
   },
-  OrderCardDetailsFour: {
+  dateEditsection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    flexGrow:1,
     alignItems: 'center',
-    paddingLeft: 10,
-    paddingTop: 10
+    alignContent:'center',
+    paddingTop: 10,
+    padding:5
+    
   },
 
   CardHead: {
@@ -254,8 +246,6 @@ const styles = StyleSheet.create({
   },
   CardText: {
     color: "#ffffff",
-
-    fontWeight: "bold",
     fontSize: 12
   },
 });

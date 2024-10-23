@@ -150,7 +150,23 @@ export default function GuideAdd({ navigation, route }) {
             initial: true,
           });
           // Alert.alert("Instruction Created Successfull");
-          setModalVisible(!modalVisible);
+          // Alert.alert(
+          //   "Required Fieldsss",
+          //   "Please fill in all the required fields......",
+          //   [
+          //     {
+          //       text: "OK",
+          //       onPress: () => {
+          //         // Handle OK button press here
+          //       },
+          //     },
+          //   ],
+          //   {
+          //     cancelable: false, // Prevent the alert from being dismissed by tapping outside
+          //     style: styles.customAlert, // Apply custom styles
+          //   }
+          // );
+          //setModalVisible(!modalVisible);
           //navigation.navigate("InstructionList");
 
           setInstructionName([]);
@@ -538,6 +554,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     paddingTop: 50,
+  },
+  customAlert: {
+    backgroundColor: 'blue', // Customize background color
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   centeredView: {
     flex: 1,

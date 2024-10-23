@@ -19,19 +19,28 @@ export default function OrderCard({
   imageCount,
   dayCount,
   orderStatus,
-  onPress,
+  onDetails,
 }) {
   let statusColor;
 
-  if (orderStatus == "Approved") {
+                  // ('draft', 'Draft'),
+                  // ('uploaded', 'Uploaded'),
+                  // ('in_progress', 'In progress'),
+                  // ('qc_in_progress', 'QC in progress'),
+                  // ('approval_required', 'Approval required'),
+                  // ('approved', 'Approved'),
+
+  if (orderStatus == "Draft") {
     statusColor = "#0CFFB3";
-  } else if (orderStatus == "Pending") {
+  } else if (orderStatus == "Uploaded") {
     statusColor = "#FFCA0C";
-  } else if (orderStatus == "Cancel") {
-    statusColor = "#FC381E";
-  } else if (orderStatus == "in_progress") {
-    statusColor = "#D0F0C0";
-  } else if (orderStatus == "Archive") {
+  } else if (orderStatus == "QC in progress") {
+    statusColor = "#FFCA0C";
+  } else if (orderStatus == "In Progress") {
+    statusColor = "#0CFFB3";
+  } else if (orderStatus == "Approval required") {
+    statusColor = "gray";
+  } else if (orderStatus == "Approved") {
     statusColor = "gray";
   } else {
     statusColor = "white";
@@ -96,7 +105,7 @@ export default function OrderCard({
           <Text
             style={{
               color: statusColor,
-              fontSize: 14,
+              fontSize: 13,
               fontFamily: "DMSans_500Medium",
             }}
           >
@@ -125,7 +134,7 @@ export default function OrderCard({
               alignItems: "center",
               justifyContent: "center",
             }}
-            onPress={onPress}
+            onPress={onDetails}
           >
             <Text
               style={{

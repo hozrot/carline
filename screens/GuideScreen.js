@@ -96,7 +96,7 @@ export default function GuideScreen({ navigation }) {
               }}
             >
               <GuideCard
-
+              
                 BgId={item.background}
                 guideId={item.id}
                 BGCheck={item.background}

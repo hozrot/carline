@@ -24,7 +24,7 @@ import {
   
     useEffect(() => {
       const fetchOrders = async () => {
-        setLoader(true);
+        // setLoader(true);
         try {
           const response = await axios.get(`${BaseUrl}/instructions/`, {
             headers: {
@@ -100,6 +100,10 @@ import {
                 // }}
               >
                 <GuideCard
+                 onEdit={() => {
+                    setInstruction(item), navigation.navigate("InstructionEdit");
+                  }}
+    
   
                   BgId={item.background}
                   guideId={item.id}
@@ -131,10 +135,10 @@ import {
       flexDirection: "row",
       margin: 10,
       justifyContent: "space-between",
-      paddingTop: 40,
+      paddingTop: 30,
     },
     bodyContent: {
-      flex: 0.8,
+      flex: 0.9,
     },
     GuideCard: {
       margin: 10,
@@ -165,25 +169,7 @@ import {
       top: "50%",
       left: "50%",
     },
-    OrderCardDetailsTwo: {
-      flexDirection: "row",
-      padding: 5,
-      justifyContent: "space-around",
-    },
-    OrderCardDetailsThree: {
-      justifyContent: "center",
-      alignContent: "center",
-      width: "60%",
-  
-      alignItems: "center",
-    },
-    OrderCardDetailsFour: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      paddingLeft: 10,
-      paddingTop: 10,
-    },
+   
   
     CardHead: {
       color: "#ffffff",
