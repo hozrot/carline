@@ -17,7 +17,7 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
       url: `${BaseUrl}/backgrounds/${BgId}`,
       headers: {
         "Authorization": `Token ${userData?.token}`, // Pass the token here
-        'Cookie': 'csrftoken=NJChvjOxebFsuddDFi8waFmFFeWWLsBm; sessionid=pewl7aqbu7dwierg2uy7yipixdz05r7s'
+        // 'Cookie': 'csrftoken=NJChvjOxebFsuddDFi8waFmFFeWWLsBm; sessionid=pewl7aqbu7dwierg2uy7yipixdz05r7s'
       }
     };
     BgId &&
@@ -35,7 +35,7 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
       url: `${BaseUrl}/floors/${FloorCheck}`,
       headers: {
         "Authorization": `Token ${userData?.token}`, // Pass the token here
-        'Cookie': 'csrftoken=NJChvjOxebFsuddDFi8waFmFFeWWLsBm; sessionid=pewl7aqbu7dwierg2uy7yipixdz05r7s'
+      //  'Cookie': 'csrftoken=NJChvjOxebFsuddDFi8waFmFFeWWLsBm; sessionid=pewl7aqbu7dwierg2uy7yipixdz05r7s'
       }
     };
     FloorCheck &&

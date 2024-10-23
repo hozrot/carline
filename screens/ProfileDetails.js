@@ -27,7 +27,7 @@ export default function ProfileDetails({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
   const [Loader, setLoader] = useState(false);
 
-  const isButtonActive = (nameUpdate.trim() !== '' || company_name.trim() !== '');
+  const isButtonActive = (nameUpdate.trim() !== '' || company_name.trim() !== '' ||  image != userData?.image);
 
   // const { isAppReloading, reloadApp } = useGlobalContext();
 
@@ -135,8 +135,10 @@ export default function ProfileDetails({ navigation }) {
       .then((result) => {
         console.log("Result is", result);
         setLoader(false);
-        Alert.alert("Login Again To see the changes", result);
-        navigation.navigate("Login")
+       // Alert.alert("Login Again To see the changes", result);
+       // navigation.navigate("Login")
+       navigation.navigate("Login")
+       
 
 
       })
@@ -289,7 +291,7 @@ export default function ProfileDetails({ navigation }) {
             </KeyboardAvoidingView>
           </View>
           <View style={styles.Bottom}>
-            {isButtonActive || image != userData?.image && <Button label="Save"
+            {isButtonActive  && <Button label="Save"
               // onPress={() => navigation.navigate("Home")} 
 
               onPress={() => UpdateProfile()}

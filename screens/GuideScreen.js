@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   FlatList,
+  ActivityIndicator
 } from "react-native";
 import React, { useContext, useState, useEffect } from "react";
 import GuideCard from "../component/GuideCard";
@@ -17,9 +18,13 @@ import moment from 'moment';
 export default function GuideScreen({ navigation }) {
   const [instructions, setInstructions] = useState([]);
   const { userData, setInstruction } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const [Loader, setLoader] = useState(false);
+
 
   useEffect(() => {
     const fetchOrders = async () => {
+      setLoader(true);
       try {
         const response = await axios.get(`${BaseUrl}/instructions/`, {
           headers: {
@@ -28,6 +33,8 @@ export default function GuideScreen({ navigation }) {
           },
         });
         setInstructions(response.data);
+        setIsLoading(false);
+        setLoader(false);
       } catch (err) {
         alert(err.message); // Catch and display error if any
         console.log(err); // Catch and display error if any
@@ -35,8 +42,10 @@ export default function GuideScreen({ navigation }) {
     };
 
     fetchOrders();
+    setLoader(true);
 
   }, []);
+  
 
   return (
     <View style={styles.containerView}>
@@ -44,6 +53,10 @@ export default function GuideScreen({ navigation }) {
         source={require("../assets/background.png")}
         style={styles.containerView}
       >
+         {Loader && (
+        <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
+      )}
+       
         <View style={styles.topBar}>
           <View>
             <Text
@@ -72,7 +85,7 @@ export default function GuideScreen({ navigation }) {
             <Text style={{ color: "#ffffff" }}> Create Instruction </Text>
           </TouchableOpacity> */}
         </View>
-
+       
         <FlatList
           style={styles.bodyContent}
           data={instructions.sort((a, b) => b.created_at.localeCompare(a.created_at))}
@@ -83,6 +96,7 @@ export default function GuideScreen({ navigation }) {
               }}
             >
               <GuideCard
+
                 BgId={item.background}
                 guideId={item.id}
                 BGCheck={item.background}
@@ -140,6 +154,12 @@ const styles = StyleSheet.create({
     paddingRight: 10,
 
     paddingTop: 8,
+  },
+  loader: {
+    position: "absolute",
+    zIndex: 2,
+    top: "50%",
+    left: "50%",
   },
   OrderCardDetailsTwo: {
     flexDirection: "row",

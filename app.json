@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/Carline-Orange.png",
+        "foregroundImage": "./assets/Carline-AppIcon1.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.mhali.carline",

@@ -7,7 +7,8 @@ import {
   StatusBar,
   Image,
   Modal,
-  ImageBackground
+  ImageBackground,
+  ActivityIndicator
 } from "react-native";
 import React, { useState } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -26,6 +27,8 @@ export default function SignupScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   // State variable to track password visibility
   const [showPassword, setShowPassword] = useState(false);
+  const [Loader, setLoader] = useState(false);
+
 
   // Function to toggle the password visibility state
   const toggleShowPassword = () => {
@@ -50,6 +53,7 @@ export default function SignupScreen({ navigation }) {
       "company_name": company_name,
       "password": password
     });
+    setLoader(true);
 
     let config = {
       method: 'post',
@@ -66,6 +70,7 @@ export default function SignupScreen({ navigation }) {
       .then((result) => {
         alert(result.data.message)
         alert("Please Confirm the verification code")
+        setLoader(false);
 
         //  navigation.navigate("Login")
       })
@@ -117,6 +122,11 @@ export default function SignupScreen({ navigation }) {
 
     <ScrollView style={styles.containerView}>
       <ImageBackground source={require("../assets/background.png")} resizeMode='stretch' >
+
+      {Loader && (
+        <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
+      )}
+       
         <View style={styles.HeaderView}>
           {/* <TouchableOpacity style={{
             color: 'white',
@@ -325,6 +335,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 30,
 
+  },
+  loader: {
+    position: "absolute",
+    zIndex: 2,
+    top: "50%",
+    left: "50%",
   },
   InputHead: {
     fontSize: 16,

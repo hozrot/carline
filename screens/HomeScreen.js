@@ -14,6 +14,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 //npm install @react-navigation/bottom-tabs
 const Tab = createBottomTabNavigator();
 export default function HomeScreen() {
+  
   return (
     <Tab.Navigator tabBar={props => <BottomTab {...props} />}>
 

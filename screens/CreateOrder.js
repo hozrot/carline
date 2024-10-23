@@ -19,6 +19,7 @@ import UserContext from "../auth/UserContext";
 //npx expo install @react-native-picker/picker
 import PickerSelect from "react-native-picker-select";
 import BaseUrl from "../auth/BaseUrl";
+import ModalAlert from "../component/ModalAlert";
 
 
 
@@ -37,6 +38,8 @@ export default function CreateOrder({ navigation }) {
   const [regCarId, setRegCarId] = useState("");
   const [message, setMessage] = useState("");
   const [Loader, setLoader] = useState(false);
+
+  const [showAlert, setShowAlert] = useState(false);
 
   const items = [
     { label: "12 Hours", value: "12hours" },
@@ -89,7 +92,8 @@ export default function CreateOrder({ navigation }) {
   const sendOrderData = async () => {
     setIsButtonDisabled(true);
     if (!regCarId || !message || !Instruction || !selectedValue) {
-      alert("Fill The required Field");
+      //alert("Fill The required Field");
+      setShowAlert(true);
       setModalVisible(false);
       return;
     }
@@ -199,6 +203,8 @@ export default function CreateOrder({ navigation }) {
       {Loader && (
         <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
       )}
+
+      <ModalAlert  modalAlertText={"tetstt"} />
       <ImageBackground
         source={require("../assets/background.png")}
         resizeMode="stretch"

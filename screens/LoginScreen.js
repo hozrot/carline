@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ImageBackground,
+  ActivityIndicator
 } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import Button from "../component/Button";
@@ -20,6 +21,8 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const { userData, setUserData } = useContext(UserContext);
+  const [Loader, setLoader] = useState(false);
+
 
   // State variable to track password visibility
   const [showPassword, setShowPassword] = useState(false);
@@ -39,6 +42,8 @@ export default function LoginScreen({ navigation }) {
       password: password,
     });
 
+    setLoader(true);
+
     let config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -57,6 +62,7 @@ export default function LoginScreen({ navigation }) {
         if (result.status == 200) {
           getData(result.data);
           // setUserData(result.data);
+          setLoader(false);
         }
       })
       .catch((error) => {
@@ -94,6 +100,10 @@ export default function LoginScreen({ navigation }) {
         source={require("../assets/background.png")}
         resizeMode="stretch"
       >
+         {Loader && (
+        <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
+      )}
+       
         <View style={styles.HeaderView}>
           <Text
             style={{
@@ -208,6 +218,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 80,
+  },
+  loader: {
+    position: "absolute",
+    zIndex: 2,
+    top: "50%",
+    left: "50%",
   },
   FormView: {
     flex: 0.4,

@@ -9,7 +9,7 @@ import {
   ImageBackground,
   Alert,
   ActivityIndicator,
-
+  Modal,
 } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -39,51 +39,57 @@ export default function GuideAdd({ navigation, route }) {
       updateBackgroundImage,
       updateFloorImage,
       updateLogoImage,
-    }
+    },
   } = useContext(UserContext);
 
   const [Loader, setLoader] = useState(false);
-  const bgswitch = route.params;
-  const bgimage = route.params;
-
-  const logoimage = route.params;
-  const floorimage = route.params;
-  const name = route.params;
+  const [modalVisible, setModalVisible] = useState(false);
+  
 
   // const [isEnabled, setIsEnabled] = useState(false);
   // const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   const [backgroundSwitch, setBackgroundSwitch] = useState(false);
-  const togglebackgroundSwitch = () => setBackgroundSwitch((previousState) => !previousState);
-
+  const togglebackgroundSwitch = () =>
+    setBackgroundSwitch((previousState) => !previousState);
 
   //const [background, setBackground] = useState(null);
 
-  const [floorSwitch, setFloorSwitch] = useState('');
-  const togglefloorSwitch = () => setFloorSwitch((previousState) => !previousState);
+  const [floorSwitch, setFloorSwitch] = useState("");
+  const togglefloorSwitch = () =>
+    setFloorSwitch((previousState) => !previousState);
   //const [floor, setFloor] = useState(null);
 
-  const [logoSwitch, setLogoSwitch] = useState('');
-  const togglelogoSwitch = () => setLogoSwitch((previousState) => !previousState);
+  const [logoSwitch, setLogoSwitch] = useState("");
+  const togglelogoSwitch = () =>
+    setLogoSwitch((previousState) => !previousState);
   //const [logo, setLogo] = useState(null);
 
-  const [npSwitch, setNpSwitch] = useState('');
+  const [npSwitch, setNpSwitch] = useState("");
   const togglenpSwitch = () => setNpSwitch((previousState) => !previousState);
 
   const PostInstructions = () => {
     try {
       if (!InstructionName) {
-        alert("Enter Instruction name");
+        setModalVisible(!modalVisible);
         setLoader(false);
         return;
       }
       if (!backgroundImageId) {
-        alert("Background Not Found");
+        // alert("Background Not Found");
+        setModalVisible(!modalVisible);
+        setLoader(false);
+        return;
+      }
+      if (!floorImageId) {
+        setModalVisible(!modalVisible);
+        // alert("Select a Floor ");
         setLoader(false);
         return;
       }
       if (!logoImageId) {
-        alert("Select a Logo ");
+        //alert("Select a Logo ");
+        setModalVisible(!modalVisible);
         setLoader(false);
         return;
       }
@@ -108,10 +114,19 @@ export default function GuideAdd({ navigation, route }) {
 
       // formdata.append("logo", logoSwitch ? "addlogo" : "Dontaddlogo");
 
-      formdata.append("logo_placement", logoSwitch ? logoImageId : "Dontaddlogo");
+      formdata.append(
+        "logo_placement",
+        logoSwitch ? logoImageId : "Dontaddlogo"
+      );
       formdata.append("floor", floorSwitch ? floorImageId : "Dontaddfloor");
-      formdata.append("background", backgroundSwitch ? backgroundImageId : "Don't Add Background");
-      formdata.append("license_plate", npSwitch ? "addLicensePlate" : "DontaddLicensePlate");
+      formdata.append(
+        "background",
+        backgroundSwitch ? backgroundImageId : "Don't Add Background"
+      );
+      formdata.append(
+        "license_plate",
+        npSwitch ? "addLicensePlate" : "DontaddLicensePlate"
+      );
 
       const requestOptions = {
         method: "POST",
@@ -128,24 +143,22 @@ export default function GuideAdd({ navigation, route }) {
           }
         })
         .then((result) => {
-
           setLoader(false);
-          navigation.navigate("InstructionList");
-          // navigation.navigate("Home", {
-          //   screen: "Guide",
-          //   initial: false,
-          // });
-          Alert.alert("Instruction Created Successfull");
+         // navigation.navigate("InstructionList");
+          navigation.navigate("Home", {
+            screen: "Guide",
+            initial: true,
+          });
+          // Alert.alert("Instruction Created Successfull");
+          setModalVisible(!modalVisible);
           //navigation.navigate("InstructionList");
 
           setInstructionName([]);
           clearSelectedStates();
-          // togglebackgroundSwitch([]);
-          // togglefloorSwitch([]);
-          // togglelogoSwitch([]);
-          // togglenpSwitch([]);
-
-
+          togglebackgroundSwitch([]);
+          togglefloorSwitch([]);
+          togglelogoSwitch([]);
+          togglenpSwitch([]);
 
           console.log("Instruction Created Successfull", result);
         })
@@ -167,15 +180,15 @@ export default function GuideAdd({ navigation, route }) {
    * do a fresh start when trying to create instruction
    */
   const clearSelectedStates = () => {
-    updateBackgroundImage('', '');
-    updateFloorImage('', '');
-    updateLogoImage('', '');
+    updateBackgroundImage("", "");
+    updateFloorImage("", "");
+    updateLogoImage("", "");
 
     setBackgroundSwitch(false);
     setFloorSwitch(false);
     setLogoSwitch(false);
     setNpSwitch(false);
-  }
+  };
 
   return (
     <View style={styles.containerView}>
@@ -186,35 +199,58 @@ export default function GuideAdd({ navigation, route }) {
       >
         <ScrollView>
           {Loader && (
-            <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
+            <ActivityIndicator
+              size="large"
+              color={"#fff"}
+              style={styles.loader}
+            />
           )}
-          <View style={{
-            color: 'white',
-            width: '100%',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            paddingTop: 40,
-            paddingLeft: 10
-          }}>
-            <TouchableOpacity onPress={() => {
-              clearSelectedStates();
-              navigation.navigate("Home", {
-                screen: "Guide",
-                initial: true,
-              })
-            }} style={{ flexDirection: 'row' }}>
-              <MaterialCommunityIcons name="arrow-left" size={24} color={"#ffffff"} />
-              <Text style={{
-                color: "#ffffff",
-                fontFamily: 'DMSans_500Medium', fontSize: 18
-              }}> </Text>
+          <View
+            style={{
+              color: "white",
+              width: "100%",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              paddingTop: 40,
+              paddingLeft: 10,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                clearSelectedStates();
+                navigation.navigate("Home", {
+                  screen: "Guide",
+                  initial: true,
+                });
+              }}
+              style={{ flexDirection: "row" }}
+            >
+              <MaterialCommunityIcons
+                name="arrow-left"
+                size={24}
+                color={"#ffffff"}
+              />
+              <Text
+                style={{
+                  color: "#ffffff",
+                  fontFamily: "DMSans_500Medium",
+                  fontSize: 18,
+                }}
+              >
+                {" "}
+              </Text>
             </TouchableOpacity>
-            <Text style={{
-              color: "#ffffff",
-              fontFamily: 'DMSans_500Medium', fontSize: 18
-            }}> Instruction Create</Text>
-            <Text>       </Text>
-
+            <Text
+              style={{
+                color: "#ffffff",
+                fontFamily: "DMSans_500Medium",
+                fontSize: 18,
+              }}
+            >
+              {" "}
+              Instruction Create
+            </Text>
+            <Text> </Text>
           </View>
           <View style={styles.optionList}>
             <Text style={styles.InputHead}> Instruction name </Text>
@@ -250,18 +286,23 @@ export default function GuideAdd({ navigation, route }) {
               <View style={styles.imageContainer}>
                 <TouchableOpacity
                   style={styles.addImage}
-                  onPress={() =>
-                    navigation.navigate("BackgroundType")
-                  }
+                  onPress={() => navigation.navigate("BackgroundType")}
                 >
-                  <MaterialCommunityIcons
-                    name="plus"
-                    size={30}
-                    color={"#ffffff"}
-                  />
-
+                  {backgroundImageURL && (
+                    <MaterialCommunityIcons
+                      name="reload"
+                      size={30}
+                      color={"#ffffff"}
+                    />
+                  )}
+                  {!backgroundImageURL && (
+                    <MaterialCommunityIcons
+                      name="plus"
+                      size={30}
+                      color={"#ffffff"}
+                    />
+                  )}
                 </TouchableOpacity>
-
 
                 {backgroundImageURL && backgroundImageURL.length && (
                   <TouchableOpacity
@@ -298,13 +339,22 @@ export default function GuideAdd({ navigation, route }) {
                   style={styles.addImage}
                   onPress={() => navigation.navigate("FloorType")}
                 >
-                  <MaterialCommunityIcons
-                    name="plus"
-                    size={30}
-                    color={"#ffffff"}
-                  />
+                  {floorImageURL && (
+                    <MaterialCommunityIcons
+                      name="reload"
+                      size={30}
+                      color={"#ffffff"}
+                    />
+                  )}
+                  {!floorImageURL && (
+                    <MaterialCommunityIcons
+                      name="plus"
+                      size={30}
+                      color={"#ffffff"}
+                    />
+                  )}
                 </TouchableOpacity>
-                <Text style={{ color: "#ffffff" }} >
+                <Text style={{ color: "#ffffff" }}>
                   {/* {floorimage.id} */}
                 </Text>
                 {floorImageURL && floorImageURL.length && (
@@ -345,15 +395,22 @@ export default function GuideAdd({ navigation, route }) {
                   style={styles.addImage}
                   onPress={() => navigation.navigate("LogoList")}
                 >
-                  <MaterialCommunityIcons
-                    name="plus"
-                    size={30}
-                    color={"#ffffff"}
-                  />
+                  {logoImageURL && (
+                    <MaterialCommunityIcons
+                      name="reload"
+                      size={30}
+                      color={"#ffffff"}
+                    />
+                  )}
+                  {!logoImageURL && (
+                    <MaterialCommunityIcons
+                      name="plus"
+                      size={30}
+                      color={"#ffffff"}
+                    />
+                  )}
                 </TouchableOpacity>
-                <Text style={{ color: "#ffffff" }} >
-                  {/* {logoimage.id} */}
-                </Text>
+                <Text style={{ color: "#ffffff" }}>{/* {logoimage.id} */}</Text>
                 {logoImageURL && logoImageURL.length && (
                   <TouchableOpacity
                     onPress={() => navigation.navigate("LogoList")}
@@ -399,13 +456,76 @@ export default function GuideAdd({ navigation, route }) {
           </View>
 
           <View style={styles.Bottom}>
-            {(backgroundSwitch && logoSwitch && floorSwitch) && (
+            {backgroundSwitch && logoSwitch && floorSwitch && (
               <Button
                 label="Create Instruction"
                 onPress={() => PostInstructions()}
               />
             )}
           </View>
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                {/* setModalVisible(!modalVisible) */}
+                <View style={styles.modalTop}>
+                  <View
+                    style={{
+                      width: "25%",
+                      height: 1,
+                      paddingTop: 5,
+                      marginBottom: 20,
+                      borderRadius: 10,
+                      backgroundColor: "#FF4A22",
+                    }}
+                  ></View>
+
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: 16,
+                      fontFamily: "DMSans_400Regular",
+                    }}
+                  >
+                    {" "}
+                    Enter All the Required Fields{" "}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={{
+                    borderWidth: 0.5,
+                    borderColor: "gray",
+                    margin: 10,
+                    borderRadius: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    height: 54,
+                  }}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: 14,
+                      fontFamily: "DMSans_400Regular",
+                    }}
+                  >
+                    {" "}
+                    Back{" "}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
         </ScrollView>
       </ImageBackground>
     </View>
@@ -418,6 +538,47 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     paddingTop: 50,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  modalView: {
+    flex: 0.4,
+    width: "100%",
+    backgroundColor: "#181C27",
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    paddingTop: 20,
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    borderTopColor: "red",
+    borderWidth: 1,
+    borderTopColor: "#FF4A22",
+    borderRightColor: "#FF4A22",
+    borderLeftColor: "#FF4A22",
+  },
+  modalTop: {
+    flex: 0.8,
+    width: "100%",
+    backgroundColor: "#181C27",
+    padding: 2,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    borderTopColor: "red",
+  },
+  modalBottom: {},
+
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
 
   containerView: {

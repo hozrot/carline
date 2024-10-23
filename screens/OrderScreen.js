@@ -16,65 +16,6 @@ import UserContext from "../auth/UserContext";
 import moment from 'moment';
 //sudo npm install moment --save
 
-const orderDetails = [
-  {
-    id: 1,
-    image: require("../assets/background1.png"),
-    orderId: 1009001,
-    imageCount: 5,
-    dayCount: 3,
-    orderStatus: "Pending",
-  },
-  {
-    id: 2,
-    image: require("../assets/background2.png"),
-    orderId: 1009002,
-    imageCount: 3,
-    dayCount: 4,
-    orderStatus: "Approved",
-  },
-  {
-    id: 3,
-    image: require("../assets/background3.png"),
-    orderId: 1009002,
-    imageCount: 3,
-    dayCount: 4,
-    orderStatus: "Cancel",
-  },
-  {
-    id: 4,
-    image: require("../assets/floor1.png"),
-    orderId: 1009002,
-    imageCount: 3,
-    dayCount: 4,
-    orderStatus: "In Progress",
-  },
-  {
-    id: 5,
-    image: require("../assets/background2.png"),
-    orderId: 1009002,
-    imageCount: 3,
-    dayCount: 4,
-    orderStatus: "Approved",
-  },
-  {
-    id: 6,
-    image: require("../assets/background3.png"),
-    orderId: 1009002,
-    imageCount: 3,
-    dayCount: 4,
-    orderStatus: "Archive",
-  },
-  {
-    id: 7,
-    image: require("../assets/background3.png"),
-    orderId: 1009002,
-    imageCount: 3,
-    dayCount: 4,
-    orderStatus: "Others",
-  },
-  // ... more items with image, orderId, imageCount, dayCount, orderStatus, onPress
-];
 
 export default function OrderScreen({ navigation }) {
   const [OrderList, setOrderList] = useState([]);
@@ -83,14 +24,16 @@ export default function OrderScreen({ navigation }) {
   const [OrderImagebyId, setOrderImagebyId] = useState([]);
   const { userData } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
+  const [Loader, setLoader] = useState(false);
 
-  // const inProgressText = "in_progress";
-  //const capitalizedText = inProgressText.charAt(0).toUpperCase() + inProgressText.slice(1).replace("_", " ");
+   const inProgressText = "in_progress";
+  const capitalizedText = inProgressText.charAt(0).toUpperCase() + inProgressText.slice(1).replace("_", " ");
   const imageCounts = {};
   const [arrayCount, setArrayCount] = useState(0);
 
   useEffect(() => {
     const fetchOrders = async () => {
+      setLoader(true);
       try {
         const response = await axios.get(`${BaseUrl}/orders/`, {
           headers: {
@@ -114,12 +57,14 @@ export default function OrderScreen({ navigation }) {
         const filteredImages = imageResponse?.data?.filter((image) => image.id === OrderList.id);
         const imageCount = filteredImages?.length || 0;
         console.log(imageCount);
+        setLoader(false);
 
 
 
       } catch (err) {
         alert(err.message); // Catch and display error if any
       }
+      setLoader(false);
     };
 
 
@@ -138,10 +83,13 @@ export default function OrderScreen({ navigation }) {
       {/* {isLoading ? (
         <ActivityIndicator size="large" />
       ) : ( */}
+
       <ImageBackground
         source={require("../assets/background.png")}
         style={styles.containerView}
       >
+        
+
         <View style={styles.topBar}>
           <View>
             <Text
@@ -169,7 +117,12 @@ export default function OrderScreen({ navigation }) {
           >
             <Text style={{ color: "#ffffff" }}> Create Order </Text>
           </TouchableOpacity>
+
+         
         </View>
+        {Loader && (
+          <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
+        )}
 
         {OrderList && OrderImage && (
           <FlatList
@@ -182,7 +135,7 @@ export default function OrderScreen({ navigation }) {
                 image={OrderImage}
                 orderId={item.id}
                 orderStatus={item.status}
-                //.charAt(0).toUpperCase() + inProgressText.slice(1).replace("_", " ")
+                //.charAt(0).toUpperCase() + item.status.slice(1).replace("_", " ")}
                 imageCount={OrderImage.length}
                 dayCount={moment(item.created_on).fromNow()}
               />
@@ -284,5 +237,11 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 12,
     fontFamily: "DMSans_400Regular",
+  },
+  loader: {
+    position: "absolute",
+    zIndex: 2,
+    top: "50%",
+    left: "50%",
   },
 });
