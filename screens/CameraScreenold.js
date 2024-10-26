@@ -1,4 +1,4 @@
-import { Camera } from 'expo-camera/legacy';
+import { CameraView, useCameraPermissions } from "expo-camera";
 import React, { useRef, useState, useContext } from "react";
 import {
   Button,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Dimensions
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import PreviewImage from "./PreviewImage";
@@ -15,11 +16,11 @@ import * as ImagePicker from "expo-image-picker";
 import UserContext from "../auth/UserContext";
 
 export default function CameraScreen({ navigation }) {
-  const { SelectedImage, setSelectedImage, setSelectedOrderImage } =
-    useContext(UserContext);
+  const { SelectedImage, setSelectedImage, setSelectedOrderImage } = useContext(UserContext);
   const [facing, setFacing] = useState("back");
-  const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [permission, requestPermission] = useCameraPermissions();
   const [photo, setPhoto] = useState(null);
+
 
   const cameraRef = useRef(null);
   const [isTorchOn, setIsTorchOn] = useState(false);
@@ -51,6 +52,7 @@ export default function CameraScreen({ navigation }) {
   const handleTakePhoto = async () => {
     if (cameraRef.current) {
       const options = {
+        aspect: [4, 3],
         quality: 1,
         // base64: true,
         exif: false,
@@ -102,12 +104,11 @@ export default function CameraScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Camera
+      <CameraView
         style={styles.camera}
-        type={facing}
+        facing={facing}
         ref={cameraRef}
         flash={isLightOn}
-        ratio='4:3'
       >
         <View style={styles.topContainer}>
           <TouchableOpacity onPress={flashFunction}>
@@ -162,7 +163,7 @@ export default function CameraScreen({ navigation }) {
             />
           </TouchableOpacity>
         </View>
-      </Camera>
+      </CameraView>
     </View>
   );
 }

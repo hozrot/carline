@@ -156,6 +156,8 @@ const styles = StyleSheet.create({
   previewContainer: {
     width: "100%",
     height: "100%",
+
+
   },
   Bottom: {
     padding: 10,

@@ -82,7 +82,7 @@ export default function CarLine({ navigation }) {
             </Text>
             <Image
               style={{ width: 300, height: 200, borderRadius: 25 }}
-              source={require("../assets/carline.png")}
+              source={require("../assets/carlinenew.png")}
               resizeMode="contain"
             />
           </View>
@@ -106,7 +106,7 @@ export default function CarLine({ navigation }) {
               }}
             >
               {" "}
-              Explore{" "}
+              Start{" "}
             </Text>
           </View>
           {/* </ImageBackground> */}

@@ -45,7 +45,7 @@ export default function GuideScreen({ navigation }) {
     setLoader(true);
 
   }, []);
-  
+
 
   return (
     <View style={styles.containerView}>
@@ -53,10 +53,10 @@ export default function GuideScreen({ navigation }) {
         source={require("../assets/background.png")}
         style={styles.containerView}
       >
-         {Loader && (
-        <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
-      )}
-       
+        {Loader && (
+          <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
+        )}
+
         <View style={styles.topBar}>
           <View>
             <Text
@@ -85,7 +85,7 @@ export default function GuideScreen({ navigation }) {
             <Text style={{ color: "#ffffff" }}> Create Instruction </Text>
           </TouchableOpacity> */}
         </View>
-       
+
         <FlatList
           style={styles.bodyContent}
           data={instructions.sort((a, b) => b.created_at.localeCompare(a.created_at))}
@@ -96,9 +96,9 @@ export default function GuideScreen({ navigation }) {
               }}
             >
               <GuideCard
-              
+
                 BgId={item.background}
-                guideId={item.id}
+                guideId={item.instruction_name}
                 BGCheck={item.background}
                 NPCheck={item.license_plate}
                 FloorCheck={item.floor}

@@ -23,15 +23,15 @@ export default function OrderCard({
 }) {
   let statusColor;
 
-                  // ('draft', 'Draft'),
-                  // ('uploaded', 'Uploaded'),
-                  // ('in_progress', 'In progress'),
-                  // ('qc_in_progress', 'QC in progress'),
-                  // ('approval_required', 'Approval required'),
-                  // ('approved', 'Approved'),
+  // ('draft', 'Draft'),
+  // ('uploaded', 'Uploaded'),
+  // ('in_progress', 'In progress'),
+  // ('qc_in_progress', 'QC in progress'),
+  // ('approval_required', 'Approval required'),
+  // ('approved', 'Approved'),
 
   if (orderStatus == "Draft") {
-    statusColor = "#0CFFB3";
+    statusColor = "red";
   } else if (orderStatus == "Uploaded") {
     statusColor = "#FFCA0C";
   } else if (orderStatus == "QC in progress") {

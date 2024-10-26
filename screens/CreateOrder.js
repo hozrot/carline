@@ -41,6 +41,13 @@ export default function CreateOrder({ navigation }) {
 
   const [showAlert, setShowAlert] = useState(false);
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  const handleButtonClick = () => {
+    setIsButtonDisabled(true);
+    // Perform your desired action here
+  };
+
   const items = [
     { label: "12 Hours", value: "12hours" },
     { label: "24 Hours", value: "24hours" },
@@ -53,7 +60,7 @@ export default function CreateOrder({ navigation }) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const formattedTime = currentTime.toISOString();
 
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  //const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
 
   // useEffect(() => {
@@ -204,7 +211,7 @@ export default function CreateOrder({ navigation }) {
         <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
       )}
 
-      <ModalAlert  modalAlertText={"tetstt"} />
+      <ModalAlert modalAlertText={"tetstt"} />
       <ImageBackground
         source={require("../assets/background.png")}
         resizeMode="stretch"

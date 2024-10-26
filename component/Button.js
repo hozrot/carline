@@ -34,7 +34,7 @@ export default function Button({ label, onPress, backgroundColor, disabled }) {
 
     >
       <TouchableOpacity style={styles.containerView} activeOpacity={0.7}
-        onPress={onPress} >
+        onPress={onPress} disabled={disabled} >
 
 
 

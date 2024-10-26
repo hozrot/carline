@@ -26,7 +26,7 @@ export default function OrderScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(true);
   const [Loader, setLoader] = useState(false);
 
-   const inProgressText = "in_progress";
+  const inProgressText = "in_progress";
   const capitalizedText = inProgressText.charAt(0).toUpperCase() + inProgressText.slice(1).replace("_", " ");
   const imageCounts = {};
   const [arrayCount, setArrayCount] = useState(0);
@@ -88,7 +88,7 @@ export default function OrderScreen({ navigation }) {
         source={require("../assets/background.png")}
         style={styles.containerView}
       >
-        
+
 
         <View style={styles.topBar}>
           <View>
@@ -118,7 +118,7 @@ export default function OrderScreen({ navigation }) {
             <Text style={{ color: "#ffffff" }}> Create Order </Text>
           </TouchableOpacity>
 
-         
+
         </View>
         {Loader && (
           <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
@@ -131,36 +131,42 @@ export default function OrderScreen({ navigation }) {
             data={OrderList.sort((a, b) => b.created_on.localeCompare(a.created_on))}
             //  data={orderDetails}
             renderItem={({ item }) => (
-              <OrderCard
-              onDetails={() => {
-                setOrder(item),
-                 navigation.navigate("OrderDetails");
-              }}
-                image={OrderImage}
-                orderId={item.id}
-               // orderStatus={item.status}
-                //.charAt(0).toUpperCase() + item.status.slice(1).replace("_", " ")}
-                orderStatus= {
-                  item.status === 'draft' ? 'Draft' :
-                  item.status === 'uploaded' ? 'Uploaded' :
-                  item.status === 'in_progress' ? 'In Progress' :
-                  item.status === 'qc_in_progress' ? 'QC in progress' :
-                  item.status === 'approval_required' ? 'Approval required' :
-                  item.status === 'approved' ? 'Approved' :
-                 
-                  item.status}
+              <TouchableOpacity
+                onPress={() => {
+                  setOrder(item), navigation.navigate("OrderDetails");
+                }}
+              >
+                <OrderCard
+                  onDetails={() => {
+                    setOrder(item),
+                      navigation.navigate("OrderDetails");
+                  }}
+                  image={OrderImage}
+                  orderId={item.job_name}
+                  // orderStatus={item.status}
+                  //.charAt(0).toUpperCase() + item.status.slice(1).replace("_", " ")}
+                  orderStatus={
+                    item.status === 'draft' ? 'Draft' :
+                      item.status === 'uploaded' ? 'Uploaded' :
+                        item.status === 'in_progress' ? 'In Progress' :
+                          item.status === 'qc_in_progress' ? 'QC in progress' :
+                            item.status === 'approval_required' ? 'Approval required' :
+                              item.status === 'approved' ? 'Approved' :
+
+                                item.status}
                   // ('draft', 'Draft'),
                   // ('uploaded', 'Uploaded'),
                   // ('in_progress', 'In progress'),
                   // ('qc_in_progress', 'QC in progress'),
                   // ('approval_required', 'Approval required'),
                   // ('approved', 'Approved'),
-                imageCount={OrderImage.length}
-                dayCount={moment(item.created_on).fromNow()}
-              />
+                  imageCount={OrderImage.length}
+                  dayCount={moment(item.created_on).fromNow()}
+                /></TouchableOpacity>
             )}
             keyExtractor={(item) => item.id}
           />
+
         )}
       </ImageBackground>
     </View>

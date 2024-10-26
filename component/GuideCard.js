@@ -20,14 +20,16 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
         // 'Cookie': 'csrftoken=NJChvjOxebFsuddDFi8waFmFFeWWLsBm; sessionid=pewl7aqbu7dwierg2uy7yipixdz05r7s'
       }
     };
-   { BgId &&
-      axios.request(config)
-        .then((response) => {
-          setImg(response.data);
-        })
-        .catch((error) => {
-          console.log('backgrounds', error);
-        });}
+    {
+      BgId &&
+        axios.request(config)
+          .then((response) => {
+            setImg(response.data);
+          })
+          .catch((error) => {
+            console.log('backgrounds', error);
+          });
+    }
 
     let config2 = {
       method: 'get',
@@ -35,17 +37,19 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
       url: `${BaseUrl}/floors/${FloorCheck}`,
       headers: {
         "Authorization": `Token ${userData?.token}`, // Pass the token here
-      //  'Cookie': 'csrftoken=NJChvjOxebFsuddDFi8waFmFFeWWLsBm; sessionid=pewl7aqbu7dwierg2uy7yipixdz05r7s'
+        //  'Cookie': 'csrftoken=NJChvjOxebFsuddDFi8waFmFFeWWLsBm; sessionid=pewl7aqbu7dwierg2uy7yipixdz05r7s'
       }
     };
-   { FloorCheck &&
-      axios.request(config2)
-        .then((response) => {
-          setFloor(response.data);
-        })
-        .catch((error) => {
-          console.log('backgrounds', error);
-        });}
+    {
+      FloorCheck &&
+        axios.request(config2)
+          .then((response) => {
+            setFloor(response.data);
+          })
+          .catch((error) => {
+            console.log('backgrounds', error);
+          });
+    }
 
   }, [BgId], [FloorCheck])
 
@@ -68,11 +72,11 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
       </View>
       <View style={styles.OrderCardDetails}>
         <View>
-        <Text style={styles.CardHead}>  # {guideId} </Text>
+          <Text style={styles.CardHead}>  # {guideId} </Text>
         </View>
 
-       
-      
+
+
         <View style={styles.threeIconsection}>
           <TouchableOpacity style={{
             borderWidth: 1,
@@ -128,44 +132,44 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
         </View>
         {/* if({NPCheck}=="DontaddLicensePlate"){ */}
 
-        
+
         <View style={styles.NpIconsection}>
-        {NPCheck === "addLicensePlate" &&
-          <TouchableOpacity style={{
-            borderWidth: 1,
-            borderColor: 'gray',
-            padding: 5,
-            borderRadius: 15
-          }}>
+          {NPCheck === "addLicensePlate" &&
+            <TouchableOpacity style={{
+              borderWidth: 1,
+              borderColor: 'gray',
+              padding: 5,
+              borderRadius: 15
+            }}>
 
 
-            <Text style={styles.CardText}>
-              Number Plate {" "}
-              {
-                NPCheck === "addLicensePlate" ? (
-                  <MaterialCommunityIcons
-                    name="check-circle"
-                    // name="bookmark-remove-outline"
-                    size={12}
-                    color={"red"}
-                  />
-                ) : (
-                  <MaterialCommunityIcons
-                    // name="check-circle"
-                    name="bookmark-remove-outline"
-                    size={12}
-                    color={"red"}
-                  />)
-              }
-            </Text>
-          </TouchableOpacity>}
+              <Text style={styles.CardText}>
+                Number Plate {" "}
+                {
+                  NPCheck === "addLicensePlate" ? (
+                    <MaterialCommunityIcons
+                      name="check-circle"
+                      // name="bookmark-remove-outline"
+                      size={12}
+                      color={"red"}
+                    />
+                  ) : (
+                    <MaterialCommunityIcons
+                      // name="check-circle"
+                      name="bookmark-remove-outline"
+                      size={12}
+                      color={"red"}
+                    />)
+                }
+              </Text>
+            </TouchableOpacity>}
 
         </View>
 
         <View style={styles.dateEditsection}>
 
           <Text style={styles.CardText}>{createdOn?.split('T')[0]}  </Text>
-          <TouchableOpacity style={{
+          {/* <TouchableOpacity style={{
             borderWidth: 1,
             borderColor: 'gray',
             padding: 5,
@@ -179,9 +183,9 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
                 color={"#ffffff"}
               />
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
-      
+
       </View>
 
     </View>
@@ -210,32 +214,32 @@ const styles = StyleSheet.create({
   },
   OrderCardDetails: {
     flex: .60,
-    margin:5
+    margin: 5
   },
 
- 
-  
+
+
   threeIconsection: {
     flexDirection: 'row',
     padding: 5,
     justifyContent: 'space-between'
   },
-  NpIconsection: { 
+  NpIconsection: {
     width: '60%',
-    justifyContent:'center',
-    alignItems:'center',
-    alignContent:'center'
-   
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center'
+
   },
   dateEditsection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    flexGrow:1,
+    flexGrow: 1,
     alignItems: 'center',
-    alignContent:'center',
+    alignContent: 'center',
     paddingTop: 10,
-    padding:5
-    
+    padding: 5
+
   },
 
   CardHead: {
