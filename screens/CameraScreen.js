@@ -1,4 +1,4 @@
-import { Camera } from 'expo-camera/legacy';
+import { Camera, CameraType, FlashMode } from "expo-camera/legacy";
 import React, { useRef, useState, useContext } from "react";
 import {
   Button,
@@ -17,16 +17,18 @@ import UserContext from "../auth/UserContext";
 export default function CameraScreen({ navigation }) {
   const { SelectedImage, setSelectedImage, setSelectedOrderImage } =
     useContext(UserContext);
-  const [facing, setFacing] = useState("back");
+  const [facing, setFacing] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [photo, setPhoto] = useState(null);
 
   const cameraRef = useRef(null);
   const [isTorchOn, setIsTorchOn] = useState(false);
-  const [isLightOn, setLightOn] = useState("off");
+  const [isLightOn, setLightOn] = useState(FlashMode.off);
   const flashFunction = () => {
     setIsTorchOn(!isTorchOn);
-    setLightOn((flashMode) => (flashMode === "off" ? "on" : "off"));
+    setLightOn((flashMode) =>
+      flashMode === FlashMode.off ? FlashMode.on : FlashMode.off
+    );
   };
 
   if (!permission) {
@@ -45,7 +47,9 @@ export default function CameraScreen({ navigation }) {
   }
 
   function toggleCameraFacing() {
-    setFacing((current) => (current === "back" ? "front" : "back"));
+    setFacing((current) =>
+      current === CameraType.back ? CameraType.front : CameraType.back
+    );
   }
 
   const handleTakePhoto = async () => {
@@ -106,8 +110,8 @@ export default function CameraScreen({ navigation }) {
         style={styles.camera}
         type={facing}
         ref={cameraRef}
-        flash={isLightOn}
-        ratio='4:3'
+        flashMode={isLightOn}
+        ratio="16:9"
       >
         <View style={styles.topContainer}>
           <TouchableOpacity onPress={flashFunction}>

@@ -97,11 +97,11 @@ export default function CreateOrder({ navigation }) {
   });
 
   const sendOrderData = async () => {
-    setIsButtonDisabled(true);
+
     if (!regCarId || !message || !Instruction || !selectedValue) {
       //alert("Fill The required Field");
       setShowAlert(true);
-      setModalVisible(false);
+      // setModalVisible(false);
       return;
     }
 
@@ -110,7 +110,7 @@ export default function CreateOrder({ navigation }) {
       setModalVisible(false);
       return;
     }
-
+    setIsButtonDisabled(true);
     setLoader(true);
     // Define the data object with only the required fields
     const myHeaders = new Headers();

@@ -147,15 +147,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   box: {
-    flex: 0.9,
-    margin: 15,
-    backgroundColor: "darkgray",
-    justifyContent: "center",
-    alignItems: "center",
+    flex: .8,
+    margin: 5,
+
+
   },
   previewContainer: {
     width: "100%",
     height: "100%",
+    resizeMode: 'contain',
 
 
   },

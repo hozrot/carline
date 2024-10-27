@@ -9,6 +9,7 @@ import {
 
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
+import FastImage from 'react-native-fast-image';
 import OrderCard from "../component/OrderCard";
 import BaseUrl from "../auth/BaseUrl";
 import axios from "axios";
@@ -54,10 +55,10 @@ export default function OrderScreen({ navigation }) {
         setIsLoading(false);
         console.log(imageResponse?.data);
 
-        const filteredImages = imageResponse?.data?.filter((image) => image.id === OrderList.id);
-        const imageCount = filteredImages?.length || 0;
-        console.log(imageCount);
-        setLoader(false);
+        // const filteredImages = imageResponse?.data?.filter((image) => image.id === OrderList.id);
+        // const imageCount = filteredImages?.length || 0;
+        // console.log(imageCount);
+        // setLoader(false);
 
 
 
