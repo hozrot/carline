@@ -1,51 +1,37 @@
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  ImageBackground,
-  Alert,
-  ActivityIndicator,
-} from "react-native";
-import React, { useContext, useState, useEffect } from "react";
+import { StyleSheet, Text, TouchableOpacity, View, Image, ScrollView, KeyboardAvoidingView, Platform, ImageBackground, Alert, ActivityIndicator } from 'react-native'
+import React, { useContext, useState, useEffect } from 'react'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import TextInput from "../component/TextInput";
 import Button from "../component/Button";
 import * as ImagePicker from "expo-image-picker";
 
 import {
-  useFonts,
-  DMSans_400Regular,
+  useFonts, DMSans_400Regular,
   DMSans_500Medium,
   DMSans_700Bold,
 } from "@expo-google-fonts/dm-sans";
-import UserContext from "../auth/UserContext";
-import { useGlobalContext } from "../auth/GlobalContext";
-import axios from "axios";
-import BaseUrl from "../auth/BaseUrl";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import UserContext from '../auth/UserContext';
+import { useGlobalContext } from '../auth/GlobalContext';
+
+
+
 
 export default function ProfileDetails({ navigation }) {
-  const { userData, setUserData } = useContext(UserContext);
+
+  const { userData, setUserData } = useContext(UserContext)
   const [image, setImage] = useState(userData?.image);
   const [nameUpdate, setNameUpdate] = useState("");
   const [company_name, setCompanyName] = useState("");
-  const [password, setPassword] = useState("");
-  const [newpassword, setNewPassword] = useState("");
+  const [password, setPassword] = useState('');
+  const [newpassword, setNewPassword] = useState('');
   // State variable to track password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [Loader, setLoader] = useState(false);
 
-  const isButtonActive =
-    nameUpdate.trim() !== "" ||
-    company_name.trim() !== "" ||
-    image != userData?.image ||
-    (password.trim() !== "" && newpassword.trim() !== "");
+  const isButtonActive = (nameUpdate.trim() !== '' || company_name.trim() !== '' 
+                                                   ||  image != userData?.image 
+                                                   ||  (password.trim()!=='' && newpassword.trim()!==''));
 
   // const { isAppReloading, reloadApp } = useGlobalContext();
 
@@ -53,6 +39,8 @@ export default function ProfileDetails({ navigation }) {
   //   // Update global state when the component mounts or when isAppReloading changes
   //   reloadApp();
   // }, [isAppReloading]);
+
+
 
   // useEffect(() => {
   //   const fetchProfileData = async () => {
@@ -82,7 +70,7 @@ export default function ProfileDetails({ navigation }) {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 0.5,
-      allowsMultipleSelection: false,
+      allowsMultipleSelection: false
     });
 
     console.log(result);
@@ -99,14 +87,7 @@ export default function ProfileDetails({ navigation }) {
     DMSans_700Bold,
   });
 
-  console.log(
-    "User Data",
-    userData,
-    "Image is",
-    image,
-    "Type of image",
-    typeof image
-  );
+  console.log("User Data", userData, "Image is", image, "Type of image", typeof image)
 
   // Function to toggle the password visibility state
   const toggleShowPassword = () => {
@@ -116,6 +97,7 @@ export default function ProfileDetails({ navigation }) {
     setShowNewPassword(!showNewPassword);
   };
   const UpdateProfile = () => {
+
     // if (!nameUpdate) {
     //   alert("Enter Updated name");
     //   return;
@@ -145,13 +127,13 @@ export default function ProfileDetails({ navigation }) {
       formdata.append("image", selectedImage || defaultImage);
     }
     setLoader(true);
-    console.log("Form Data", formdata);
+    console.log("Form Data", formdata)
 
     const requestOptions = {
       method: "PUT",
       headers: myHeaders,
       body: formdata,
-      redirect: "follow",
+      redirect: "follow"
     };
 
     fetch("https://app.carline.no/api/auths/update_info/", requestOptions)
@@ -159,107 +141,55 @@ export default function ProfileDetails({ navigation }) {
       .then((result) => console.log(result))
       .then((result) => {
         console.log("Result is", result);
+        setLoader(false);
+       // Alert.alert("Login Again To see the changes", result);
+       // navigation.navigate("Login")
+       navigation.navigate("Login")
        
-        // Alert.alert("Login Again To see the changes", result);
-        // navigation.navigate("Login")
-        //  navigation.navigate("Login")
-        // setUserData({
-        //   ...userData,
-        //   name: nameUpdate || userData?.name,
-        //   company_name: company_name || userData?.company_name,
-        // });
-        getData(userData);
+
+
       })
       .catch((error) => console.error(error));
-  };
 
-  const getData = async (data) => {
-    try {
-      const response = await axios.get(`${BaseUrl}/auths/`, {
-        headers: {
-          Authorization: `Token ${data?.token}`, // Pass the token here
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.status == 200) {
-        const userData = response.data;
-        const mergedObj = { ...data, ...userData[0] };
-        setUserData(mergedObj);
-        AsyncStorage.setItem("AccessToken", JSON.stringify(data));
-        //alert("Updated");
-        setLoader(false);
-      }
-    } catch (err) {
-      alert(err.message); // Catch and display error if any
-      console.log("getData", err);
-    }
-  };
+  }
+
 
   return (
     <View style={styles.containerView}>
+
       <ScrollView style={styles.containerView}>
-        <ImageBackground
-          source={require("../assets/background.png")}
-          resizeMode="stretch"
-        >
+
+        <ImageBackground source={require("../assets/background.png")} resizeMode='stretch' >
           {Loader && (
-            <ActivityIndicator
-              size="large"
-              color={"#fff"}
-              style={styles.loader}
-            />
+            <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
           )}
 
           <View style={styles.topBack}>
-            <ImageBackground
-              source={require("../assets/profileback.png")}
-              resizeMode="stretch"
-            >
-              <View
-                style={{
-                  color: "white",
-                  width: "100%",
-                  height: 172,
-                  justifyContent: "space-between",
-                  flexDirection: "row",
-                  paddingTop: 40,
-                  paddingLeft: 20,
-                  borderRadius: 25,
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Home")}
-                  style={{
-                    flexDirection: "row",
-                    backgroundColor: "transparent",
-                  }}
-                >
-                  <MaterialCommunityIcons
-                    name="arrow-left"
-                    size={24}
-                    color={"#ffffff"}
-                  />
-                  <Text
-                    style={{
-                      color: "#ffffff",
-                      fontFamily: "DMSans_500Medium",
-                      fontSize: 18,
-                    }}
-                  >
-                    {" "}
-                    Back
-                  </Text>
-                </TouchableOpacity>
-                <Text
-                  style={{
+            <ImageBackground source={require("../assets/profileback.png")} resizeMode='stretch' >
+
+              <View style={{
+                color: 'white',
+                width: '100%',
+                height: 172,
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                paddingTop: 40,
+                paddingLeft: 20,
+                borderRadius: 25
+              }}>
+                <TouchableOpacity onPress={() => navigation.navigate("Home")} style={{ flexDirection: 'row', backgroundColor: 'transparent' }}>
+                  <MaterialCommunityIcons name="arrow-left" size={24} color={"#ffffff"} />
+                  <Text style={{
                     color: "#ffffff",
-                    fontFamily: "DMSans_500Medium",
-                    fontSize: 18,
-                  }}
-                >
-                  {" "}
-                </Text>
-                <Text> </Text>
+                    fontFamily: 'DMSans_500Medium', fontSize: 18
+                  }}> Back</Text>
+                </TouchableOpacity>
+                <Text style={{
+                  color: "#ffffff",
+                  fontFamily: 'DMSans_500Medium', fontSize: 18
+                }}> </Text>
+                <Text>       </Text>
+
               </View>
               {/* <Image
               style={{ width: "100%", height: 160 }}
@@ -270,57 +200,30 @@ export default function ProfileDetails({ navigation }) {
           <View style={styles.profileInfo}>
             <TouchableOpacity onPress={pickImage}>
               <Image
-                style={{
-                  width: 120,
-                  height: 120,
-                  borderRadius: 50,
-                  backgroundColor: "gray",
-                }}
-                source={{
-                  uri:
-                    image != null && image !== undefined
-                      ? image?.uri
-                        ? image.uri
-                        : image
-                      : "",
-                }}
+                style={{ width: 120, height: 120, borderRadius: 50, backgroundColor: 'gray' }}
+                source={{ uri: (image != null && image !== undefined) ? image?.uri ? image.uri : image : "" }}
               />
               <View style={styles.profileAdd}>
-                <MaterialCommunityIcons
-                  name="pencil-minus-outline"
-                  size={16}
-                  color={"#000000"}
-                />
+                <MaterialCommunityIcons name="pencil-minus-outline" size={16} color={"#000000"} />
               </View>
+
             </TouchableOpacity>
-            <Text
-              style={{
-                color: "white",
-                fontSize: 20,
-                fontFamily: "DMSans_500Medium",
-              }}
-            >
-              {" "}
-              {userData?.name}
-            </Text>
-            <Text
-              style={{
-                color: "#C0CACB",
-                fontSize: 16,
-                fontFamily: "DMSans_400Regular",
-              }}
-            >
-              {userData?.email}{" "}
-            </Text>
+            <Text style={{ color: 'white', fontSize: 20, fontFamily: 'DMSans_500Medium' }}> {userData?.name}</Text>
+            <Text style={{ color: '#C0CACB', fontSize: 16, fontFamily: 'DMSans_400Regular' }}>{userData?.email}  </Text>
+
           </View>
           <View style={styles.optionList}>
             <KeyboardAvoidingView
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
-              <Text style={styles.InputHead}> Name </Text>
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+
+              <Text style={styles.InputHead}>
+                {" "}
+                Name{" "}
+              </Text>
               <TextInput
                 inputHieght={54}
-                inputAlign={"center"}
+
+                inputAlign={'center'}
                 placeholder={userData?.name}
                 value={nameUpdate}
                 onChangeText={setNameUpdate}
@@ -330,6 +233,7 @@ export default function ProfileDetails({ navigation }) {
                 keyboardAppearance="dark"
                 returnKeyType="next"
                 returnKeyLabel="next"
+
               />
               {/* <Text style={styles.InputHead}>
                 {" "}
@@ -349,10 +253,13 @@ export default function ProfileDetails({ navigation }) {
                 editable={false}
               /> */}
 
-              <Text style={styles.InputHead}> Company </Text>
+              <Text style={styles.InputHead}>
+                {" "}
+                Company{" "}
+              </Text>
               <TextInput
                 inputHieght={54}
-                inputAlign={"center"}
+                inputAlign={'center'}
                 // value={userData?.company_name}
                 placeholder={userData?.company_name}
                 value={company_name}
@@ -364,12 +271,15 @@ export default function ProfileDetails({ navigation }) {
                 returnKeyType="next"
                 returnKeyLabel="next"
               />
-              <Text style={styles.InputHead}> Old Password </Text>
+              <Text style={styles.InputHead}>
+                {" "}
+               Old Password{" "}
+              </Text>
               <TextInput
                 inputHieght={54}
-                inputAlign={"center"}
+                inputAlign={'center'}
                 onPress={toggleShowPassword}
-                icon={showPassword ? "eye-off" : "eye"}
+                icon={showPassword ? 'eye-off' : 'eye'}
                 placeholder="*******"
                 autoCapitalize="none"
                 autoCompleteType="password"
@@ -381,12 +291,15 @@ export default function ProfileDetails({ navigation }) {
                 value={password}
                 onChangeText={setPassword}
               />
-              <Text style={styles.InputHead}> New Password </Text>
+               <Text style={styles.InputHead}>
+                {" "}
+               New Password{" "}
+              </Text>
               <TextInput
                 inputHieght={54}
-                inputAlign={"center"}
+                inputAlign={'center'}
                 onPress={toggleShowNewPassword}
-                icon={showNewPassword ? "eye-off" : "eye"}
+                icon={showNewPassword ? 'eye-off' : 'eye'}
                 placeholder="*******"
                 autoCapitalize="none"
                 autoCompleteType="password"
@@ -398,31 +311,33 @@ export default function ProfileDetails({ navigation }) {
                 value={newpassword}
                 onChangeText={setNewPassword}
               />
+
+
             </KeyboardAvoidingView>
           </View>
           <View style={styles.Bottom}>
-            {isButtonActive && (
-              <Button
-                label="Save"
-                // onPress={() => navigation.navigate("Home")}
+            {isButtonActive  && <Button label="Save"
+              // onPress={() => navigation.navigate("Home")} 
 
-                onPress={() => UpdateProfile()}
-              />
-            )}
+              onPress={() => UpdateProfile()}
+
+            />}
           </View>
+
         </ImageBackground>
+
       </ScrollView>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   containerView: {
     flex: 1,
-    backgroundColor: "#020202",
+    backgroundColor: '#020202'
   },
   topBack: {
-    flex: 0.1,
+    flex: .10,
   },
   loader: {
     position: "absolute",
@@ -431,46 +346,51 @@ const styles = StyleSheet.create({
     left: "50%",
   },
   profileAdd: {
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
     bottom: 10,
     right: 0,
     height: 25,
     width: 25,
-    backgroundColor: "white",
-    borderRadius: 25,
+    backgroundColor: 'white',
+    borderRadius: 25
+
+
+
   },
   InputHead: {
     fontSize: 16,
-    fontFamily: "DMSans_500Medium",
+    fontFamily: 'DMSans_500Medium',
     paddingTop: 10,
 
     color: "#ffffff",
-    paddingBottom: 5,
+    paddingBottom: 5
   },
 
   profileInfo: {
-    flex: 0.2,
-    alignContent: "center",
-    alignItems: "center",
-    margin: -60,
+    flex: .20,
+    alignContent: 'center',
+    alignItems: 'center',
+    margin: -60
   },
   optionList: {
-    flex: 0.6,
+    flex: .60,
     padding: 10,
     marginTop: 60,
-    justifyContent: "center",
+    justifyContent: 'center'
   },
 
   CardText: {
     color: "#ffffff",
     fontStyle: "italic",
-    fontSize: 14,
+    fontSize: 14
+
   },
   Bottom: {
     flex: 0.2,
     width: "100%",
     padding: 15,
+
   },
-});
+})

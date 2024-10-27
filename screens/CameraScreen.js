@@ -67,7 +67,7 @@ export default function CameraScreen({ navigation }) {
   const savePhoto = async () => {
     if (photo) {
       try {
-        setSelectedImage([...SelectedImage, photo]);
+        setSelectedImage([photo, ...SelectedImage]);
         await MediaLibrary.createAssetAsync(photo.uri);
         //alert("Saved Successfully!");
         setPhoto(null);

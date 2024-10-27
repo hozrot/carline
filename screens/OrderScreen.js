@@ -9,7 +9,7 @@ import {
 
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import FastImage from 'react-native-fast-image';
+//import FastImage from 'react-native-fast-image';
 import OrderCard from "../component/OrderCard";
 import BaseUrl from "../auth/BaseUrl";
 import axios from "axios";
@@ -53,13 +53,7 @@ export default function OrderScreen({ navigation }) {
         });
         setOrderImage(imageResponse?.data);
         setIsLoading(false);
-        console.log(imageResponse?.data);
-
-        // const filteredImages = imageResponse?.data?.filter((image) => image.id === OrderList.id);
-        // const imageCount = filteredImages?.length || 0;
-        // console.log(imageCount);
-        // setLoader(false);
-
+        //console.log(imageResponse?.data);
 
 
       } catch (err) {
@@ -143,7 +137,7 @@ export default function OrderScreen({ navigation }) {
                       navigation.navigate("OrderDetails");
                   }}
                   image={OrderImage}
-                  orderId={item.job_name}
+                  orderId={item.id}
                   // orderStatus={item.status}
                   //.charAt(0).toUpperCase() + item.status.slice(1).replace("_", " ")}
                   orderStatus={

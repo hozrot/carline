@@ -12,7 +12,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import UserContext from "../auth/UserContext";
 import BaseUrl from "../auth/BaseUrl";
 import axios from "axios";
-import FastImage from 'react-native-fast-image';
+//import FastImage from 'react-native-fast-image';
 
 export default function OrderCard({
   image,
@@ -49,47 +49,48 @@ export default function OrderCard({
   const { userData } = useContext(UserContext);
   const [Img, setImg] = useState("");
 
-  useEffect(() => {
-    let config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: `${BaseUrl}/order-upload/${orderId}/files/`,
-      headers: {
-        "Authorization": `Token ${userData?.token}`, // Pass the token here
-        // 'Cookie': 'csrftoken=NJChvjOxebFsuddDFi8waFmFFeWWLsBm; sessionid=pewl7aqbu7dwierg2uy7yipixdz05r7s'
-      }
-    };
-    {
-      orderId &&
-        axios.request(config)
-          .then((response) => {
-            setImg(response.data);
-          })
-          .catch((error) => {
-            console.log('backgrounds', error);
-          });
-    }
-  }, [orderId])
-
-
   // useEffect(() => {
+  //   let config = {
+  //     method: 'get',
+  //     maxBodyLength: Infinity,
+  //     url: `${BaseUrl}/order-upload/${orderId}/files/`,
+  //     headers: {
+  //       "Authorization": `Token ${userData?.token}`, // Pass the token here
+  //       // 'Cookie': 'csrftoken=NJChvjOxebFsuddDFi8waFmFFeWWLsBm; sessionid=pewl7aqbu7dwierg2uy7yipixdz05r7s'
+  //     }
+  //   };
   //   {
   //     orderId &&
-  //       axios
-  //         .get(`${BaseUrl}/order-upload/${orderId}/files/`, {
-  //           headers: {
-  //             Authorization: `token ${userData?.token}`, // Pass the token here
-  //             "Content-Type": "application/json",
-  //           },
-  //         })
+  //       axios.request(config)
   //         .then((response) => {
-  //           setImg(response.data[0]);
+  //           setImg(response.data);
+  //           console.log(response.data);
   //         })
   //         .catch((error) => {
-  //           console.log(error);
+  //           console.log('backgrounds', error);
   //         });
   //   }
-  // }, [orderId]);
+  // }, [orderId])
+
+
+  useEffect(() => {
+    {
+      orderId &&
+        axios
+          .get(`${BaseUrl}/order-upload/${orderId}/files/`, {
+            headers: {
+              Authorization: `token ${userData?.token}`, // Pass the token here
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => {
+            setImg(response.data[0]);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    }
+  }, [orderId]);
 
   return (
     <View style={styles.OrderCard}>
@@ -110,7 +111,7 @@ export default function OrderCard({
             }}
           >
 
-            # {orderId}
+             {orderId}
           </Text>
         </View>
         <View style={{ flex: 0.5, flexDirection: "row", justifyContent: "space-between", paddingRight: 8 }}>
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
     width: 119,
     height: 124,
     borderRadius: 22,
-    resizeMode: 'contain'
+   
   },
 
   OrderCardImage: {

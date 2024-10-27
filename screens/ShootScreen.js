@@ -22,8 +22,9 @@ export default function ShootScreen({ navigation }) {
 
   const takeImageHandler = async () => {
     const cameraphoto = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsMultipleSelection: true,
+     // mediaTypes: ImagePicker.MediaTypeOptions.All,
+     mediaTypes: ImagePicker.MediaTypeOptions.Images, 
+     allowsMultipleSelection: true,
       allowsEditing: true,
     });
     if (!cameraphoto.canceled) {

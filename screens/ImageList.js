@@ -93,7 +93,7 @@ export default function ImageList({ navigation }) {
 
         <View style={styles.Bottom}>
           <FlatList
-            data={uniqueImages}
+            data={uniqueImages.reverse()}
           // data={uniqueImages.sort(( a , b ) => b.id - a.id)}
             renderItem={({ item }) => (
               <TouchableOpacity

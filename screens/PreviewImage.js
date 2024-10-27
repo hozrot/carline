@@ -77,7 +77,7 @@ export default function PreviewImage({
           </Text>
         </View>
         <View style={styles.box}>
-          <Image style={styles.previewContainer} source={{ uri: photo.uri }} />
+          <Image style={styles.previewContainer} resizeMode="contain" width={300} source={{ uri: photo.uri }} />
         </View>
 
         <View style={styles.Bottom}>
@@ -147,15 +147,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   box: {
-    flex: .8,
-    margin: 5,
-
-
+    flex: 0.9,
+    margin: 15,
+    backgroundColor: "darkgray",
+    justifyContent: "center",
+    alignItems: "center",
+    
   },
   previewContainer: {
     width: "100%",
     height: "100%",
-    resizeMode: 'contain',
 
 
   },

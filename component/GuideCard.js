@@ -72,7 +72,7 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
       </View>
       <View style={styles.OrderCardDetails}>
         <View>
-          <Text style={styles.CardHead}>  # {guideId} </Text>
+          <Text style={styles.CardHead}> {guideId} </Text>
         </View>
 
 

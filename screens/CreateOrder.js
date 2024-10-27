@@ -8,9 +8,8 @@ import {
   ImageBackground,
   Linking,
   Alert,
-  ActivityIndicator,
 } from "react-native";
-import React, { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import Button from "../component/Button";
 import TextInput from "../component/TextInput";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -20,9 +19,7 @@ import UserContext from "../auth/UserContext";
 import PickerSelect from "react-native-picker-select";
 import BaseUrl from "../auth/BaseUrl";
 import ModalAlert from "../component/ModalAlert";
-
-
-
+import UploadingScreen from "./UploadingScreen";
 
 export default function CreateOrder({ navigation }) {
   const {
@@ -34,14 +31,18 @@ export default function CreateOrder({ navigation }) {
   } = useContext(UserContext);
   const [selectedTime, setselectedTime] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(null);
+  const [selectedValue, setSelectedValue] = useState("");
   const [regCarId, setRegCarId] = useState("");
   const [message, setMessage] = useState("");
   const [Loader, setLoader] = useState(false);
-
+  const [progress, setProgress] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  const isButtonActive = (regCarId.trim() !== '' && message.trim() !== '' 
+                                                  && Instruction 
+                                                &&  selectedValue.trim()!=='');
 
   const handleButtonClick = () => {
     setIsButtonDisabled(true);
@@ -56,12 +57,10 @@ export default function CreateOrder({ navigation }) {
     // ... more options
   ];
 
-
   const [currentTime, setCurrentTime] = useState(new Date());
   const formattedTime = currentTime.toISOString();
 
   //const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-
 
   // useEffect(() => {
   //   const intervalId = setInterval(() => {
@@ -73,7 +72,6 @@ export default function CreateOrder({ navigation }) {
 
   //   return () => clearInterval(intervalId);
   // }, []);
-
 
   const pickerSelectStyle = StyleSheet.create({
     inputIOS: {
@@ -97,11 +95,12 @@ export default function CreateOrder({ navigation }) {
   });
 
   const sendOrderData = async () => {
-
+    setIsButtonDisabled(true);
+    console.log("sendorder 1");
     if (!regCarId || !message || !Instruction || !selectedValue) {
       //alert("Fill The required Field");
       setShowAlert(true);
-      // setModalVisible(false);
+      setModalVisible(false);
       return;
     }
 
@@ -110,7 +109,7 @@ export default function CreateOrder({ navigation }) {
       setModalVisible(false);
       return;
     }
-    setIsButtonDisabled(true);
+
     setLoader(true);
     // Define the data object with only the required fields
     const myHeaders = new Headers();
@@ -132,7 +131,7 @@ export default function CreateOrder({ navigation }) {
       body: formdata,
       redirect: "follow",
     };
-
+    setProgress(5);
     fetch(`${BaseUrl}/orders/`, requestOptions)
       .then((response) => {
         if (response.ok) {
@@ -144,18 +143,21 @@ export default function CreateOrder({ navigation }) {
       .then((result) => {
         console.log("orderssss", result);
         setModalVisible(false);
-
+        setProgress(50);
         setRegCarId("");
         setMessage("");
         setInstruction("");
 
-
         if (SelectedOrderImage?.length > 0) {
           const convert = JSON.parse(result);
+          setProgress(80);
           uploadImages(convert.id);
         } else {
-          navigation.navigate("UploadingScreen");
-          setLoader(false);
+          setProgress(100);
+          setTimeout(() => {
+            navigation.navigate("SuccessScreen");
+            setLoader(false);
+          }, 2000);
         }
       })
       .catch((error) => Alert.alert("Create Order Failed", error.message));
@@ -191,7 +193,11 @@ export default function CreateOrder({ navigation }) {
           })
           .then((result) => {
             setLoader(false);
-            navigation.navigate("UploadingScreen");
+            setProgress(100);
+            setTimeout(() => {
+              navigation.navigate("SuccessScreen");
+            }, 2000);
+
             setSelectedOrderImage([]);
           })
           .catch((error) => {
@@ -207,9 +213,9 @@ export default function CreateOrder({ navigation }) {
 
   return (
     <ScrollView style={styles.containerView}>
-      {Loader && (
+      {/* {Loader && (
         <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
-      )}
+      )} */}
 
       <ModalAlert modalAlertText={"tetstt"} />
       <ImageBackground
@@ -245,7 +251,7 @@ export default function CreateOrder({ navigation }) {
             </Text>
             <Text> </Text>
           </TouchableOpacity>
-          <Text style={styles.AllText}> Create a new order   </Text>
+          <Text style={styles.AllText}> Create a new order </Text>
           <Text
             style={{
               padding: 5,
@@ -277,6 +283,7 @@ export default function CreateOrder({ navigation }) {
             returnKeyLabel="next"
             inputHieght={54}
             paddingTop={12}
+            value={regCarId}
             onChangeText={setRegCarId}
           />
           <Text
@@ -299,6 +306,7 @@ export default function CreateOrder({ navigation }) {
             returnKeyLabel="next"
             inputHieght={78}
             linenumber={2}
+            value={message}
             onChangeText={setMessage}
           />
 
@@ -328,14 +336,21 @@ export default function CreateOrder({ navigation }) {
                   <Text style={styles.InstructionText}>
                     instruction id : {Instruction.id}{" "}
                   </Text>
-                  <Text style={styles.InstructionText}>BG : {Instruction.background ? "Yes" : "No"} </Text>
                   <Text style={styles.InstructionText}>
-                    Floor :  {Instruction.floor ? "Yes" : "No"}
+                    BG : {Instruction.background ? "Yes" : "No"}{" "}
+                  </Text>
+                  <Text style={styles.InstructionText}>
+                    Floor : {Instruction.floor ? "Yes" : "No"}
                   </Text>
 
-                  <Text style={styles.InstructionText}>Logo : {Instruction.logo_placement ? "Yes" : "No"} </Text>
                   <Text style={styles.InstructionText}>
-                    Licence Plate :  {Instruction.license_plate === "addLicensePlate" ? "Yes" : "No"}
+                    Logo : {Instruction.logo_placement ? "Yes" : "No"}{" "}
+                  </Text>
+                  <Text style={styles.InstructionText}>
+                    Licence Plate :{" "}
+                    {Instruction.license_plate === "addLicensePlate"
+                      ? "Yes"
+                      : "No"}
                   </Text>
                 </>
               ) : (
@@ -385,14 +400,16 @@ export default function CreateOrder({ navigation }) {
           </ImageBackground>
         </View>
 
+        {isButtonActive && 
         <View style={styles.SubmitView}>
+          
           <Button
             label="Next"
             onPress={() => setModalVisible(!modalVisible)}
-          // onPress={handlePresentModalPress}
-          // onPress={() => sendOrderData(true)}
+            // onPress={handlePresentModalPress}
+            // onPress={() => sendOrderData(true)}
           />
-        </View>
+        </View>}
         <Modal
           animationType="slide"
           transparent={true}
@@ -416,7 +433,11 @@ export default function CreateOrder({ navigation }) {
                     backgroundColor: "#FF4A22",
                   }}
                 ></View>
-                <Button label="Send Order" disabled={isButtonDisabled} onPress={() => sendOrderData()} />
+                <Button
+                  label="Send Order"
+                  disabled={isButtonDisabled}
+                  onPress={() => sendOrderData()}
+                />
 
                 <TouchableOpacity
                   style={{
@@ -473,6 +494,20 @@ export default function CreateOrder({ navigation }) {
           </View>
         </Modal>
       </ImageBackground>
+      {!modalVisible && progress > 0 && (
+        <View
+          style={{
+            flex: 1,
+            position: "absolute",
+            top: 0,
+            right: 0,
+            left: 0,
+            bottom: 0,
+          }}
+        >
+          <UploadingScreen value={progress} />
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -523,9 +558,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: "DMSans_500Medium",
   },
-  InputBlock: {
-    justifyContent: "flex-start",
-  },
   centeredView: {
     flex: 1,
     justifyContent: "flex-end",
@@ -556,17 +588,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     borderTopColor: "red",
   },
-  modalBottom: {},
 
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-  },
   loader: {
     position: "absolute",
     zIndex: 2,
