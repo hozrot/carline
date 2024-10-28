@@ -111,7 +111,7 @@ export default function OrderCard({
             }}
           >
 
-             {orderId}
+            {orderId}
           </Text>
         </View>
         <View style={{ flex: 0.5, flexDirection: "row", justifyContent: "space-between", paddingRight: 8 }}>
@@ -153,8 +153,9 @@ export default function OrderCard({
               borderWidth: 1,
               borderColor: "gray",
               borderRadius: 15,
-              width: 80,
+              width: 90,
               height: 30,
+              padding: 5,
               alignContent: "center",
               alignItems: "center",
               justifyContent: "center",
@@ -164,14 +165,14 @@ export default function OrderCard({
             <Text
               style={{
                 color: "#ffffff",
-                fontSize: 14,
+                fontSize: 12,
                 fontFamily: "DMSans_400Regular",
               }}
             >
-              Option{" "}
+              View Order{" "}
               <MaterialCommunityIcons
                 name="ship-wheel"
-                size={14}
+                size={12}
                 color={"#ffffff"}
               />
             </Text>
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
     width: 119,
     height: 124,
     borderRadius: 22,
-   
+
   },
 
   OrderCardImage: {

@@ -32,7 +32,7 @@ export default function NotificationScreen({ navigation }) {
 
                 </View>
                 <ImageBackground source={require("../assets/notification1.png")} resizeMode='stretch' style={styles.FullBlock} borderRadius={15}>
-                    <View  >
+                    <TouchableOpacity  >
                         <View style={styles.SwitchBlock}>
                             <Text style={styles.CardText}>Notification  </Text>
 
@@ -42,11 +42,11 @@ export default function NotificationScreen({ navigation }) {
                         <View style={styles.InnerBlock}>
                             <Text style={styles.InnerText}>We Collect Information that helps us enhance your experience</Text>
                         </View>
-                    </View>
+                    </TouchableOpacity>
 
                 </ImageBackground>
                 <ImageBackground source={require("../assets/notification2.png")} resizeMode='stretch' style={styles.FullBlock} borderRadius={15}>
-                    <View  >
+                    <TouchableOpacity  >
                         <View style={styles.SwitchBlock}>
                             <Text style={styles.CardText}>Notification  </Text>
 
@@ -56,11 +56,11 @@ export default function NotificationScreen({ navigation }) {
                         <View style={styles.InnerBlock}>
                             <Text style={styles.InnerText}>We Collect Information that helps us enhance your experience</Text>
                         </View>
-                    </View>
+                    </TouchableOpacity>
 
                 </ImageBackground>
                 <ImageBackground source={require("../assets/cardback.png")} resizeMode='stretch' style={styles.FullBlock} borderRadius={15}>
-                    <View  >
+                    <TouchableOpacity  >
                         <View style={styles.SwitchBlock}>
                             <Text style={styles.CardText}>Notification  </Text>
 
@@ -70,11 +70,11 @@ export default function NotificationScreen({ navigation }) {
                         <View style={styles.InnerBlock}>
                             <Text style={styles.InnerText}>We Collect Information that helps us enhance your experience</Text>
                         </View>
-                    </View>
+                    </TouchableOpacity>
 
                 </ImageBackground>
                 <ImageBackground source={require("../assets/cardback.png")} resizeMode='stretch' style={styles.FullBlock} borderRadius={15}>
-                    <View  >
+                    <TouchableOpacity  >
                         <View style={styles.SwitchBlock}>
                             <Text style={styles.CardText}>Notification  </Text>
 
@@ -84,11 +84,11 @@ export default function NotificationScreen({ navigation }) {
                         <View style={styles.InnerBlock}>
                             <Text style={styles.InnerText}>We Collect Information that helps us enhance your experience</Text>
                         </View>
-                    </View>
+                    </TouchableOpacity>
 
                 </ImageBackground>
                 <ImageBackground source={require("../assets/cardback.png")} resizeMode='stretch' style={styles.FullBlock} borderRadius={15}>
-                    <View  >
+                    <TouchableOpacity  >
                         <View style={styles.SwitchBlock}>
                             <Text style={styles.CardText}>Notification  </Text>
 
@@ -98,7 +98,7 @@ export default function NotificationScreen({ navigation }) {
                         <View style={styles.InnerBlock}>
                             <Text style={styles.InnerText}>We Collect Information that helps us enhance your experience</Text>
                         </View>
-                    </View>
+                    </TouchableOpacity>
 
                 </ImageBackground>
             </ImageBackground>

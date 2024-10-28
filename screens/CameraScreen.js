@@ -1,5 +1,5 @@
 import { Camera, CameraType, FlashMode } from "expo-camera/legacy";
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import {
   Button,
   StyleSheet,
@@ -20,7 +20,12 @@ export default function CameraScreen({ navigation }) {
   const [facing, setFacing] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [photo, setPhoto] = useState(null);
+  const [showGrid, setShowGrid] = useState(false);
+  const gridFunction = () => {
+    setShowGrid(!showGrid);
 
+
+  };
   const cameraRef = useRef(null);
   const [isTorchOn, setIsTorchOn] = useState(false);
   const [isLightOn, setLightOn] = useState(FlashMode.off);
@@ -46,6 +51,14 @@ export default function CameraScreen({ navigation }) {
     );
   }
 
+  // useEffect(() => {
+  //   (async () => {
+  //     const { status } = await Camera.requestCameraPermissionsAsync();
+  //     setHasPermission(status === 'granted');
+  //   })();
+  // }, []);
+
+
   function toggleCameraFacing() {
     setFacing((current) =>
       current === CameraType.back ? CameraType.front : CameraType.back
@@ -56,6 +69,7 @@ export default function CameraScreen({ navigation }) {
     if (cameraRef.current) {
       const options = {
         quality: 1,
+        aspect: [4, 3],
         // base64: true,
         exif: false,
       };
@@ -111,12 +125,41 @@ export default function CameraScreen({ navigation }) {
         type={facing}
         ref={cameraRef}
         flashMode={isLightOn}
-        ratio="16:9"
+        ratio="4:3"
       >
+        {showGrid && (
+          <View style={styles.gridOverlay}>
+            {/* Horizontal lines */}
+            <View style={[styles.gridLine, { top: '10%' }]} />
+            <View style={[styles.gridLine, { top: '20%' }]} />
+            <View style={[styles.gridLine, { top: '30%' }]} />
+            <View style={[styles.gridLine, { top: '40%' }]} />
+            <View style={[styles.gridLine, { top: '50%' }]} />
+            <View style={[styles.gridLine, { top: '60%' }]} />
+            <View style={[styles.gridLine, { top: '70%' }]} />
+            <View style={[styles.gridLine, { top: '80%' }]} />
+            <View style={[styles.gridLine, { top: '90%' }]} />
+            <View style={[styles.gridLine, { top: '100%' }]} />
+            {/* Vertical lines */}
+            <View style={[styles.gridLineVertical, { transform: [{ rotate: '90deg' }] }]} />
+            <View style={[styles.gridLineVertical, { left: '20%' }]} />
+            <View style={[styles.gridLineVertical, { left: '40%' }]} />
+            <View style={[styles.gridLineVertical, { left: '60%' }]} />
+            <View style={[styles.gridLineVertical, { left: '80%' }]} />
+          </View>
+        )}
+
         <View style={styles.topContainer}>
           <TouchableOpacity onPress={flashFunction}>
             <MaterialCommunityIcons
               name={isTorchOn ? "flash-outline" : "flash-off"}
+              size={24}
+              color={"white"}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={gridFunction}>
+            <MaterialCommunityIcons
+              name={showGrid ? "grid" : "grid-off"}
               size={24}
               color={"white"}
             />
@@ -174,11 +217,7 @@ export default function CameraScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-  },
-  message: {
-    textAlign: "center",
-    paddingBottom: 10,
+
   },
   camera: {
     flex: 1,
@@ -215,5 +254,27 @@ const styles = StyleSheet.create({
     padding: 5,
     color: "#ffffff",
     paddingBottom: 10,
+  },
+  gridOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flexDirection: 'column',
+  },
+  gridLine: {
+    position: 'absolute',
+    width: '100%',
+    height: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)', // Adjust opacity as needed
+  },
+
+  gridLineVertical: {
+    position: 'absolute',
+    width: 1,
+    height: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+
   },
 });

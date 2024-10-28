@@ -94,7 +94,7 @@ export default function ImageList({ navigation }) {
         <View style={styles.Bottom}>
           <FlatList
             data={uniqueImages.reverse()}
-          // data={uniqueImages.sort(( a , b ) => b.id - a.id)}
+            // data={uniqueImages.sort(( a , b ) => b.id - a.id)}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => toggleImageSelection(item)} // Toggle selection on press
@@ -111,6 +111,7 @@ export default function ImageList({ navigation }) {
                     padding: 10,
                   }}
                   source={{ uri: item.uri }}
+
                 />
                 {isSelected(item.uri) && ( // Show check icon if selected
                   <View style={styles.checkIconContainer}>
