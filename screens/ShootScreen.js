@@ -22,9 +22,9 @@ export default function ShootScreen({ navigation }) {
 
   const takeImageHandler = async () => {
     const cameraphoto = await ImagePicker.launchCameraAsync({
-     // mediaTypes: ImagePicker.MediaTypeOptions.All,
-     mediaTypes: ImagePicker.MediaTypeOptions.Images, 
-     allowsMultipleSelection: true,
+      // mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: true,
       allowsEditing: true,
     });
     if (!cameraphoto.canceled) {
@@ -90,7 +90,7 @@ export default function ShootScreen({ navigation }) {
                 </Text>
               </View>
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => navigation.navigate("NotificationScreen")}
               style={{
                 backgroundColor: "#653024",
@@ -107,7 +107,7 @@ export default function ShootScreen({ navigation }) {
                 size={18}
                 color={"#ffffff"}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <View style={styles.bodyContent}>
             <TouchableOpacity

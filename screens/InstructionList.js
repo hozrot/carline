@@ -128,17 +128,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     backgroundColor: "#020202",
+    marginBottom: 10
   },
 
   topBar: {
-    flex: 0.07,
+    flex: 0.05,
     flexDirection: "row",
-    margin: 10,
+    margin: 8,
     justifyContent: "space-between",
-    paddingTop: 30,
+    paddingTop: 20,
   },
   bodyContent: {
-    flex: 0.9,
+    flex: 0.8,
   },
   GuideCard: {
     margin: 10,
@@ -160,7 +161,6 @@ const styles = StyleSheet.create({
   OrderCardDetails: {
     flex: 0.6,
     paddingRight: 10,
-
     paddingTop: 8,
   },
   loader: {

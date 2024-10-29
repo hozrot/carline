@@ -127,9 +127,9 @@ export default function OrderScreen({ navigation }) {
             //  data={orderDetails}
             renderItem={({ item }) => (
               <TouchableOpacity
-                onPress={() => {
-                  setOrder(item), navigation.navigate("OrderDetails");
-                }}
+              // onPress={() => {
+              //   setOrder(item), navigation.navigate("OrderDetails");
+              // }}
               >
                 <OrderCard
                   onDetails={() => {

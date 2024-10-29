@@ -85,6 +85,8 @@ export default function OrderCard({
           })
           .then((response) => {
             setImg(response.data[0]);
+            console.log(response.data);
+
           })
           .catch((error) => {
             console.log(error);

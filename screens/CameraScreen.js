@@ -35,6 +35,15 @@ export default function CameraScreen({ navigation }) {
       flashMode === FlashMode.off ? FlashMode.on : FlashMode.off
     );
   };
+  const [zoom, setZoom] = React.useState(0);
+
+  const handleZoomIn = () => {
+    setZoom(Math.min(zoom + 0.1, 1));
+  };
+
+  const handleZoomOut = () => {
+    setZoom(Math.max(zoom - 0.1, 0));
+  };
 
   if (!permission) {
     return <View />;
@@ -124,6 +133,7 @@ export default function CameraScreen({ navigation }) {
         style={styles.camera}
         type={facing}
         ref={cameraRef}
+        zoom={zoom}
         flashMode={isLightOn}
         ratio="4:3"
       >
@@ -175,6 +185,24 @@ export default function CameraScreen({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleZoomIn}>
+            <MaterialCommunityIcons
+              name={"plus-circle"}
+              size={30}
+              color={"white"}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleZoomOut}>
+            <MaterialCommunityIcons
+              name={"minus-circle"}
+              size={30}
+              color={"white"}
+            />
+          </TouchableOpacity>
+
+
+        </View>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={pickImage}>
             <Image
               style={{
@@ -217,13 +245,12 @@ export default function CameraScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
   },
   camera: {
     flex: 1,
   },
   topContainer: {
-    flex: 0.1,
+    flex: 0.2,
     flexDirection: "row",
     backgroundColor: "transparent",
     justifyContent: "space-between",
