@@ -13,7 +13,7 @@ import { StackActions } from '@react-navigation/native';
 
 
 export default function ProfileScreen({ navigation }) {
-  const { userData } = useContext(UserContext)
+  const { userData, setUserData } = useContext(UserContext)
 
   const image = require("../assets/logo-blue.png");
   const image2 = require("../assets/bottomtab.png");
@@ -28,8 +28,9 @@ export default function ProfileScreen({ navigation }) {
       //await AsyncStorage.removeItem('authToken'); // Replace 'authToken' with your token key
       // Clear any other local state
       // Navigate to login screen or landing page
-
-      await AsyncStorage.removeItem('AccessToken');
+      setUserData({}); // Set user data to an empty object on logout
+      await AsyncStorage.removeItem('AccessToken'); 
+     
       navigation.dispatch(StackActions.popToTop());
       navigation.navigate('Login');
 

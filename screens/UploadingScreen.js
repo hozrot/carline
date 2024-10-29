@@ -25,7 +25,7 @@ export default function UploadingScreen({ route, navigation, value }) {
           }}
           activeStrokeSecondaryColor="#A52306"
           inActiveStrokeColor="black"
-          duration={1800}
+          duration={1000}
           dashedStrokeConfig={{
             count: 50,
             width: 8,

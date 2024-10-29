@@ -159,6 +159,7 @@ export default function ProfileDetails({ navigation }) {
       .then((result) => console.log(result))
       .then((result) => {
         console.log("Result is", result);
+        navigation.navigate("Home")
        
         // Alert.alert("Login Again To see the changes", result);
         // navigation.navigate("Login")

@@ -150,12 +150,12 @@ export default function CreateOrder({ navigation }) {
 
         if (SelectedOrderImage?.length > 0) {
           const convert = JSON.parse(result);
-          setProgress(80);
+          setProgress(50);
           uploadImages(convert.id);
         } else {
           setProgress(100);
           setTimeout(() => {
-            navigation.navigate("SuccessScreen");
+           // navigation.navigate("SuccessScreen");
             setLoader(false);
           }, 2000);
         }
@@ -217,7 +217,7 @@ export default function CreateOrder({ navigation }) {
         <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
       )} */}
 
-      <ModalAlert modalAlertText={"tetstt"} />
+     
       <ImageBackground
         source={require("../assets/background.png")}
         resizeMode="stretch"

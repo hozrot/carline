@@ -66,7 +66,8 @@ export default function CarLine({ navigation }) {
         <TouchableOpacity
           style={styles.blockContent}
           disabled={loader}
-          onPress={() => navigation.navigate(userData ? "Home" : "Login")}
+         // onPress={() => navigation.navigate(userData ? "Home" : "Login")}
+          onPress={() => navigation.navigate("Login")}
         >
           {/* <ImageBackground source={require("../assets/cardback.png")} imageStyle={{ borderRadius: 25 }} style={styles.imageBack} > */}
           <View style={{ padding: 5 }}>

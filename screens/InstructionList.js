@@ -107,7 +107,7 @@ export default function InstructionList({ navigation }) {
 
                 BgId={item.background}
                 guideId={item.instruction_name}
-                BGCheck={item.background}
+                //BGCheck={item.background}
                 NPCheck={item.license_plate}
                 FloorCheck={item.floor}
                 LogoCheck={item.logo}

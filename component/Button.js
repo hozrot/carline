@@ -1,5 +1,5 @@
-import React from "react";
-import { TouchableOpacity, Text, StyleSheet, ImageBackground, View } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import { TouchableOpacity, Text, StyleSheet, ImageBackground, View, Vibration } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { RNSVGSvgAndroid } from "react-native-svg";
 
@@ -15,6 +15,17 @@ export default function Button({ label, onPress, backgroundColor, disabled }) {
     DMSans_500Medium,
     DMSans_700Bold,
   });
+
+  const [isPressed, setIsPressed] = useState(false);
+
+  const handlePressIn = () => {
+    setIsPressed(true);
+    Vibration.vibrate(100); // Vibrate on press
+  };
+
+  const handlePressOut = () => {
+    setIsPressed(false);
+  };
   return (
 
     <ImageBackground
@@ -33,8 +44,15 @@ export default function Button({ label, onPress, backgroundColor, disabled }) {
     // locations={[.1,.5,.9]}
 
     >
-      <TouchableOpacity style={styles.containerView} activeOpacity={0.7}
-        onPress={onPress} disabled={disabled} >
+      <TouchableOpacity  activeOpacity={0.1}
+        onPress={onPress} disabled={disabled} 
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        style={[styles.containerView, {
+          opacity: isPressed ? 0.7 : 1,
+          backgroundColor: isPressed ? 'lightgray' : 'transparent',
+          elevation: isPressed ? 5 : 0,
+        }]}>
 
 
 
@@ -55,9 +73,13 @@ export default function Button({ label, onPress, backgroundColor, disabled }) {
 }
 const styles = StyleSheet.create({
   containerView: {
-    margin: 10,
+  
     alignContent: 'center',
     alignItems: 'center',
+    height:'100%',
+    width:'100%',
+    justifyContent:'center'
+
 
 
 
