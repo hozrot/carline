@@ -67,6 +67,7 @@ export default function LoginScreen({ navigation }) {
       })
       .catch((error) => {
         alert("Wrong Email And Password");
+        setLoader(false);
       });
   };
 
@@ -196,11 +197,11 @@ export default function LoginScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-        {/* <View style={styles.Bottom}>
-          <TouchableOpacity onPress={handelLogin}>
-            <Text style={styles.RegularText}> Forget Password? </Text>
+        <View style={styles.Bottom}>
+          <TouchableOpacity onPress={() => navigation.navigate("ResetPassword")}>
+            <Text style={styles.RegularText}> Reset Password? </Text>
           </TouchableOpacity>
-        </View> */}
+        </View>
       </ImageBackground>
     </ScrollView>
   );

@@ -40,6 +40,7 @@ import { UserProvider } from './auth/UserContext';
 import InstructionList from './screens/InstructionList';
 import InstructionEdit from './screens/InstructionEdit';
 import OrderDetails from './screens/OrderDetails';
+import ResetPassword from './screens/ResetPassword';
 SplashScreen.preventAutoHideAsync();
 
 const Tab = createMaterialBottomTabNavigator();
@@ -98,6 +99,7 @@ export default function App() {
           <Stack.Screen name="InstructionList" component={InstructionList} options={{ header: () => null }} />
           <Stack.Screen name="InstructionEdit" component={InstructionEdit} options={{ header: () => null }} />
           <Stack.Screen name="OrderDetails" component={OrderDetails} options={{ header: () => null }} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ header: () => null }} />
 
 
         </Stack.Navigator>
