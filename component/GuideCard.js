@@ -14,7 +14,7 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: `${BaseUrl}/backgrounds/${BgId}`,
+      url: `${BaseUrl}/backgrounds/${BgId}/`,
       headers: {
         "Authorization": `Token ${userData?.token}`, // Pass the token here
         "Content-Type": "application/json",
@@ -35,7 +35,7 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
     let config2 = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: `${BaseUrl}/floors/${FloorCheck}`,
+      url: `${BaseUrl}/floors/${FloorCheck}/`,
       headers: {
         "Authorization": `Token ${userData?.token}`, // Pass the token here
         //  'Cookie': 'csrftoken=NJChvjOxebFsuddDFi8waFmFFeWWLsBm; sessionid=pewl7aqbu7dwierg2uy7yipixdz05r7s'
@@ -54,7 +54,7 @@ export default function GuideCard({ BgId, guideId, BGCheck, NPCheck, FloorCheck,
 
   }, [BgId], [FloorCheck])
 
-
+  console.log('image flooe :',img,floor)
   return (
     <View style={styles.GuideCard}>
       <View style={styles.OrderCardImage}>
