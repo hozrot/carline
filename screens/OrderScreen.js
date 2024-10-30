@@ -6,31 +6,25 @@ import {
   ImageBackground,
   FlatList,
   ActivityIndicator,
-
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 //import FastImage from 'react-native-fast-image';
 import OrderCard from "../component/OrderCard";
 import BaseUrl from "../auth/BaseUrl";
 import axios from "axios";
 import UserContext from "../auth/UserContext";
-import moment from 'moment';
+import moment from "moment";
 //sudo npm install moment --save
-
 
 export default function OrderScreen({ navigation }) {
   const [OrderList, setOrderList] = useState([]);
 
   const [OrderImage, setOrderImage] = useState();
-  const [OrderImagebyId, setOrderImagebyId] = useState([]);
   const { userData, setOrder } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
   const [Loader, setLoader] = useState(false);
 
   const inProgressText = "in_progress";
-  const capitalizedText = inProgressText.charAt(0).toUpperCase() + inProgressText.slice(1).replace("_", " ");
-  const imageCounts = {};
-  const [arrayCount, setArrayCount] = useState(0);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -42,38 +36,35 @@ export default function OrderScreen({ navigation }) {
             "Content-Type": "application/json",
           },
         });
-        setOrderList(response.data);
-        setIsLoading(false);
-       // console.log(response?.data);
-
         const imageResponse = await axios.get(`${BaseUrl}/order-upload/`, {
           headers: {
             Authorization: `token ${userData?.token}`, // Pass the token here
             "Content-Type": "application/json",
           },
         });
+        const ordersWithImages = response.data.map((order) => ({
+          ...order,
+          images: imageResponse?.data.filter(
+            (image) => image.order_id === order.id
+          ),
+        }));
+
+        setOrderList(ordersWithImages);
         setOrderImage(imageResponse?.data);
         setIsLoading(false);
         console.log(imageResponse?.data);
-       
-
       } catch (err) {
         alert(err.message); // Catch and display error if any
       }
       setLoader(false);
     };
 
-
-
-
     // Adding event listener for focus
-    const unsubscribe = navigation.addListener('focus', fetchOrders);
+    const unsubscribe = navigation.addListener("focus", fetchOrders);
 
     // Cleanup function to remove the listener
     return unsubscribe;
   }, [navigation, userData]); // Add userData as a dependency if it can change
-
-
   return (
     <View style={styles.containerView}>
       {/* {isLoading ? (
@@ -84,8 +75,6 @@ export default function OrderScreen({ navigation }) {
         source={require("../assets/background.png")}
         style={styles.containerView}
       >
-
-
         <View style={styles.topBar}>
           <View>
             <Text
@@ -113,57 +102,65 @@ export default function OrderScreen({ navigation }) {
           >
             <Text style={{ color: "#ffffff" }}> Create Order </Text>
           </TouchableOpacity>
-
-
         </View>
         {Loader && (
-          <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
+          <ActivityIndicator
+            size="large"
+            color={"#fff"}
+            style={styles.loader}
+          />
         )}
 
         {OrderList && OrderImage && (
           <FlatList
             style={styles.bodyContent}
             //data={OrderList}
-            data={OrderList.sort((a, b) => b.created_on.localeCompare(a.created_on))}
+            data={OrderList.sort((a, b) =>
+              b.created_on.localeCompare(a.created_on)
+            )}
             //  data={orderDetails}
             renderItem={({ item }) => (
               <View
-                // onPress={() => {
-                //   setOrder(item), navigation.navigate("OrderDetails");
-                // }}
+              // onPress={() => {
+              //   setOrder(item), navigation.navigate("OrderDetails");
+              // }}
               >
                 <OrderCard
                   onDetails={() => {
-                    setOrder(item),
-                      navigation.navigate("OrderDetails");
+                    setOrder(item), navigation.navigate("OrderDetails");
                   }}
                   image={OrderImage}
                   orderId={item.id}
                   // orderStatus={item.status}
                   //.charAt(0).toUpperCase() + item.status.slice(1).replace("_", " ")}
                   orderStatus={
-                    item.status === 'draft' ? 'Draft' :
-                      item.status === 'uploaded' ? 'Uploaded' :
-                        item.status === 'in_progress' ? 'In Progress' :
-                          item.status === 'qc_in_progress' ? 'QC in progress' :
-                            item.status === 'approval_required' ? 'Approval required' :
-                              item.status === 'approved' ? 'Approved' :
-
-                                item.status}
+                    item.status === "draft"
+                      ? "Draft"
+                      : item.status === "uploaded"
+                      ? "Uploaded"
+                      : item.status === "in_progress"
+                      ? "In Progress"
+                      : item.status === "qc_in_progress"
+                      ? "QC in progress"
+                      : item.status === "approval_required"
+                      ? "Approval required"
+                      : item.status === "approved"
+                      ? "Approved"
+                      : item.status
+                  }
                   // ('draft', 'Draft'),
                   // ('uploaded', 'Uploaded'),
                   // ('in_progress', 'In progress'),
                   // ('qc_in_progress', 'QC in progress'),
                   // ('approval_required', 'Approval required'),
                   // ('approved', 'Approved'),
-                  imageCount={OrderImage.length} 
-                  //imageCount={arrayCount} 
+                  imageCount={item?.images?.length}
+                  //imageCount={arrayCount}
                   dayCount={moment(item.created_on).fromNow()}
-                /></View>
+                />
+              </View>
             )}
-            keyExtractor={(item) => item.id}
           />
-
         )}
       </ImageBackground>
     </View>
@@ -188,78 +185,8 @@ const styles = StyleSheet.create({
   bodyContent: {
     flex: 0.8,
   },
-  OrderCard: {
-    flex: 1,
-    margin: 10,
-    flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "gray",
-    padding: 2,
-    borderRadius: 25,
-  },
 
-  OrderCardImage: {
-    flex: 0.4,
-  },
-  OrderCardDetails: {
-    flex: 0.6,
-    paddingRight: 10,
 
-    paddingTop: 8,
-  },
-  OrderCardDetailsTwo: {
-    flexDirection: "row",
-    padding: 5,
-    justifyContent: "space-around",
-  },
-  OrderCardDetailsThree: {
-    justifyContent: "center",
-    alignContent: "center",
-    width: "60%",
-
-    alignItems: "center",
-  },
-  OrderCardDetailsFour: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingLeft: 10,
-    paddingTop: 20,
-  },
-  IDText: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontFamily: "DMSans_500Medium",
-    paddingLeft: 4,
-  },
-  ImageCount: {
-    color: "#ffffff",
-    fontSize: 14,
-    fontFamily: "DMSans_400Regular",
-    paddingLeft: 4,
-  },
-  DayCount: {
-    color: "#ffffff",
-    fontSize: 12,
-    fontFamily: "DMSans_400Regular",
-  },
-
-  CardHead: {
-    color: "#ffffff",
-    fontStyle: "italic",
-    fontWeight: "bold",
-    fontSize: 18,
-  },
-  CardText: {
-    color: "#ffffff",
-    fontSize: 14,
-    fontFamily: "DMSans_400Regular",
-  },
-  CardText2: {
-    color: "#ffffff",
-    fontSize: 12,
-    fontFamily: "DMSans_400Regular",
-  },
   loader: {
     position: "absolute",
     zIndex: 2,
