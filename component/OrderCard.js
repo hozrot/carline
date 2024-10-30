@@ -6,6 +6,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  FlatList
 } from "react-native";
 import React, { useEffect, useState, useContext } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -48,6 +49,7 @@ export default function OrderCard({
   }
   const { userData } = useContext(UserContext);
   const [Img, setImg] = useState("");
+  const [Imgcount, setImgcount] = useState("");
 
   // useEffect(() => {
   //   let config = {
@@ -84,9 +86,8 @@ export default function OrderCard({
             },
           })
           .then((response) => {
-            setImg(response.data[0]);
-            console.log(response.data);
-
+            setImg(response.data);
+            //console.log(response.data);
           })
           .catch((error) => {
             console.log(error);
@@ -96,10 +97,21 @@ export default function OrderCard({
 
   return (
     <View style={styles.OrderCard}>
-      <View style={{ flex: 0.38 }}>
-        <ScrollView horizontal={true}>
+      <View style={{ flex: 0.38 , height:124}}>
+        {/* <ScrollView horizontal={true}>
           <Image source={{ uri: Img?.file }} style={styles.imageList} />
-        </ScrollView>
+          <Image source={{ uri: Img?.file }} style={styles.imageList} />
+        </ScrollView> */}
+        <ScrollView horizontal={true}>
+        <FlatList
+        data={Img}
+        renderItem={({ item }) => (
+          <Image source={{ uri: item?.file }} style={styles.imageList} />
+        )}
+        keyExtractor={(item) => item.order_id} // Replace 'id' with the unique identifier of your images
+        numColumns={2} // Adjust the number of columns as needed
+      />
+      </ScrollView>
       </View>
 
       <View style={{ flex: 0.62, flexDirection: "column" }}>
@@ -201,6 +213,8 @@ const styles = StyleSheet.create({
     width: 119,
     height: 124,
     borderRadius: 22,
+    marginRight:10
+   
 
   },
 

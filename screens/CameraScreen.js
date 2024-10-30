@@ -19,6 +19,8 @@ export default function CameraScreen({ navigation }) {
     useContext(UserContext);
   const [facing, setFacing] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [permissionResponse, requestPermissionM] = MediaLibrary.usePermissions();
+
   const [photo, setPhoto] = useState(null);
   const [showGrid, setShowGrid] = useState(false);
   const gridFunction = () => {
@@ -91,6 +93,9 @@ export default function CameraScreen({ navigation }) {
     if (photo) {
       try {
         setSelectedImage([photo, ...SelectedImage]);
+        if (permissionResponse.status !== 'granted') {
+          await requestPermissionM();
+        }
         await MediaLibrary.createAssetAsync(photo.uri);
         //alert("Saved Successfully!");
         setPhoto(null);
@@ -137,28 +142,6 @@ export default function CameraScreen({ navigation }) {
         flashMode={isLightOn}
         ratio="4:3"
       >
-        {showGrid && (
-          <View style={styles.gridOverlay}>
-            {/* Horizontal lines */}
-            <View style={[styles.gridLine, { top: '10%' }]} />
-            <View style={[styles.gridLine, { top: '20%' }]} />
-            <View style={[styles.gridLine, { top: '30%' }]} />
-            <View style={[styles.gridLine, { top: '40%' }]} />
-            <View style={[styles.gridLine, { top: '50%' }]} />
-            <View style={[styles.gridLine, { top: '60%' }]} />
-            <View style={[styles.gridLine, { top: '70%' }]} />
-            <View style={[styles.gridLine, { top: '80%' }]} />
-            <View style={[styles.gridLine, { top: '90%' }]} />
-            <View style={[styles.gridLine, { top: '100%' }]} />
-            {/* Vertical lines */}
-            <View style={[styles.gridLineVertical, { transform: [{ rotate: '90deg' }] }]} />
-            <View style={[styles.gridLineVertical, { left: '20%' }]} />
-            <View style={[styles.gridLineVertical, { left: '40%' }]} />
-            <View style={[styles.gridLineVertical, { left: '60%' }]} />
-            <View style={[styles.gridLineVertical, { left: '80%' }]} />
-          </View>
-        )}
-
         <View style={styles.topContainer}>
           <TouchableOpacity onPress={flashFunction}>
             <MaterialCommunityIcons
@@ -238,6 +221,27 @@ export default function CameraScreen({ navigation }) {
           </TouchableOpacity>
         </View>
       </Camera>
+      {showGrid && (
+          <View  pointerEvents="none"  style={styles.gridOverlay}>
+            {/* Horizontal lines */}
+            <View style={[styles.gridLine, { top: '10%' }]} />
+            <View style={[styles.gridLine, { top: '20%' }]} />
+            <View style={[styles.gridLine, { top: '30%' }]} />
+            <View style={[styles.gridLine, { top: '40%' }]} />
+            <View style={[styles.gridLine, { top: '50%' }]} />
+            <View style={[styles.gridLine, { top: '60%' }]} />
+            <View style={[styles.gridLine, { top: '70%' }]} />
+            <View style={[styles.gridLine, { top: '80%' }]} />
+            <View style={[styles.gridLine, { top: '90%' }]} />
+            <View style={[styles.gridLine, { top: '100%' }]} />
+            {/* Vertical lines */}
+            <View style={[styles.gridLineVertical, { transform: [{ rotate: '90deg' }] }]} />
+            <View style={[styles.gridLineVertical, { left: '20%' }]} />
+            <View style={[styles.gridLineVertical, { left: '40%' }]} />
+            <View style={[styles.gridLineVertical, { left: '60%' }]} />
+            <View style={[styles.gridLineVertical, { left: '80%' }]} />
+          </View>
+        )}
     </View>
   );
 }

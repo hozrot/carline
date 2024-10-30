@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "carline",
+    "slug": "carline",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/Carline-Orange.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/logo-orange.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/Carline-AppIcon1.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.mhali.carline",
+      "versionCode": 1
+    },
+    "web": {
+      "favicon": "./assets/Carline-Orange.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-build-properties",
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
+          "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "2f469023-0376-40ae-a812-5f30b4b47c18"
+      }
+    }
+  }
+}

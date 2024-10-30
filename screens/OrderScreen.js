@@ -44,6 +44,7 @@ export default function OrderScreen({ navigation }) {
         });
         setOrderList(response.data);
         setIsLoading(false);
+       // console.log(response?.data);
 
         const imageResponse = await axios.get(`${BaseUrl}/order-upload/`, {
           headers: {
@@ -53,8 +54,8 @@ export default function OrderScreen({ navigation }) {
         });
         setOrderImage(imageResponse?.data);
         setIsLoading(false);
-        //console.log(imageResponse?.data);
-
+        console.log(imageResponse?.data);
+       
 
       } catch (err) {
         alert(err.message); // Catch and display error if any
@@ -126,10 +127,10 @@ export default function OrderScreen({ navigation }) {
             data={OrderList.sort((a, b) => b.created_on.localeCompare(a.created_on))}
             //  data={orderDetails}
             renderItem={({ item }) => (
-              <TouchableOpacity
-              // onPress={() => {
-              //   setOrder(item), navigation.navigate("OrderDetails");
-              // }}
+              <View
+                // onPress={() => {
+                //   setOrder(item), navigation.navigate("OrderDetails");
+                // }}
               >
                 <OrderCard
                   onDetails={() => {
@@ -155,9 +156,10 @@ export default function OrderScreen({ navigation }) {
                   // ('qc_in_progress', 'QC in progress'),
                   // ('approval_required', 'Approval required'),
                   // ('approved', 'Approved'),
-                  imageCount={OrderImage.length}
+                  imageCount={OrderImage.length} 
+                  //imageCount={arrayCount} 
                   dayCount={moment(item.created_on).fromNow()}
-                /></TouchableOpacity>
+                /></View>
             )}
             keyExtractor={(item) => item.id}
           />
