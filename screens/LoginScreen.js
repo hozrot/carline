@@ -16,6 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import BaseUrl from "../auth/BaseUrl";
 import UserContext from "../auth/UserContext";
+import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 
 export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState("");
@@ -34,7 +35,13 @@ export default function LoginScreen({ navigation }) {
 
   const handelLogin = () => {
     if (!email && !password) {
-      alert("Please Enter Email and Password");
+      // alert("Please Enter Email and Password");
+      Dialog.show({
+        type: ALERT_TYPE.WARNING,
+        title: 'Warning',
+        textBody: 'Please Enter Email and Password',
+        button: 'close',
+      })
       return;
     }
     let data = JSON.stringify({
@@ -66,7 +73,13 @@ export default function LoginScreen({ navigation }) {
         }
       })
       .catch((error) => {
-        alert("Wrong Email And Password");
+        //alert("Wrong Email And Password");
+        Dialog.show({
+          type: ALERT_TYPE.DANGER,
+          title: 'Sorry',
+          textBody: 'Wrong Email or Password',
+          button: 'close',
+        })
         setLoader(false);
       });
   };
@@ -90,21 +103,29 @@ export default function LoginScreen({ navigation }) {
         });
       }
     } catch (err) {
-      alert(err.message); // Catch and display error if any
+      //alert(err.message); // Catch and display error if any
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: 'Warning',
+        textBody: 'Problem In Networks',
+        button: 'close',
+      })
       console.log("getData", err);
     }
   };
 
   return (
     <ScrollView style={styles.containerView}>
+      <AlertNotificationRoot>
+      </AlertNotificationRoot>
       <ImageBackground
         source={require("../assets/background.png")}
         resizeMode="stretch"
       >
-         {Loader && (
-        <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
-      )}
-       
+        {Loader && (
+          <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
+        )}
+
         <View style={styles.HeaderView}>
           <Text
             style={{

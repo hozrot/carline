@@ -16,7 +16,7 @@ import Button from "../component/Button";
 import TextInput from "../component/TextInput";
 import BaseUrl from "../auth/BaseUrl";
 import axios from "axios";
-
+import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 export default function SignupScreen({ navigation }) {
 
   const [email, setEmail] = useState('');
@@ -44,7 +44,13 @@ export default function SignupScreen({ navigation }) {
 
   const handleSignUp = () => {
     if (!name && !validateEmail(email) && !password && !company_name) {
-      alert('All filled is required')
+      // alert('All filled is required')
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: 'Warning',
+        textBody: 'All field is required',
+        button: 'close',
+      })
       return
     }
     let data = JSON.stringify({
@@ -68,15 +74,27 @@ export default function SignupScreen({ navigation }) {
 
     axios.request(config)
       .then((result) => {
-        alert(result.data.message)
-        alert("Please Confirm the verification code")
+        //alert(result.data.message)
+        // alert("Please Confirm the verification code")
+        Dialog.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Success',
+          textBody: 'Please Confirm the verification code',
+          button: 'close',
+        })
         setLoader(false);
 
         //  navigation.navigate("Login")
       })
       .catch((error) => {
         console.log(error)
-        alert("Fill Correct Field");
+        //alert("Fill Correct Field");
+        Dialog.show({
+          type: ALERT_TYPE.DANGER,
+          title: 'Warning',
+          textBody: 'Something wrong with given data',
+          button: 'close',
+        })
       });
 
     setModalVisible(!modalVisible)
@@ -84,7 +102,13 @@ export default function SignupScreen({ navigation }) {
 
   const handleVerification = () => {
     if (!verification_code && !validateEmail(email)) {
-      alert('All filled is required')
+      // alert('All filled is required')
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: 'Warning',
+        textBody: 'All filled is required',
+        button: 'close',
+      })
       return
     }
     let data = JSON.stringify({
@@ -106,13 +130,25 @@ export default function SignupScreen({ navigation }) {
 
     axios.request(config)
       .then((result) => {
-        alert(result.data.message);
-        alert("Verification Successfull");
+        // alert(result.data.message);
+        // alert("Verification Successfull");
+        Dialog.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Success',
+          textBody: 'Verification Successfull',
+          button: 'close',
+        })
         navigation.navigate("Login");
       })
       .catch((error) => {
         console.log(error)
-        alert("Fill Correct Field");
+        // alert("Fill Correct Field");
+        Dialog.show({
+          type: ALERT_TYPE.DANGER,
+          title: 'Warning',
+          textBody: 'Something wrong with given data',
+          button: 'close',
+        })
       });
 
   }
@@ -121,12 +157,13 @@ export default function SignupScreen({ navigation }) {
   return (
 
     <ScrollView style={styles.containerView}>
+      <AlertNotificationRoot></AlertNotificationRoot>
       <ImageBackground source={require("../assets/background.png")} resizeMode='stretch' >
 
-      {Loader && (
-        <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
-      )}
-       
+        {Loader && (
+          <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
+        )}
+
         <View style={styles.HeaderView}>
           {/* <TouchableOpacity style={{
             color: 'white',
