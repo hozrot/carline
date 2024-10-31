@@ -17,6 +17,7 @@ import TextInput from "../component/TextInput";
 import Button from "../component/Button";
 import * as ImagePicker from "expo-image-picker";
 
+
 import {
   useFonts,
   DMSans_400Regular,
@@ -28,6 +29,8 @@ import { useGlobalContext } from "../auth/GlobalContext";
 import axios from "axios";
 import BaseUrl from "../auth/BaseUrl";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+
 
 export default function ProfileDetails({ navigation }) {
   const { userData, setUserData } = useContext(UserContext);
@@ -99,14 +102,14 @@ export default function ProfileDetails({ navigation }) {
     DMSans_700Bold,
   });
 
-  console.log(
-    "User Data",
-    userData,
-    "Image is",
-    image,
-    "Type of image",
-    typeof image
-  );
+  // console.log(
+  //   "User Data",
+  //   userData,
+  //   "Image is",
+  //   image,
+  //   "Type of image",
+  //   typeof image
+  // );
 
   // Function to toggle the password visibility state
   const toggleShowPassword = () => {
@@ -116,15 +119,6 @@ export default function ProfileDetails({ navigation }) {
     setShowNewPassword(!showNewPassword);
   };
   const UpdateProfile = () => {
-    // if (!nameUpdate) {
-    //   alert("Enter Updated name");
-    //   return;
-    // }
-    // if (!company_name) {
-    //   alert("Enter New Company Name");
-    //   return;
-    // }
-
     const myHeaders = new Headers();
     myHeaders.append("Authorization", `Token ${userData?.token}`);
     myHeaders.append(
@@ -132,8 +126,8 @@ export default function ProfileDetails({ navigation }) {
       "csrftoken=ASTAfJ6pYzH8nZpIHUf5SIJWuXrLAPe8; sessionid=lnupp2l3rm3a6se4vwr6uj5xlnp291b7"
     );
     const formdata = new FormData();
-
     const defaultImage = userData?.image;
+
     formdata.append("name", nameUpdate || userData?.name);
     formdata.append("company_name", company_name || userData?.company_name);
     if (image.uri) {
@@ -158,17 +152,14 @@ export default function ProfileDetails({ navigation }) {
       .then((response) => response.text())
       .then((result) => console.log(result))
       .then((result) => {
-        console.log("Result is", result);
+        Dialog.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Success',
+          textBody: 'Profile Updated Successfully',
+          button: 'close',
+        })
         navigation.navigate("Home")
        
-        // Alert.alert("Login Again To see the changes", result);
-        // navigation.navigate("Login")
-        //  navigation.navigate("Login")
-        // setUserData({
-        //   ...userData,
-        //   name: nameUpdate || userData?.name,
-        //   company_name: company_name || userData?.company_name,
-        // });
         getData(userData);
       })
       .catch((error) => console.error(error));
@@ -191,14 +182,21 @@ export default function ProfileDetails({ navigation }) {
         setLoader(false);
       }
     } catch (err) {
-      alert(err.message); // Catch and display error if any
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: 'Warning',
+        textBody: 'Network Error',
+        button: 'close',
+      })
       console.log("getData", err);
     }
   };
 
   return (
     <View style={styles.containerView}>
+    
       <ScrollView style={styles.containerView}>
+      
         <ImageBackground
           source={require("../assets/background.png")}
           resizeMode="stretch"
@@ -210,7 +208,7 @@ export default function ProfileDetails({ navigation }) {
               style={styles.loader}
             />
           )}
-
+  <AlertNotificationRoot></AlertNotificationRoot>
           <View style={styles.topBack}>
             <ImageBackground
               source={require("../assets/profileback.png")}
@@ -326,8 +324,7 @@ export default function ProfileDetails({ navigation }) {
                 value={nameUpdate}
                 onChangeText={setNameUpdate}
                 autoCapitalize="none"
-                autoCompleteType="email"
-                keyboardType="email-address"
+                keyboardType="alphabetic"
                 keyboardAppearance="dark"
                 returnKeyType="next"
                 returnKeyLabel="next"
@@ -360,45 +357,12 @@ export default function ProfileDetails({ navigation }) {
                 onChangeText={setCompanyName}
                 autoCapitalize="none"
                 autoCompleteType="email"
-                keyboardType="email-address"
+                keyboardType="alphabetic"
                 keyboardAppearance="dark"
                 returnKeyType="next"
                 returnKeyLabel="next"
               />
-              <Text style={styles.InputHead}> Old Password </Text>
-              <TextInput
-                inputHieght={54}
-                inputAlign={"center"}
-                onPress={toggleShowPassword}
-                icon={showPassword ? "eye-off" : "eye"}
-                placeholder="*******"
-                autoCapitalize="none"
-                autoCompleteType="password"
-                keyboardType="password"
-                keyboardAppearance="dark"
-                returnKeyType="next"
-                returnKeyLabel="next"
-                secureTextEntry={!showPassword}
-                value={password}
-                onChangeText={setPassword}
-              />
-              <Text style={styles.InputHead}> New Password </Text>
-              <TextInput
-                inputHieght={54}
-                inputAlign={"center"}
-                onPress={toggleShowNewPassword}
-                icon={showNewPassword ? "eye-off" : "eye"}
-                placeholder="*******"
-                autoCapitalize="none"
-                autoCompleteType="password"
-                keyboardType="password"
-                keyboardAppearance="dark"
-                returnKeyType="next"
-                returnKeyLabel="next"
-                secureTextEntry={!showNewPassword}
-                value={newpassword}
-                onChangeText={setNewPassword}
-              />
+             
             </KeyboardAvoidingView>
           </View>
           <View style={styles.Bottom}>
@@ -410,6 +374,11 @@ export default function ProfileDetails({ navigation }) {
                 onPress={() => UpdateProfile()}
               />
             )}
+             {!isButtonActive && (
+            <Button
+                label="Change Password"
+                onPress={() => navigation.navigate("ChangePassword")}
+              />)}
           </View>
         </ImageBackground>
       </ScrollView>

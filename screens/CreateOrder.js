@@ -21,6 +21,8 @@ import BaseUrl from "../auth/BaseUrl";
 import ModalAlert from "../component/ModalAlert";
 import UploadingScreen from "./UploadingScreen";
 
+import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+
 export default function CreateOrder({ navigation }) {
   const {
     userData,
@@ -201,13 +203,25 @@ export default function CreateOrder({ navigation }) {
             setSelectedOrderImage([]);
           })
           .catch((error) => {
-            Alert.alert("Image Upload Failed", error.message);
+            Dialog.show({
+              type: ALERT_TYPE.DANGER,
+              title: 'Warning',
+              textBody: 'Image Upload Failed, Network Error',
+              button: 'close',
+            })
+           // Alert.alert("Image Upload Failed", error.message);
             console.log("Image Upload Failed", error);
             setLoader(false);
           });
       }
     } catch (error) {
-      Alert.alert("Failed Image Upload", error.message);
+      //Alert.alert("Failed Image Upload", error.message);
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: 'Warning',
+        textBody: 'Image Upload Failed, Network Error',
+        button: 'close',
+      })
     }
   };
 
@@ -216,7 +230,7 @@ export default function CreateOrder({ navigation }) {
       {/* {Loader && (
         <ActivityIndicator size="large" color={"#fff"} style={styles.loader} />
       )} */}
-
+  <AlertNotificationRoot></AlertNotificationRoot>
      
       <ImageBackground
         source={require("../assets/background.png")}

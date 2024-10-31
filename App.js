@@ -41,6 +41,7 @@ import InstructionList from './screens/InstructionList';
 import InstructionEdit from './screens/InstructionEdit';
 import OrderDetails from './screens/OrderDetails';
 import ResetPassword from './screens/ResetPassword';
+import ChangePassword from './screens/ChangePassword';
 SplashScreen.preventAutoHideAsync();
 
 const Tab = createMaterialBottomTabNavigator();
@@ -100,6 +101,8 @@ export default function App() {
           <Stack.Screen name="InstructionEdit" component={InstructionEdit} options={{ header: () => null }} />
           <Stack.Screen name="OrderDetails" component={OrderDetails} options={{ header: () => null }} />
           <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ header: () => null }} />
+          <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ header: () => null }} />
+
 
 
         </Stack.Navigator>

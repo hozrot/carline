@@ -168,14 +168,14 @@ export default function CameraScreen({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleZoomIn}>
+          <TouchableOpacity style={styles.Zoombutton} onPress={handleZoomIn}>
             <MaterialCommunityIcons
               name={"plus-circle"}
               size={30}
               color={"white"}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleZoomOut}>
+          <TouchableOpacity style={styles.Zoombutton} onPress={handleZoomOut}>
             <MaterialCommunityIcons
               name={"minus-circle"}
               size={30}
@@ -273,6 +273,13 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  Zoombutton: {
+    flex: 1,
+    alignSelf: "flex-end",
+    alignItems: "center",
+    justifyContent: "space-between",
+    opacity:.2
   },
   text: {
     fontSize: 24,

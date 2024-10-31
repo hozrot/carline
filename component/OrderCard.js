@@ -109,7 +109,8 @@ export default function OrderCard({
           <Image source={{ uri: item?.file }} style={styles.imageList} />
         )}
         keyExtractor={(item) => item.order_id} // Replace 'id' with the unique identifier of your images
-        numColumns={2} // Adjust the number of columns as needed
+        numColumns={10} // Adjust the number of columns as needed
+        columnWrapperStyle={{ flexDirection: 'row', justifyContent: 'space-around' }}
       />
       </ScrollView>
       </View>

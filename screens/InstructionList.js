@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     margin: 8,
     justifyContent: "space-between",
-    paddingTop: 20,
+    paddingTop: 30,
   },
   bodyContent: {
     flex: 0.8,
