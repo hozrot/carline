@@ -13,6 +13,7 @@ import UserContext from "../auth/UserContext";
 import BaseUrl from "../auth/BaseUrl";
 import axios from "axios";
 import moment from 'moment';
+import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 
 
 export default function GuideScreen({ navigation }) {
@@ -49,6 +50,7 @@ export default function GuideScreen({ navigation }) {
 
   return (
     <View style={styles.containerView}>
+     
       <ImageBackground
         source={require("../assets/background.png")}
         style={styles.containerView}
@@ -85,7 +87,7 @@ export default function GuideScreen({ navigation }) {
             <Text style={{ color: "#ffffff" }}> Create Instruction </Text>
           </TouchableOpacity> */}
         </View>
-
+       { instructions.length > 0 ? (
         <FlatList
           style={styles.bodyContent}
           data={instructions.sort((a, b) => b.created_at.localeCompare(a.created_at))}
@@ -110,6 +112,15 @@ export default function GuideScreen({ navigation }) {
           )}
           keyExtractor={(item) => item.id}
         />
+      ) : (
+        <View  style={styles.flatList}>
+     <Text style={{
+      color: "#ffffff",
+      fontSize: 16,
+      alignItems:'center'
+    }}> Please Create Instruction To Start your First Order </Text>
+     </View>
+      )}
       </ImageBackground>
     </View>
   );
@@ -154,6 +165,13 @@ const styles = StyleSheet.create({
     paddingRight: 10,
 
     paddingTop: 8,
+  },
+  flatList:{
+    flex: 1,
+    justifyContent:'center',
+    alignContent:'center',
+    alignItems:'center'
+
   },
   loader: {
     position: "absolute",

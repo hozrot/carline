@@ -140,7 +140,7 @@ export default function CameraScreen({ navigation }) {
         ref={cameraRef}
         zoom={zoom}
         flashMode={isLightOn}
-        ratio="4:3"
+        ratio="16:9"
       >
         <View style={styles.topContainer}>
           <TouchableOpacity onPress={flashFunction}>

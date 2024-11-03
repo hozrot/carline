@@ -33,17 +33,17 @@ export default function OrderCard({
   // ('approved', 'Approved'),
 
   if (orderStatus == "Draft") {
-    statusColor = "red";
+    statusColor = "pink";
   } else if (orderStatus == "Uploaded") {
     statusColor = "#FFCA0C";
   } else if (orderStatus == "QC in progress") {
-    statusColor = "#FFCA0C";
+    statusColor = "yellow";
   } else if (orderStatus == "In Progress") {
     statusColor = "#0CFFB3";
   } else if (orderStatus == "Approval required") {
-    statusColor = "gray";
+    statusColor = "red";
   } else if (orderStatus == "Approved") {
-    statusColor = "gray";
+    statusColor = "cyans";
   } else {
     statusColor = "white";
   }
@@ -97,7 +97,7 @@ export default function OrderCard({
 
   return (
     <View style={styles.OrderCard}>
-      <View style={{ flex: 0.38 , height:124}}>
+      <View style={{ flex: 0.35 , height:124}}>
         {/* <ScrollView horizontal={true}>
           <Image source={{ uri: Img?.file }} style={styles.imageList} />
           <Image source={{ uri: Img?.file }} style={styles.imageList} />
@@ -110,7 +110,7 @@ export default function OrderCard({
         )}
         keyExtractor={(item) => item.order_id} // Replace 'id' with the unique identifier of your images
         numColumns={10} // Adjust the number of columns as needed
-        columnWrapperStyle={{ flexDirection: 'row', justifyContent: 'space-around' }}
+       // columnWrapperStyle={{ flexDirection: 'row', justifyContent: 'space-around' }}
       />
       </ScrollView>
       </View>

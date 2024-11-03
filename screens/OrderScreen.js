@@ -14,6 +14,7 @@ import BaseUrl from "../auth/BaseUrl";
 import axios from "axios";
 import UserContext from "../auth/UserContext";
 import moment from "moment";
+import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 //sudo npm install moment --save
 
 export default function OrderScreen({ navigation }) {
@@ -66,17 +67,23 @@ export default function OrderScreen({ navigation }) {
     return unsubscribe;
   }, [navigation, userData]); // Add userData as a dependency if it can change
   return (
+    
     <View style={styles.containerView}>
+      
       {/* {isLoading ? (
         <ActivityIndicator size="large" />
       ) : ( */}
+   
 
       <ImageBackground
         source={require("../assets/background.png")}
         style={styles.containerView}
       >
+           
         <View style={styles.topBar}>
+          
           <View>
+            
             <Text
               style={{
                 color: "#ffffff",
@@ -102,6 +109,7 @@ export default function OrderScreen({ navigation }) {
           >
             <Text style={{ color: "#ffffff" }}> Create Order </Text>
           </TouchableOpacity>
+          
         </View>
         {Loader && (
           <ActivityIndicator
@@ -111,7 +119,7 @@ export default function OrderScreen({ navigation }) {
           />
         )}
 
-        {OrderList && OrderImage && (
+        {OrderList && OrderImage && OrderList.length > 0 ? (
           <FlatList
             style={styles.bodyContent}
             //data={OrderList}
@@ -161,8 +169,20 @@ export default function OrderScreen({ navigation }) {
               </View>
             )}
           />
+        ) : (
+          <View  style={styles.flatList}>
+       <Text style={{
+        color: "#ffffff",
+        fontSize: 24,
+        fontWeight: "condensedBold",
+        
+        alignItems:'center'
+      }}> You have No orders till now </Text>
+       </View>
         )}
+        
       </ImageBackground>
+      
     </View>
   );
 }
@@ -170,7 +190,6 @@ export default function OrderScreen({ navigation }) {
 const styles = StyleSheet.create({
   containerView: {
     flex: 1,
-    justifyContent: "space-between",
     backgroundColor: "#020202",
     paddingBottom: 10,
   },
@@ -184,6 +203,13 @@ const styles = StyleSheet.create({
   },
   bodyContent: {
     flex: 0.8,
+  },
+  flatList:{
+    flex: 1,
+    justifyContent:'center',
+    alignContent:'center',
+    alignItems:'center'
+
   },
 
 

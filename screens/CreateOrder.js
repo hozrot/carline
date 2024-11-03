@@ -157,9 +157,10 @@ export default function CreateOrder({ navigation }) {
         } else {
           setProgress(100);
           setTimeout(() => {
-           // navigation.navigate("SuccessScreen");
+        
             setLoader(false);
           }, 2000);
+          navigation.navigate("SuccessScreen");
         }
       })
       .catch((error) => Alert.alert("Create Order Failed", error.message));
@@ -187,6 +188,7 @@ export default function CreateOrder({ navigation }) {
           .then((response) => {
             if (response.ok) {
               return response.text(); // Parse the response body
+              
             } else {
               throw new Error(
                 `Error: ${response.status} ${response.statusText}`
@@ -197,11 +199,15 @@ export default function CreateOrder({ navigation }) {
             setLoader(false);
             setProgress(100);
             setTimeout(() => {
-              navigation.navigate("SuccessScreen");
+            
             }, 2000);
 
             setSelectedOrderImage([]);
+            navigation.navigate("SuccessScreen");
           })
+          // .then((result) => {
+          //  navigation.navigate("SuccessScreen");
+          // })
           .catch((error) => {
             Dialog.show({
               type: ALERT_TYPE.DANGER,

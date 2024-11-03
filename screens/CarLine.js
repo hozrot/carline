@@ -14,6 +14,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import UserContext from "../auth/UserContext";
 import axios from "axios";
 import BaseUrl from "../auth/BaseUrl";
+import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+
 SplashScreen.preventAutoHideAsync();
 
 export default function CarLine({ navigation }) {
@@ -42,7 +44,13 @@ export default function CarLine({ navigation }) {
             const mergedObj = { ...convertValue, ...userData[0] }
             setUserData(mergedObj);
           } catch (err) {
-            alert(err.message); // Catch and display error if any
+           // alert(err.message); // Catch and display error if any
+           Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Warning',
+            textBody: 'You need a Stable Internet Connection To Start',
+            button: 'close',
+          })
             console.log("getData", err);
           }
         }
@@ -61,8 +69,10 @@ export default function CarLine({ navigation }) {
       resizeMode="stretch"
       style={styles.containerView}
     >
+      
       <StatusBar hidden={true} backgroundColor={"blue"} />
       <View style={styles.bodyContent}>
+      
         <TouchableOpacity
           style={styles.blockContent}
           disabled={loader}
@@ -112,6 +122,7 @@ export default function CarLine({ navigation }) {
           </View>
           {/* </ImageBackground> */}
         </TouchableOpacity>
+      
         <TouchableOpacity
           style={styles.blockContent2}
           onPress={() => {
@@ -143,6 +154,8 @@ export default function CarLine({ navigation }) {
             </View>
           </ImageBackground>
         </TouchableOpacity>
+        <AlertNotificationRoot>
+        </AlertNotificationRoot>
       </View>
     </ImageBackground>
   );
