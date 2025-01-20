@@ -2,7 +2,7 @@
   "expo": {
     "name": "carline",
     "slug": "carline",
-    "version": "1.0.0",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/Carline-Orange.png",
     "userInterfaceStyle": "light",
@@ -23,7 +23,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.mhali.carline",
-      "versionCode": 1
+      "versionCode": 4
     },
     "web": {
       "favicon": "./assets/Carline-Orange.png"
@@ -38,7 +38,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "2f469023-0376-40ae-a812-5f30b4b47c18"
+        "projectId": "9f5552b3-632a-47f0-b6c1-47e6cc4d1de9"
       }
     }
   }
