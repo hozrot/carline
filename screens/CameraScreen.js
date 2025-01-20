@@ -1,13 +1,14 @@
 import { Camera, CameraType, FlashMode } from "expo-camera/legacy";
 import React, { useRef, useState, useContext, useEffect } from "react";
 import {
-  Button,
+  
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
   Image,
 } from "react-native";
+import Button from "../component/Button";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import PreviewImage from "./PreviewImage";
 import * as MediaLibrary from "expo-media-library";
@@ -53,12 +54,20 @@ export default function CameraScreen({ navigation }) {
 
   if (!permission.granted) {
     return (
-      <View style={styles.container}>
+
+      <View style={styles.containerP}>
         <Text style={styles.message}>
           We need your permission to show the camera
         </Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Button onPress={requestPermission} label="Grant Permission" />
       </View>
+
+      // <View style={styles.container}>
+      //   <Text style={styles.message}>
+      //     We need your permission to show the camera
+      //   </Text>
+      //   <Button onPress={requestPermission} title="grant permission" />
+      // </View>
     );
   }
 
@@ -247,6 +256,14 @@ export default function CameraScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  containerP: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    padding: 10
+  },
+
   container: {
     flex: 1,
   },

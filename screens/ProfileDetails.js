@@ -379,7 +379,19 @@ export default function ProfileDetails({ navigation }) {
                 label="Change Password"
                 onPress={() => navigation.navigate("ChangePassword")}
               />)}
+
+              
           </View>
+          <View  style={{
+                padding:10
+              }} >
+          <Button
+                label="Delete Your Account"
+                //onPress={() => navigation.navigate("ChangePassword")}
+              />
+
+          </View>
+         
         </ImageBackground>
       </ScrollView>
     </View>

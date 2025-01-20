@@ -18,6 +18,7 @@ import axios from "axios";
 export default function OrderCard({
   image,
   orderId,
+  orderName,
   imageCount,
   dayCount,
   orderStatus,
@@ -97,7 +98,7 @@ export default function OrderCard({
 
   return (
     <View style={styles.OrderCard}>
-      <View style={{ flex: 0.35 , height:124}}>
+      <View style={{ flex: 0.38 , height:124}}>
         {/* <ScrollView horizontal={true}>
           <Image source={{ uri: Img?.file }} style={styles.imageList} />
           <Image source={{ uri: Img?.file }} style={styles.imageList} />
@@ -116,7 +117,7 @@ export default function OrderCard({
       </View>
 
       <View style={{ flex: 0.62, flexDirection: "column" }}>
-        <View style={{ flex: 0.2, justifyContent: 'center' }}>
+        <View style={{ flex: 0.1, justifyContent: 'center',paddingLeft:5 }}>
 
           <Text
             style={{
@@ -126,10 +127,11 @@ export default function OrderCard({
             }}
           >
 
-            {orderId}
+            
+            {orderName}
           </Text>
         </View>
-        <View style={{ flex: 0.5, flexDirection: "row", justifyContent: "space-between", paddingRight: 8 }}>
+        <View style={{ flex: 0.5, flexDirection: "row", justifyContent: "space-between", paddingRight: 5 ,paddingLeft:5}}>
           <Text
             style={{
               color: "#ffffff",
@@ -138,7 +140,7 @@ export default function OrderCard({
 
             }}
           >
-            {" "}
+            
             {imageCount} images
           </Text>
 
@@ -152,7 +154,7 @@ export default function OrderCard({
             {orderStatus}
           </Text>
         </View>
-        <View style={{ flex: 0.4, flexDirection: "row", justifyContent: "space-between", alignItems: 'center', paddingRight: 8 }}>
+        <View style={{ flex: 0.4, flexDirection: "row", justifyContent: "space-between", alignItems: 'center', paddingRight: 2,paddingLeft:5 }}>
           {/* <View style={{ paddingTop: 45, paddingLeft: 10 }}> */}
           <Text
             style={{

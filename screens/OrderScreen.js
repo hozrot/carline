@@ -138,7 +138,8 @@ export default function OrderScreen({ navigation }) {
                     setOrder(item), navigation.navigate("OrderDetails");
                   }}
                   image={OrderImage}
-                  orderId={item.id}
+                 orderId={item.id}
+                  orderName={item.job_name}
                   // orderStatus={item.status}
                   //.charAt(0).toUpperCase() + item.status.slice(1).replace("_", " ")}
                   orderStatus={

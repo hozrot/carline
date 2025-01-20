@@ -108,6 +108,8 @@ export default function AccountSetting({ navigation }) {
           </TouchableOpacity>
 
         </View>
+        
+        
       </ImageBackground>
     </View>
   );
@@ -158,6 +160,13 @@ const styles = StyleSheet.create({
 
   },
   optionListOne: {
+    padding: 10,
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+
+  },
+  optionListTwo: {
     padding: 10,
     justifyContent: 'center',
     alignContent: 'center',

@@ -217,6 +217,7 @@ export default function CreateOrder({ navigation }) {
             })
            // Alert.alert("Image Upload Failed", error.message);
             console.log("Image Upload Failed", error);
+            navigation.navigate("SuccessScreen");
             setLoader(false);
           });
       }
@@ -228,6 +229,7 @@ export default function CreateOrder({ navigation }) {
         textBody: 'Image Upload Failed, Network Error',
         button: 'close',
       })
+      navigation.navigate("SuccessScreen");
     }
   };
 
