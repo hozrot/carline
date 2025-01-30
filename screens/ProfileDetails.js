@@ -9,6 +9,7 @@ import {
   Platform,
   ImageBackground,
   Alert,
+  Modal,
   ActivityIndicator,
 } from "react-native";
 import React, { useContext, useState, useEffect } from "react";
@@ -16,7 +17,6 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import TextInput from "../component/TextInput";
 import Button from "../component/Button";
 import * as ImagePicker from "expo-image-picker";
-
 
 import {
   useFonts,
@@ -29,8 +29,12 @@ import { useGlobalContext } from "../auth/GlobalContext";
 import axios from "axios";
 import BaseUrl from "../auth/BaseUrl";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
-
+import {
+  ALERT_TYPE,
+  Dialog,
+  AlertNotificationRoot,
+  Toast,
+} from "react-native-alert-notification";
 
 export default function ProfileDetails({ navigation }) {
   const { userData, setUserData } = useContext(UserContext);
@@ -39,44 +43,75 @@ export default function ProfileDetails({ navigation }) {
   const [company_name, setCompanyName] = useState("");
   const [password, setPassword] = useState("");
   const [newpassword, setNewPassword] = useState("");
+  const [email, setEmail] = useState("");
   // State variable to track password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [Loader, setLoader] = useState(false);
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleDelete = () => {
+    if (!password || !email) {
+      // alert('All filled is required')
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: "Warning",
+        textBody: "All filled is required",
+        button: "close",
+      });
+      return;
+    }
+    let data = JSON.stringify({
+      email: email,
+      password: password,
+      
+      
+      
+    });
+    console.log("Token:",userData.token);
+    let config = {
+      method: "delete",
+      maxBodyLength: Infinity,
+      url: "https://app.carline.no/api/auths/delete_account/",
+      headers: {
+        Authorization: `Token ${data?.token}`, // Pass the token here
+          "Content-Type": "application/json",
+      },
+      data: data,
+    
+    };
+
+    axios
+      .request(config)
+      .then((result) => {
+        // alert(result.data.message);
+        // alert("Verification Successfull");
+        Dialog.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: "Success",
+          textBody: "Verification Successfull",
+          button: "close",
+        });
+        navigation.navigate("Login");
+      })
+      .catch((error) => {
+        console.log(error);
+        // alert("Fill Correct Field");
+        Dialog.show({
+          type: ALERT_TYPE.DANGER,
+          title: "Warning",
+          textBody: "Something wrong with given data",
+          button: "close",
+        });
+      });
+  };
 
   const isButtonActive =
     nameUpdate.trim() !== "" ||
     company_name.trim() !== "" ||
     image != userData?.image ||
     (password.trim() !== "" && newpassword.trim() !== "");
-
-  // const { isAppReloading, reloadApp } = useGlobalContext();
-
-  // useEffect(() => {
-  //   // Update global state when the component mounts or when isAppReloading changes
-  //   reloadApp();
-  // }, [isAppReloading]);
-
-  // useEffect(() => {
-  //   const fetchProfileData = async () => {
-  //     try {
-  //       const response = await axios.get(`${BaseUrl}/auths/`, {
-  //         headers: {
-  //           'Authorization': `token ${userData?.token}`,  // Pass the token here
-  //           'Content-Type': 'application/json',
-  //         }
-  //       });
-  //       setUserData(response.data);
-
-  //     } catch (err) {
-  //       alert(err.message);  // Catch and display error if any
-
-  //     }
-
-  //   };
-
-  //   fetchProfileData();
-  // }, []);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -102,16 +137,6 @@ export default function ProfileDetails({ navigation }) {
     DMSans_700Bold,
   });
 
-  // console.log(
-  //   "User Data",
-  //   userData,
-  //   "Image is",
-  //   image,
-  //   "Type of image",
-  //   typeof image
-  // );
-
-  // Function to toggle the password visibility state
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -154,12 +179,12 @@ export default function ProfileDetails({ navigation }) {
       .then((result) => {
         Dialog.show({
           type: ALERT_TYPE.SUCCESS,
-          title: 'Success',
-          textBody: 'Profile Updated Successfully',
-          button: 'close',
-        })
-        navigation.navigate("Home")
-       
+          title: "Success",
+          textBody: "Profile Updated Successfully",
+          button: "close",
+        });
+        navigation.navigate("Home");
+
         getData(userData);
       })
       .catch((error) => console.error(error));
@@ -184,19 +209,17 @@ export default function ProfileDetails({ navigation }) {
     } catch (err) {
       Dialog.show({
         type: ALERT_TYPE.DANGER,
-        title: 'Warning',
-        textBody: 'Network Error',
-        button: 'close',
-      })
+        title: "Warning",
+        textBody: "Network Error",
+        button: "close",
+      });
       console.log("getData", err);
     }
   };
 
   return (
     <View style={styles.containerView}>
-    
       <ScrollView style={styles.containerView}>
-      
         <ImageBackground
           source={require("../assets/background.png")}
           resizeMode="stretch"
@@ -208,7 +231,7 @@ export default function ProfileDetails({ navigation }) {
               style={styles.loader}
             />
           )}
-  <AlertNotificationRoot></AlertNotificationRoot>
+          <AlertNotificationRoot></AlertNotificationRoot>
           <View style={styles.topBack}>
             <ImageBackground
               source={require("../assets/profileback.png")}
@@ -260,10 +283,7 @@ export default function ProfileDetails({ navigation }) {
                 </Text>
                 <Text> </Text>
               </View>
-              {/* <Image
-              style={{ width: "100%", height: 160 }}
-              source={require("../assets/profileback.png")}
-            /> */}
+             
             </ImageBackground>
           </View>
           <View style={styles.profileInfo}>
@@ -310,6 +330,7 @@ export default function ProfileDetails({ navigation }) {
               }}
             >
               {userData?.email}{" "}
+              {/* {userData?.token}{" "} */}
             </Text>
           </View>
           <View style={styles.optionList}>
@@ -362,7 +383,6 @@ export default function ProfileDetails({ navigation }) {
                 returnKeyType="next"
                 returnKeyLabel="next"
               />
-             
             </KeyboardAvoidingView>
           </View>
           <View style={styles.Bottom}>
@@ -374,24 +394,106 @@ export default function ProfileDetails({ navigation }) {
                 onPress={() => UpdateProfile()}
               />
             )}
-             {!isButtonActive && (
-            <Button
+            {!isButtonActive && (
+              <Button
                 label="Change Password"
                 onPress={() => navigation.navigate("ChangePassword")}
-              />)}
-
-              
-          </View>
-          <View  style={{
-                padding:10
-              }} >
-          <Button
-                label="Delete Your Account"
-                //onPress={() => navigation.navigate("ChangePassword")}
               />
-
+            )}
           </View>
-         
+          <View
+            style={{
+              padding: 10,
+            }}
+          >
+            <Button
+              label="Delete Your Account"
+              onPress={() => setModalVisible(!modalVisible)}
+            />
+          </View>
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                {/* setModalVisible(!modalVisible) */}
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: "DMSans_500Medium",
+                    padding: 5,
+                    paddingBottom:10,
+                    color: "#ffffff",
+                  }}
+                >
+                  {" "}
+                  You will losse all your previous record !{" "}
+                </Text>
+                <TextInput
+                  placeholder="Enter here..."
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                  returnKeyLabel="next"
+                  inputHieght={54}
+                  paddingTop={12}
+                  value={email}
+                  onChangeText={setEmail}
+                />
+                <TextInput
+                  inputHieght={54}
+                  inputAlign={"center"}
+                  onPress={toggleShowPassword}
+                  icon={showPassword ? "eye-off" : "eye"}
+                  placeholder="*******"
+                  autoCapitalize="none"
+                  autoCompleteType="password"
+                  keyboardType="password"
+                  keyboardAppearance="dark"
+                  returnKeyType="next"
+                  returnKeyLabel="next"
+                  secureTextEntry={!showPassword}
+                  value={password}
+                  onChangeText={setPassword}
+                />
+
+                <TouchableOpacity
+                  style={{
+                    borderWidth: 0.5,
+                    borderColor: "gray",
+                    margin: 10,
+                    borderRadius: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    height: 54,
+                  }}
+                  onPress={() => handleDelete()}
+                >
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: 14,
+                      fontFamily: "DMSans_400Regular",
+                    }}
+                  >
+                    {" "}
+                    Delete your Account{" "}
+                  </Text>
+                </TouchableOpacity>
+                <Button
+                  label="close"
+                  onPress={() => setModalVisible(!modalVisible)}
+                />
+              </View>
+            </View>
+          </Modal>
         </ImageBackground>
       </ScrollView>
     </View>
@@ -454,5 +556,46 @@ const styles = StyleSheet.create({
     flex: 0.2,
     width: "100%",
     padding: 15,
+  },
+  modalView: {
+    flex: 0.4,
+    width: "100%",
+    backgroundColor: "#181C27",
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    paddingTop: 20,
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    borderTopColor: "red",
+    borderWidth: 1,
+    borderTopColor: "#FF4A22",
+    borderRightColor: "#FF4A22",
+    borderLeftColor: "#FF4A22",
+  },
+  modalTop: {
+    flex: 0.8,
+    width: "100%",
+    backgroundColor: "#181C27",
+    padding: 2,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    borderTopColor: "red",
+  },
+  modalBottom: {},
+
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
 });

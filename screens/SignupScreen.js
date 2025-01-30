@@ -362,11 +362,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingLeft: 10
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
+  
   welcomeBar: {
     justifyContent: "center",
     alignItems: "center",
@@ -460,5 +456,10 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
 });
