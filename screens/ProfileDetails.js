@@ -41,6 +41,7 @@ export default function ProfileDetails({ navigation }) {
   const [image, setImage] = useState(userData?.image);
   const [nameUpdate, setNameUpdate] = useState("");
   const [company_name, setCompanyName] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [newpassword, setNewPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -110,6 +111,7 @@ export default function ProfileDetails({ navigation }) {
   const isButtonActive =
     nameUpdate.trim() !== "" ||
     company_name.trim() !== "" ||
+    phone.trim() !== "" ||
     image != userData?.image ||
     (password.trim() !== "" && newpassword.trim() !== "");
 
@@ -155,6 +157,7 @@ export default function ProfileDetails({ navigation }) {
 
     formdata.append("name", nameUpdate || userData?.name);
     formdata.append("company_name", company_name || userData?.company_name);
+    formdata.append("phone", phone || userData?.phone);
     if (image.uri) {
       const selectedImage = {
         uri: image.uri,
@@ -367,7 +370,20 @@ export default function ProfileDetails({ navigation }) {
                 returnKeyLabel="next"
                 editable={false}
               /> */}
-
+ <Text style={styles.InputHead}> Mobile No </Text>
+              <TextInput
+                inputHieght={54}
+                inputAlign={"center"}
+                // value={userData?.company_name}
+                placeholder={userData?.phone}
+                value={phone}
+                onChangeText={setPhone}
+                autoCapitalize="none"
+                keyboardType="phone-pad"
+                keyboardAppearance="dark"
+                returnKeyType="next"
+                returnKeyLabel="next"
+              />
               <Text style={styles.InputHead}> Company </Text>
               <TextInput
                 inputHieght={54}

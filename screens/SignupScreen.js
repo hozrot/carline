@@ -23,6 +23,7 @@ export default function SignupScreen({ navigation }) {
   const [name, setName] = useState('');
   const [company_name, setCompany_name] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
   const [verification_code, setVerification_code] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   // State variable to track password visibility
@@ -43,7 +44,7 @@ export default function SignupScreen({ navigation }) {
 
 
   const handleSignUp = () => {
-    if (!name && !validateEmail(email) && !password && !company_name) {
+    if (!name && !validateEmail(email) && !password && !company_name && !phone) {
       // alert('All filled is required')
       Dialog.show({
         type: ALERT_TYPE.DANGER,
@@ -57,7 +58,8 @@ export default function SignupScreen({ navigation }) {
       "email": email,
       "name": name,
       "company_name": company_name,
-      "password": password
+      "password": password,
+      "phone": phone
     });
     setLoader(true);
 
@@ -92,9 +94,10 @@ export default function SignupScreen({ navigation }) {
         Dialog.show({
           type: ALERT_TYPE.DANGER,
           title: 'Warning',
-          textBody: 'Something wrong with given data',
+          textBody: 'Something wrong with given data or Email already exist',
           button: 'close',
         })
+        setLoader(false);
       });
 
     setModalVisible(!modalVisible)
@@ -243,6 +246,26 @@ export default function SignupScreen({ navigation }) {
             value={password}
             onChangeText={setPassword}
           />
+
+<Text style={styles.InputHead}>
+            {" "}
+            Mobile No {" "}
+          </Text>
+          <TextInput
+
+            placeholder="Enter here....."
+            autoCapitalize="none"
+            autoCompleteType="email"
+            keyboardType="phone-pad"
+            keyboardAppearance="dark"
+            returnKeyType="next"
+            returnKeyLabel="next"
+            inputHieght={54}
+            inputAlign={'center'}
+            value={phone}
+            onChangeText={setPhone}
+          />
+          
           <Text style={styles.InputHead}>
             {" "}
             Company{" "}

@@ -89,7 +89,7 @@ export default function InstructionList({ navigation }) {
             <Text style={{ color: "#ffffff" }}> Create Instruction </Text>
           </TouchableOpacity>
         </View>
-
+        { instructions.length > 0 ? (
         <FlatList
           style={styles.bodyContent}
           data={instructions.sort((a, b) => b.created_at.localeCompare(a.created_at))}
@@ -118,6 +118,15 @@ export default function InstructionList({ navigation }) {
           )}
           keyExtractor={(item) => item.id}
         />
+         ) : (
+                <View  style={styles.flatList}>
+             <Text style={{
+              color: "#ffffff",
+              fontSize: 16,
+              alignItems:'center'
+            }}> Please Create Instruction To Start your First Order </Text>
+             </View>
+              )}
       </ImageBackground>
     </View>
   );
@@ -140,6 +149,13 @@ const styles = StyleSheet.create({
   },
   bodyContent: {
     flex: 0.8,
+  },
+  flatList:{
+    flex: 1,
+    justifyContent:'center',
+    alignContent:'center',
+    alignItems:'center'
+
   },
   GuideCard: {
     margin: 10,
